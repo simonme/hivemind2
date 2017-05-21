@@ -6,17 +6,21 @@ public class Vulture {
     private final Mirror bwapi;
     private final HashSet<Unit> enemyUnits;
     final private Unit unit;
+    private final AI ai;
 
     public Vulture(Unit unit, Mirror bwapi, HashSet<Unit> enemyUnits) {
         this.unit = unit;
         this.bwapi = bwapi;
         this.enemyUnits = enemyUnits;
+        this.ai = new XCS();
     }
 
     public void step() {
         /**
          * TODO: XCS
          */
+        final Situation sigmaT = new Situation();
+        this.ai
         Unit target = getClosestEnemy();
 //        move(target);
         this.unit.attack(target);
