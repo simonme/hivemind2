@@ -37,22 +37,18 @@ public class Covering {
         return new IntervalPredicate(lower, upper);
     }
 
-    public Action pickRandomAction(){ //TODO: wähle zufällige Aktion, die nicht im Match Set ist
-        return null;
-    }
-
     public int getActualTime(){ //TODO: liefere aktuellen Zeitschritt
         return Integer.MIN_VALUE;
     }
 
-    public Classifier generateCoveringClassifier(Situation sigmaT){
-        ArrayList<IntervalPredicate>intervalPredicates = new ArrayList<IntervalPredicate>()
+    public Classifier generateCoveringClassifier(Situation sigmaT, Action action){
+        ArrayList<IntervalPredicate>intervalPredicates = new ArrayList<IntervalPredicate>();
         for (int i = 0; i < sigmaT.getFeatures().size(); i++){
             intervalPredicates.add(generateIntervalPredicate(sigmaT.getFeatures().get(i)));
         }
         Condition condition = new Condition(intervalPredicates);
         return new Classifier(condition,
-                pickRandomAction(),
+                action,
                 XCSConfig.predictionI,
                 XCSConfig.epsilonI,
                 XCSConfig.FI,
