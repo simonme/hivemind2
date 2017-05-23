@@ -13,10 +13,7 @@ public class IntervalPredicate {
 
 
     public boolean contains(double d){
-        if ((lowerBound <= d) || (upperBound >= d)){
-            return true;
-        }
-        return false;
+        return (lowerBound <= d) && (upperBound >= d);
     }
 
 }
