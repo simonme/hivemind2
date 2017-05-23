@@ -37,11 +37,7 @@ public class Covering {
         return new IntervalPredicate(lower, upper);
     }
 
-    public int getActualTime(){ //TODO: liefere aktuellen Zeitschritt
-        return Integer.MIN_VALUE;
-    }
-
-    public Classifier generateCoveringClassifier(Situation sigmaT, Action action){
+    public Classifier generateCoveringClassifier(Situation sigmaT, Action action, int timestamp){
         ArrayList<IntervalPredicate>intervalPredicates = new ArrayList<IntervalPredicate>();
         for (int i = 0; i < sigmaT.getFeatures().size(); i++){
             intervalPredicates.add(generateIntervalPredicate(sigmaT.getFeatures().get(i)));
@@ -53,7 +49,7 @@ public class Covering {
                 XCSConfig.epsilonI,
                 XCSConfig.FI,
                 0,
-                getActualTime());
+                timestamp);
     }
 
 }

@@ -8,23 +8,37 @@ public class XCS implements AI {
     private LinkedHashSet<Classifier> population;
     private XCSConfig xcsConfig;
     private Covering covering;
+    private int timestamp;
+    private LinkedList<Set<Classifier>> actionSetHistory;
 
-    public XCS() {
+    public XCS(ArrayList<Action> possibleActions) {
+        this.possibleActions = possibleActions;
         this.xcsConfig = new XCSConfig();// TODO not necessary, all XCSConfig parameters are public static final XY
         covering = new Covering();
         population = new LinkedHashSet<>();
         // TODO: Load population from csv
+        timestamp = 0;
+        actionSetHistory = new LinkedList<>();
     }
 
     @Override
-    public Action step(Situation sigmaT) {
-        // TODO update previous action set, if there is any
+    public Action step(Situation sigmaT, int reward) {
+        if(actionSetHistory.size() > 0) // we could also test if timestamp > 0
+        {
+            // TODO update previous action set
+
+            // Only using A and A_-1 right now, so discard older action sets
+            if(actionSetHistory.size() > 1)
+            {
+                actionSetHistory.removeLast();
+            }
+        }
+        timestamp++;
         Set<Classifier> matchSet = generateMatchSet(sigmaT);
         Map<Action, Double> predictionArray = generatePredictionArray(matchSet);
         Action chosenAction = selectAction(predictionArray);
-        Set<Classifier> actionSet = generateActionSet(sigmaT, chosenAction, matchSet);
-        // TODO
-        return null;
+        actionSetHistory.addFirst(generateActionSet(sigmaT, chosenAction, matchSet));
+        return chosenAction;
     }
 
     public int numberOfDistinctActions(Set<Classifier> set) {
@@ -44,7 +58,7 @@ public class XCS implements AI {
         }
         //Covering, wenn zu wenig Aktionen im Match Set
         while (numberOfDistinctActions(matchSet) < XCSConfig.thetaMNA) {
-            Classifier clc = covering.generateCoveringClassifier(sigmaT, pickRandomActionNotPresentInSet(matchSet));
+            Classifier clc = covering.generateCoveringClassifier(sigmaT, pickRandomActionNotPresentInSet(matchSet), timestamp);
             population.add(clc);
             deleteFromPopulation();
             matchSet.add(clc);

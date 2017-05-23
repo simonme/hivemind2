@@ -1,4 +1,6 @@
 import bwapi.*;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Vulture {
@@ -12,18 +14,19 @@ public class Vulture {
         this.unit = unit;
         this.bwapi = bwapi;
         this.enemyUnits = enemyUnits;
-        this.ai = new XCS();
+        ArrayList<Action> possibleActions = new ArrayList<>();
+        possibleActions.add(new ActionMove(ActionMove.Direction.North));
+        possibleActions.add(new ActionMove(ActionMove.Direction.South));
+        possibleActions.add(new ActionMove(ActionMove.Direction.East));
+        possibleActions.add(new ActionMove(ActionMove.Direction.West));
+        this.ai = new XCS(possibleActions);
     }
 
     public void step() {
-        /**
-         * TODO: XCS
-         */
         final Situation sigmaT = new Situation();
-        this.ai
-        Unit target = getClosestEnemy();
-//        move(target);
-        this.unit.attack(target);
+        //TODO: Compute Reward
+        Action action = this.ai.step(sigmaT, 0);
+        action.ExecuteOn(this.unit);
     }
 
     private void move(Unit target) {
