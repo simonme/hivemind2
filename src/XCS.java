@@ -41,4 +41,8 @@ public class XCS implements AI {
     }
 
 
+    @Override
+    public Action step(Situation sigmaT) {
+        return null;
+    }
 }

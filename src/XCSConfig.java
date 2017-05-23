@@ -8,6 +8,7 @@ public class XCSConfig {
     public static double delta = 0.1;
     public static double nu = 5;
     public static double epsilon0 = 0.01;
+    public static double predictionI = 0.0; //TODO richtigen Wert herausfinden bzw berechnen
     public static double epsilonI = 0.0;
     public static double FI = 0.01;
     public static int thetaGA = 50;
