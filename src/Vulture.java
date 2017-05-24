@@ -15,10 +15,14 @@ public class Vulture {
         this.bwapi = bwapi;
         this.enemyUnits = enemyUnits;
         ArrayList<Action> possibleActions = new ArrayList<>();
-        possibleActions.add(new ActionMove(ActionMove.Direction.North));
-        possibleActions.add(new ActionMove(ActionMove.Direction.South));
-        possibleActions.add(new ActionMove(ActionMove.Direction.East));
-        possibleActions.add(new ActionMove(ActionMove.Direction.West));
+        possibleActions.add(new ActionMove(new RelativePosition(0, 1)));
+        possibleActions.add(new ActionMove(new RelativePosition(90, 1)));
+        possibleActions.add(new ActionMove(new RelativePosition(180, 1)));
+        possibleActions.add(new ActionMove(new RelativePosition(270, 1)));
+        possibleActions.add(new ActionSpiderMines(new RelativePosition(0, 1)));
+        possibleActions.add(new ActionSpiderMines(new RelativePosition(90, 1)));
+        possibleActions.add(new ActionSpiderMines(new RelativePosition(180, 1)));
+        possibleActions.add(new ActionSpiderMines(new RelativePosition(270, 1)));
         this.ai = new XCS(possibleActions);
     }
 
