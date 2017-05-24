@@ -1,4 +1,3 @@
-import bwapi.Position;
 import bwapi.Unit;
 
 /**
