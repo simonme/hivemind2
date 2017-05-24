@@ -17,7 +17,7 @@ public class XCSConfig {
     public static int thetaDEL = 50;
     public static double thetaSUB = 50;
     public static double thetaRLS = 1000;
-    public static int thetaMNA = 2; //Anzahl der Aktionen die minimal im Match Set vorhanden sein müssen, damit kein Covering betrieben wird
+    public static int thetaMNA = 6; //Anzahl der Aktionen die minimal im Match Set vorhanden sein müssen, damit kein Covering betrieben wird
     public static double chi = 0.8;
     public static double my = 0.04;
     public static int N = 6400;
@@ -25,5 +25,5 @@ public class XCSConfig {
     public static double r0 = 0.33;
     public static boolean doActionSetSubsumption = true;
     public static boolean doGASubsumption = true;
-    public static double pExp = 0.8; //Wahrscheinlichkeit für Exploitation
+    public static double pExp = 0.7; //Wahrscheinlichkeit für Exploitation
 }
