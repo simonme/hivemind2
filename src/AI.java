@@ -3,5 +3,5 @@
  */
 public interface AI {
 
-    public Action step(Situation sigmaT, int reward);
+    public Action step(Situation sigmaT, double reward);
 }

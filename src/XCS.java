@@ -10,6 +10,7 @@ public class XCS implements AI {
     private Covering covering;
     private int timestamp;
     private LinkedList<Set<Classifier>> actionSetHistory;
+    private Random random;
 
     public XCS(ArrayList<Action> possibleActions) {
         this.possibleActions = possibleActions;
@@ -19,13 +20,15 @@ public class XCS implements AI {
         // TODO: Load population from csv
         timestamp = 0;
         actionSetHistory = new LinkedList<>();
+        this.random = new Random();
     }
 
     @Override
-    public Action step(Situation sigmaT, int reward) {
-        if(actionSetHistory.size() > 0) // we could also test if timestamp > 0
-        {
+    public Action step(Situation sigmaT, double reward) {
+        System.out.println("XCS step!");
+        if(actionSetHistory.size() > 0) { // we could also test if timestamp > 0
             // TODO update previous action set
+            actionSetHistory.getFirst().forEach(classifier -> classifier.update(reward));
 
             // Only using A and A_-1 right now, so discard older action sets
             if(actionSetHistory.size() > 1)
@@ -35,9 +38,13 @@ public class XCS implements AI {
         }
         timestamp++;
         Set<Classifier> matchSet = generateMatchSet(sigmaT);
+        System.out.println("XCS match set!" + matchSet);
         Map<Action, Double> predictionArray = generatePredictionArray(matchSet);
+        System.out.println("XCS prediction array!" + predictionArray);
         Action chosenAction = selectAction(predictionArray);
+        System.out.println("XCS chosen action!" + chosenAction);
         actionSetHistory.addFirst(generateActionSet(sigmaT, chosenAction, matchSet));
+        System.out.println("XCS actionSetHistory!" + actionSetHistory);
         return chosenAction;
     }
 
@@ -69,24 +76,34 @@ public class XCS implements AI {
     private Map<Action, Double> generatePredictionArray(Set<Classifier> matchSet) {
         LinkedHashMap<Action, Double> predictionArray = new LinkedHashMap<>();
         LinkedHashMap<Action, Double> fitnessSumArray = new LinkedHashMap<>();
-        for (Action action : possibleActions) {
-            predictionArray.put(action, null);
-            fitnessSumArray.put(action, 0.0);
+        HashSet<Action> distinctActions = new HashSet<>();
+
+        matchSet.forEach(classifier -> distinctActions.add(classifier.getAction()));
+
+        for (Action a : distinctActions) {
+            predictionArray.put(a, 0.0);
+            fitnessSumArray.put(a, 0.0);
         }
         for (Classifier cl : matchSet) {
             predictionArray.put(cl.getAction(), predictionArray.get(cl.getAction()) + cl.getFitness() * cl.getPrediction());
             fitnessSumArray.put(cl.getAction(), fitnessSumArray.get(cl.getAction()) + cl.getFitness());
         }
-        for (Action action : possibleActions) {
-            if (fitnessSumArray.get(action) != 0.0)
-                predictionArray.put(action, predictionArray.get(action) / fitnessSumArray.get(action));
+
+        LinkedHashMap<Action, Double> resultPredictionarray = new LinkedHashMap<>();
+        for (Action a : distinctActions) {
+            if (fitnessSumArray.get(a) != 0.0)
+                resultPredictionarray.put(a, predictionArray.get(a) / fitnessSumArray.get(a));
         }
-        return predictionArray;
+        return resultPredictionarray;
     }
 
-    private Action pickRandomAction() {
-        int randomIndex = (int) (Math.random() * possibleActions.size());
-        return possibleActions.get(randomIndex);
+    private Action pickRandomAction(Set<Action> actions) {
+        int index = random.nextInt(actions.size());
+        Iterator<Action> iter = actions.iterator();
+        for (int i = 0; i < index; i++) {
+            iter.next();
+        }
+        return iter.next();
     }
 
     private Action pickRandomActionNotPresentInSet(Set<Classifier> set) {
@@ -101,17 +118,16 @@ public class XCS implements AI {
 
     private Action selectAction(Map<Action, Double> predictionArray) {
         Action chosenAction = null;
-        if (Math.random() > XCSConfig.pExp)
+        if (Math.random() > XCSConfig.pExp) {
+            System.out.println("selectAction.if");
             for (Action action : predictionArray.keySet()) {
-                if ((chosenAction == null) || (predictionArray.get(chosenAction) < predictionArray.get(action)))
+                if ((chosenAction == null) || (predictionArray.get(chosenAction) < predictionArray.get(action))) {
                     chosenAction = action;
+                }
             }
-        else {
-            while (chosenAction == null) {
-                Action possibleAction = pickRandomAction();
-                if ((predictionArray.get(possibleActions) != null))
-                    chosenAction = possibleAction;
-            }
+        } else {
+            System.out.println("selectAction.else");
+            chosenAction = pickRandomAction(predictionArray.keySet());
         }
         return chosenAction;
     }

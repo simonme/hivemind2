@@ -8,12 +8,13 @@ import java.util.Set;
  */
 public class Situation {
 
-    private ArrayList<Double>features;
+    private ArrayList<Double> features;
 
     public Situation(Unit unit, Unit closestEnemy) {
-        features.add((double)unit.getHitPoints());
-        features.add((double)closestEnemy.getHitPoints());
-        features.add((double)closestEnemy.getDistance(unit));
+        features = new ArrayList<>();
+        features.add((double) unit.getHitPoints());
+        features.add((double) closestEnemy.getHitPoints());
+        features.add((double) closestEnemy.getDistance(unit));
         features.add(RelativePosition.computeAngle(unit.getPosition(), closestEnemy.getPosition()));
     }
 

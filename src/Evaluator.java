@@ -5,6 +5,6 @@ import bwapi.Unit;
  */
 interface IEvaluator
 {
-    int evaluate(Unit unit);
+    double evaluate(Unit unit);
 }
 

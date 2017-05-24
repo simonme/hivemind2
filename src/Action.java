@@ -5,5 +5,9 @@ import bwapi.Unit;
  */
 public abstract class Action {
     public abstract void ExecuteOn(Unit unit);
+
+    public abstract boolean equals(Object obj);
+
+    public abstract int hashCode();
 }
 

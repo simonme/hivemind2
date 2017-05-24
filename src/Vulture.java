@@ -34,8 +34,11 @@ public class Vulture {
 
     public void step() {
         Unit closestEnemy = getClosestEnemy();
+        System.out.println("Step!");
         final Situation sigmaT = new Situation(this.unit, closestEnemy);
+        System.out.println("got situation!" +  sigmaT.toString());
         Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit));
+        System.out.println("got action!" +  action.toString());
         action.ExecuteOn(this.unit);
     }
 

@@ -24,7 +24,7 @@ public class Classifier {
     }
 
     public void update(double reward) {
-
+        // TODO update with reward.
     }
 
     public boolean matches(Situation sigmaT) {
