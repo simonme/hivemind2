@@ -15,10 +15,10 @@ public class Covering {
             bound = feature + rand;
         else
             bound = feature - rand;
-        if (bound > 1.0)
+        /*if (bound > 1.0)
             bound = 1.0;
         else if (bound < 0.0)
-            bound = 0.0;
+            bound = 0.0;*/
         return bound;
     }
 
@@ -38,7 +38,7 @@ public class Covering {
     }
 
     public Classifier generateCoveringClassifier(Situation sigmaT, Action action, int timestamp){
-        ArrayList<IntervalPredicate>intervalPredicates = new ArrayList<IntervalPredicate>();
+        ArrayList<IntervalPredicate> intervalPredicates = new ArrayList<>();
         for (int i = 0; i < sigmaT.getFeatures().size(); i++){
             intervalPredicates.add(generateIntervalPredicate(sigmaT.getFeatures().get(i)));
         }

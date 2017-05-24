@@ -8,10 +8,7 @@ public class VultureEvaluator implements IEvaluator {
     private int HP;
 
     public double evaluate(Unit unit) {
-        System.out.println("new evaluation!");
-        if(!isInitialized)
-        {
-            System.out.println("initializing!");
+        if(!isInitialized) {
             killedUnitCount = unit.getKillCount();
             damageDealt += unit.isAttacking() ? unit.getType().groundWeapon().damageAmount() : 0;
             HP = unit.getHitPoints();
@@ -25,10 +22,11 @@ public class VultureEvaluator implements IEvaluator {
         damageDealt += deltaDamageDealt;
         int deltaHP = unit.getHitPoints() - HP;
         HP += deltaHP;
+
         int visibleEnemyUnitCount = unit.getUnitsInRadius(unit.getType().sightRange()).size();
 
-        double reward = killedUnitCount * 20 + deltaHP * 2 + damageDealt + visibleEnemyUnitCount;
-        System.out.println("evaluation reward: " + reward);
+        double reward = killedUnitCount * 200 + deltaHP * 2 + damageDealt + visibleEnemyUnitCount; //+ (unit.isAttacking() ? 0.00001 : 0);
+        // System.out.println("evaluation reward: " + reward);
         return reward;
     }
 }

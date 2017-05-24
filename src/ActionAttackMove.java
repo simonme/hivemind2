@@ -17,12 +17,12 @@ public class ActionAttackMove extends Action {
     }
 
     @Override
-    public boolean equals(Object other){
-        if (other == null) return false;
-        if (other == this) return true;
-        if (!(other instanceof ActionAttackMove))return false;
-        ActionAttackMove otherClass = (ActionAttackMove) other;
-        return this.movement.equals(otherClass.movement);
+    public boolean equals(Object obj){
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof ActionAttackMove))return false;
+        ActionAttackMove other = (ActionAttackMove) obj;
+        return this.movement.equals(other.movement);
     }
 
     @Override

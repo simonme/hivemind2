@@ -13,9 +13,15 @@ public class Situation {
     public Situation(Unit unit, Unit closestEnemy) {
         features = new ArrayList<>();
         features.add((double) unit.getHitPoints());
-        features.add((double) closestEnemy.getHitPoints());
-        features.add((double) closestEnemy.getDistance(unit));
-        features.add(RelativePosition.computeAngle(unit.getPosition(), closestEnemy.getPosition()));
+        if (closestEnemy != null) {
+            features.add((double) closestEnemy.getHitPoints());
+            features.add((double) closestEnemy.getDistance(unit));
+            features.add(RelativePosition.computeAngle(unit.getPosition(), closestEnemy.getPosition()) * 360 / (2*Math.PI));
+        } else {
+            features.add((double) -10000);
+            features.add((double) 0);
+            features.add((double) -10000);
+        }
     }
 
     public ArrayList<Double> getFeatures() {

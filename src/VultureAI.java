@@ -1,5 +1,6 @@
 import bwapi.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class VultureAI  extends DefaultBWListener implements Runnable {
@@ -13,6 +14,8 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
     private Vulture vulture;
 
     private HashSet<Unit> enemyUnits;
+
+    private AI ai = null;
 
     private int frame;
 
@@ -44,12 +47,47 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
     @Override
     public void onFrame() {
 
-        vulture.step();
+        if (frame % 8 == 0) {
+            vulture.step();
+        }
+
+        // save XCS to CSV every 100th frame
+        if (!XCSConfig.SHOULD_LOAD_FROM_CSV && (frame % 100 == 0)) {
+            System.out.println("Saving XCS to CSV");
+            // TODO save to CSV. use a serialize function of XCS
+        }
 
         if (frame % 1000 == 0) {
             System.out.println("Frame: " + frame);
         }
         frame++;
+    }
+
+    private AI getAI() {
+        if (XCSConfig.SHOULD_LOAD_FROM_CSV) {
+            // TODO load XCS from csv. (one fixed path should suffice for the moment)
+            // probably use two files, one for the single properties and one for a classifier list
+            // use a deserialize function of XCSF
+        }
+
+        if (this.ai == null) {
+            ArrayList<Action> possibleActions = new ArrayList<>();
+            possibleActions.add(new ActionMove(new RelativePosition(0+45, 8)));
+            possibleActions.add(new ActionMove(new RelativePosition(90+45, 8)));
+            possibleActions.add(new ActionMove(new RelativePosition(180+45, 8)));
+            possibleActions.add(new ActionMove(new RelativePosition(270+45, 8)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(0+45, 8)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(90+45, 8)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(180+45, 8)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(270+45, 8)));
+            possibleActions.add(new ActionSpiderMines(new RelativePosition(0+45, 8)));
+            possibleActions.add(new ActionSpiderMines(new RelativePosition(90+45, 8)));
+            possibleActions.add(new ActionSpiderMines(new RelativePosition(180+45, 8)));
+            possibleActions.add(new ActionSpiderMines(new RelativePosition(270+45, 8)));
+            this.ai = new XCS(possibleActions);
+        }
+
+        return this.ai;
     }
 
     @Override
@@ -59,7 +97,7 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
 
         if (type == UnitType.Terran_Vulture) {
             if (unit.getPlayer() == this.self) {
-                this.vulture = new Vulture(unit, bwapi, enemyUnits, new VultureEvaluator());
+                this.vulture = new Vulture(unit, bwapi, enemyUnits, new VultureEvaluator(), getAI());
             }
         } else if (type == UnitType.Protoss_Zealot) {
             if (unit.getPlayer() != this.self) {

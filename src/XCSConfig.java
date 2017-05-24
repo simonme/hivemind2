@@ -2,6 +2,8 @@
  * Created by Simon on 15.05.2017.
  */
 public class XCSConfig {
+    public static boolean SHOULD_LOAD_FROM_CSV = true; // makes XCS load fron CSV and prevents save to CSV
+
     public static double alpha = 0.1;
     public static double beta = 0.2;
     public static double gamma = 0.71;

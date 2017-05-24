@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * Created by Simon on 15.05.2017.
  */
@@ -8,10 +10,10 @@ public class Classifier {
     private double error;
     private double fitness;
     private double experience;
-    private int lastGA = Integer.MIN_VALUE;
-    private double meanActionSetSize = 0;
-    private int numerosity = 0;
-    private int timeStamp = Integer.MIN_VALUE;
+    private int lastGA = 0;
+    private double meanActionSetSize = 1;
+    private int numerosity = 1;
+    private int timeStamp = 0;
 
     public Classifier(Condition cond, Action act, double pred, double error, double fitness, double exp, int ts) {
         setCondition(cond);
@@ -23,8 +25,28 @@ public class Classifier {
         setTimeStamp(ts);
     }
 
-    public void update(double reward) {
-        // TODO update with reward.
+    public void update(double reward, int totalActionSetSize,  double accuracy, double accuracySum) {
+        experience++;
+        // update prediction
+        if (experience < 1/XCSConfig.beta) {
+            prediction += (reward - prediction) / experience;
+        } else {
+            prediction += XCSConfig.beta * (reward - prediction);
+        }
+        // update prediction error
+        if (experience < 1/XCSConfig.beta) {
+            error += (Math.abs(reward - prediction) - error) / experience;
+        } else {
+            error += XCSConfig.beta * (Math.abs(reward - prediction) - error);
+        }
+        // update action set size estimate
+        if (experience < 1/XCSConfig.beta) {
+            meanActionSetSize += (totalActionSetSize - meanActionSetSize) / experience;
+        } else {
+            meanActionSetSize += XCSConfig.beta * (totalActionSetSize - meanActionSetSize);
+        }
+        // update fitness
+        fitness += XCSConfig.beta * (accuracy * numerosity / accuracySum - fitness);
     }
 
     public boolean matches(Situation sigmaT) {
@@ -109,5 +131,40 @@ public class Classifier {
 
     public void setTimeStamp(int timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+
+    @Override
+    public boolean equals(Object obj){
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof Classifier))return false;
+        Classifier other = (Classifier) obj;
+        return this.condition.equals(other.condition)
+                && this.action.equals(other.action)
+                && this.prediction == other.prediction
+                && this.error == other.error
+                && this.fitness == other.fitness
+                && this.experience == other.experience
+                && this.lastGA == other.lastGA
+                && this.meanActionSetSize == other.meanActionSetSize
+                && this.numerosity == other.numerosity
+                && this.timeStamp == other.timeStamp
+                ;
+    }
+
+    @Override
+    public int hashCode() {
+        return 23 * 17 + Objects.hashCode(this.condition)
+                + Objects.hashCode(this.action)
+                + Objects.hashCode(this.prediction)
+                + Objects.hashCode(this.error)
+                + Objects.hashCode(this.fitness)
+                + Objects.hashCode(this.experience)
+                + Objects.hashCode(this.lastGA)
+                + Objects.hashCode(this.meanActionSetSize)
+                + Objects.hashCode(this.numerosity)
+                + Objects.hashCode(this.timeStamp)
+                ;
     }
 }

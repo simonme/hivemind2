@@ -25,26 +25,32 @@ public class XCS implements AI {
 
     @Override
     public Action step(Situation sigmaT, double reward) {
-        System.out.println("XCS step!");
         if(actionSetHistory.size() > 0) { // we could also test if timestamp > 0
-            // TODO update previous action set
-            actionSetHistory.getFirst().forEach(classifier -> classifier.update(reward));
+
+            actionSetHistory.forEach(actionSet -> {
+                final int actionSetSize = actionSet.stream().mapToInt(Classifier::getNumerosity).sum();
+                double accuracySum = 0;
+                LinkedHashMap<Classifier, Double> accuracies = new LinkedHashMap<>();
+                for (Classifier classifier1 : actionSet) {
+                    if (classifier1.getError() < XCSConfig.epsilon0) accuracies.put(classifier1, 1.0);
+                    else accuracies.put(classifier1, XCSConfig.alpha * Math.pow(classifier1.getError() / XCSConfig.epsilon0, XCSConfig.nu));
+                    accuracySum += accuracies.get(classifier1) * classifier1.getNumerosity();
+                }
+                for (Classifier classifier : actionSet) {
+                    classifier.update(reward, actionSetSize, accuracies.get(classifier), accuracySum);
+                }
+            });
 
             // Only using A and A_-1 right now, so discard older action sets
-            if(actionSetHistory.size() > 1)
-            {
+            if(actionSetHistory.size() > 1) {
                 actionSetHistory.removeLast();
             }
         }
         timestamp++;
         Set<Classifier> matchSet = generateMatchSet(sigmaT);
-        System.out.println("XCS match set!" + matchSet);
         Map<Action, Double> predictionArray = generatePredictionArray(matchSet);
-        System.out.println("XCS prediction array!" + predictionArray);
         Action chosenAction = selectAction(predictionArray);
-        System.out.println("XCS chosen action!" + chosenAction);
         actionSetHistory.addFirst(generateActionSet(sigmaT, chosenAction, matchSet));
-        System.out.println("XCS actionSetHistory!" + actionSetHistory);
         return chosenAction;
     }
 
@@ -118,15 +124,13 @@ public class XCS implements AI {
 
     private Action selectAction(Map<Action, Double> predictionArray) {
         Action chosenAction = null;
-        if (Math.random() > XCSConfig.pExp) {
-            System.out.println("selectAction.if");
+        if (Math.random() < XCSConfig.pExp) {
             for (Action action : predictionArray.keySet()) {
                 if ((chosenAction == null) || (predictionArray.get(chosenAction) < predictionArray.get(action))) {
                     chosenAction = action;
                 }
             }
         } else {
-            System.out.println("selectAction.else");
             chosenAction = pickRandomAction(predictionArray.keySet());
         }
         return chosenAction;
