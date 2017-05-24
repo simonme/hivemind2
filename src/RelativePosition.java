@@ -29,4 +29,12 @@ public class RelativePosition {
     public double getDistance() {
         return distance;
     }
+
+    public static double computeAngle(Position origin, Position target)
+    {
+        double deltaX = target.getX() - origin.getX();
+        double deltaY = target.getY() - origin.getY();
+
+        return Math.atan2(deltaY, deltaX);
+    }
 }

@@ -27,7 +27,18 @@ public class Vulture {
     }
 
     public void step() {
-        final Situation sigmaT = new Situation();
+        Unit closestEnemy = null;
+        double distanceToEnemy = Double.MAX_VALUE;
+        for(Unit enemy : enemyUnits)
+        {
+            double distance = enemy.getDistance(this.unit);
+            if(distance < distanceToEnemy)
+            {
+                distanceToEnemy = distance;
+                closestEnemy = enemy;
+            }
+        }
+        final Situation sigmaT = new Situation(this.unit, closestEnemy);
         //TODO: Compute Reward
         Action action = this.ai.step(sigmaT, 0);
         action.ExecuteOn(this.unit);
