@@ -59,7 +59,7 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
 
         if (type == UnitType.Terran_Vulture) {
             if (unit.getPlayer() == this.self) {
-                this.vulture = new Vulture(unit, bwapi, enemyUnits);
+                this.vulture = new Vulture(unit, bwapi, enemyUnits, new VultureEvaluator());
             }
         } else if (type == UnitType.Protoss_Zealot) {
             if (unit.getPlayer() != this.self) {
