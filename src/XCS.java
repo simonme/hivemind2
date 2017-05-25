@@ -27,17 +27,23 @@ public class XCS implements AI {
         while(reader.hasNextLine())
         {
             String line = reader.nextLine();
+            if(line.split(";").length != 18)
+            {
+                break;
+            }
+
             Scanner classifier = new Scanner(line);
             classifier.useDelimiter(Character.toString(CSVWriter.VALUE_DELIMITER));
             Classifier cl = new Classifier(classifier, possibleActions);
             population.add(cl);
             cl.hashOnEnter = cl.hashCode();
         }
+        System.out.println("Reloaded existing population (" + population.stream().mapToInt(Classifier::getNumerosity).sum() + " classifiers)");
     }
 
     @Override
     public void serialize(CSVWriter writer) {
-        System.out.println("Population count: " + population.stream().mapToInt(Classifier::getNumerosity).sum());
+        //System.out.println("Population count: " + population.stream().mapToInt(Classifier::getNumerosity).sum());
         for (Classifier classifier:
              population) {
             classifier.serialize(writer, possibleActions);

@@ -91,11 +91,10 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
             try
             {
                 this.ai = new XCS(possibleActions, new Scanner(new FileReader("Test.csv")));
-                System.out.println("reloaded existing population");
             }
             catch(Exception ex)
             {
-                System.out.println("failed reading csv: " + ex.getMessage());
+                System.out.println("Failed reading csv: " + ex.getMessage());
             }
         }
 
@@ -123,7 +122,7 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
 
     @Override
     public void onUnitCreate(Unit unit) {
-        System.out.println("New unit discovered " + unit.getType());
+        //System.out.println("New unit discovered " + unit.getType());
         UnitType type = unit.getType();
 
         if (type == UnitType.Terran_Vulture) {
@@ -139,7 +138,7 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
 
     @Override
     public void onUnitDiscover(Unit unit) {
-        System.out.println("New unit discovered " + unit.getType());
+        //System.out.println("New unit discovered " + unit.getType());
         UnitType type = unit.getType();
 
         if (type == UnitType.Protoss_Zealot) {
