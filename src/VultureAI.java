@@ -57,10 +57,10 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
         }
 
         // save XCS to CSV every 100th frame
-        if (!XCSConfig.SHOULD_LOAD_FROM_CSV && (frame % 100 == 0)) {
+        if (XCSConfig.SHOULD_SAVE_TO_CSV && (frame % 100 == 0)) {
             System.out.println("Saving XCS to CSV");
             try {
-                FileWriter fileWriter = new FileWriter("WriteTest.csv");
+                FileWriter fileWriter = new FileWriter("Test.csv");
                 PrintWriter printWriter = new PrintWriter(fileWriter);
                 CSVWriter csvWriter = new CSVWriter(printWriter);
                 this.ai.serialize(csvWriter);
@@ -78,7 +78,7 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
     }
 
     private AI getAI() {
-        if (XCSConfig.SHOULD_LOAD_FROM_CSV) {
+        if (this.ai == null && XCSConfig.SHOULD_LOAD_FROM_CSV) {
             ArrayList<Action> possibleActions = new ArrayList<>();
             possibleActions.add(new ActionMove(new RelativePosition(0+0.0, 12)));
             possibleActions.add(new ActionMove(new RelativePosition(90+0.0, 12)));
@@ -90,7 +90,7 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
             // use a deserialize function of XCSF
             try
             {
-                this.ai = new XCS(possibleActions, new Scanner(new FileReader("ReadTest.csv")));
+                this.ai = new XCS(possibleActions, new Scanner(new FileReader("Test.csv")));
                 System.out.println("reloaded existing population");
             }
             catch(Exception ex)
