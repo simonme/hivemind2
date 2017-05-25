@@ -37,6 +37,7 @@ public class XCS implements AI {
             Classifier cl = new Classifier(classifier, possibleActions);
             population.add(cl);
             cl.hashOnEnter = cl.hashCode();
+            // TODO set timestamp for later GA usa?
         }
         System.out.println("Reloaded existing population (" + population.stream().mapToInt(Classifier::getNumerosity).sum() + " classifiers)");
     }

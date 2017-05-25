@@ -49,15 +49,8 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
         
     }
 
-    @Override
-    public void onFrame() {
-
-        if (frame % 5 == 0) {
-            vulture.step();
-        }
-
-        // save XCS to CSV every 100th frame
-        if (XCSConfig.SHOULD_SAVE_TO_CSV && (frame % 100 == 0)) {
+    private void saveAIToCSV() { // Is saved on every match end
+        if (XCSConfig.SHOULD_SAVE_TO_CSV) {
             System.out.println("Saving XCS to CSV");
             try {
                 FileWriter fileWriter = new FileWriter("Test.csv");
@@ -69,6 +62,16 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
             {
                 System.out.println("Failed to serialize");
             }
+        } else {
+            System.out.println("Did not save XCS to CSV, XCSConfig.SHOULD_SAVE_TO_CSV is false!");
+        }
+    }
+
+    @Override
+    public void onFrame() {
+
+        if (frame % 5 == 0) {
+            vulture.step();
         }
 
         if (frame % 1000 == 0) {
@@ -85,9 +88,6 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
             possibleActions.add(new ActionMove(new RelativePosition(180+0.0, 12)));
             possibleActions.add(new ActionMove(new RelativePosition(270+0.0, 12)));
             possibleActions.add(new ActionAttackClosestEnemy());
-            // TODO load XCS from csv. (one fixed path should suffice for the moment)
-            // probably use two files, one for the single properties and one for a classifier list
-            // use a deserialize function of XCSF
             try
             {
                 this.ai = new XCS(possibleActions, new Scanner(new FileReader("Test.csv")));
@@ -158,6 +158,8 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
 
     @Override
     public void onEnd(boolean winner) {
+        System.out.println("Game ended, saving XCS.");
+        saveAIToCSV();
     }
 
     @Override
