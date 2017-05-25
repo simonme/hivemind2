@@ -13,9 +13,9 @@ public class XCSConfig {
     public static double predictionI = 0.0; //TODO richtigen Wert herausfinden bzw berechnen
     public static double epsilonI = 0.0;
     public static double FI = 0.01;
-    public static int thetaGA = 50;
+    public static int thetaGA = 40;
     public static int thetaDEL = 50;
-    public static double thetaSUB = 50;
+    public static double thetaSUB = 20;
     public static double thetaRLS = 1000;
     public static int thetaMNA = 5; //Anzahl der Aktionen die minimal im Match Set vorhanden sein müssen, damit kein Covering betrieben wird
     public static double chi = 0.8;

@@ -61,6 +61,10 @@ public class XCS implements AI {
                 for (Classifier classifier : actionSet) {
                     classifier.update(reward, actionSetSize, accuracies.get(classifier), accuracySum);
                 }
+                if(XCSConfig.doActionSetSubsumption)
+                {
+                    actionSetSubsumption(actionSet);
+                }
                 runGA(actionSet);
             });
 
@@ -75,6 +79,33 @@ public class XCS implements AI {
         Action chosenAction = selectAction(predictionArray);
         actionSetHistory.addFirst(generateActionSet(sigmaT, chosenAction, matchSet));
         return chosenAction;
+    }
+
+    private void actionSetSubsumption(Set<Classifier> actionSet)
+    {
+        Classifier cl = null;
+        for (Classifier classifier :
+                actionSet) {
+            if (couldSubsume(classifier))
+            {
+                if(cl == null || classifier.getCondition().isMoreGeneral(cl.getCondition()))
+                {
+                    cl = classifier;
+                }
+            }
+        }
+        if(cl != null)
+        {
+            for (Classifier classifier :
+                    actionSet) {
+                if(cl.getCondition().isMoreGeneral(classifier.getCondition()))
+                {
+                    cl.setNumerosity(cl.getNumerosity() + classifier.getNumerosity());
+                    actionSet.remove(classifier);
+                    population.remove(classifier);
+                }
+            }
+        }
     }
 
     public int numberOfDistinctActions(Set<Classifier> set) {
