@@ -18,6 +18,8 @@ public class Classifier {
     private int numerosity = 1;
     private int timeStamp = 0;
 
+    public int hashOnEnter = 0;
+
     public Classifier(Condition cond, Action act, double pred, double error, double fitness, double exp, int ts) {
         setCondition(cond);
         setAction(act);
@@ -33,6 +35,7 @@ public class Classifier {
         setPrediction(Double.parseDouble(scanner.next()));
         setError(Double.parseDouble(scanner.next()));
         setFitness(Double.parseDouble(scanner.next()));
+        setNumerosity(Integer.parseInt(scanner.next()));
         setExperience(Double.parseDouble(scanner.next()));
         setTimeStamp(Integer.parseInt(scanner.next()));
         setLastGA(Integer.parseInt(scanner.next()));
@@ -45,6 +48,7 @@ public class Classifier {
         writer.write(getPrediction());
         writer.write(getError());
         writer.write(getFitness());
+        writer.write(getNumerosity());
         writer.write(getExperience());
         writer.write(getTimeStamp());
         writer.write(getLastGA());
@@ -182,15 +186,10 @@ public class Classifier {
 
     @Override
     public int hashCode() {
-        return 23 * 17 + Objects.hashCode(this.condition)
+        // The condition shouldn't change, but somehow the hash code can change if the condition is used, so leave it out
+        // Don't change this, or the population.remove function will not work
+        return 23 * 17 //+ Objects.hashCode(this.condition)
                 + Objects.hashCode(this.action)
-                + Objects.hashCode(this.prediction)
-                + Objects.hashCode(this.error)
-                + Objects.hashCode(this.fitness)
-                + Objects.hashCode(this.experience)
-                + Objects.hashCode(this.lastGA)
-                + Objects.hashCode(this.meanActionSetSize)
-                + Objects.hashCode(this.numerosity)
                 + Objects.hashCode(this.timeStamp)
                 ;
     }

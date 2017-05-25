@@ -27,15 +27,17 @@ public class XCS implements AI {
         while(reader.hasNextLine())
         {
             String line = reader.nextLine();
-            System.out.println("Reading line: " + line);
             Scanner classifier = new Scanner(line);
             classifier.useDelimiter(Character.toString(CSVWriter.VALUE_DELIMITER));
-            population.add(new Classifier(classifier, possibleActions));
+            Classifier cl = new Classifier(classifier, possibleActions);
+            population.add(cl);
+            cl.hashOnEnter = cl.hashCode();
         }
     }
 
     @Override
     public void serialize(CSVWriter writer) {
+        System.out.println("Population count: " + population.stream().mapToInt(Classifier::getNumerosity).sum());
         for (Classifier classifier:
              population) {
             classifier.serialize(writer, possibleActions);
@@ -94,6 +96,7 @@ public class XCS implements AI {
         while (numberOfDistinctActions(matchSet) < XCSConfig.thetaMNA) {
             Classifier clc = covering.generateCoveringClassifier(sigmaT, pickRandomActionNotPresentInSet(matchSet), timestamp);
             population.add(clc);
+            clc.hashOnEnter = clc.hashCode();
             deleteFromPopulation();
             matchSet.add(clc);
         }
@@ -167,12 +170,8 @@ public class XCS implements AI {
     }
 
     private void deleteFromPopulation() {
-        int sumNumerosityInPopulation = 0;
-        double sumFitnessInPopulation = 0;
-        for (Classifier cl: population) {
-            sumNumerosityInPopulation += cl.getNumerosity();
-            sumFitnessInPopulation += cl.getFitness();
-        }
+        int sumNumerosityInPopulation = population.stream().mapToInt(Classifier::getNumerosity).sum();
+        double sumFitnessInPopulation = population.stream().mapToInt(Classifier::getNumerosity).sum();
         if(sumNumerosityInPopulation < XCSConfig.N) {
             return;
         }
@@ -194,7 +193,14 @@ public class XCS implements AI {
                 }
                 else
                 {
-                    population.remove(cl);
+                    boolean deleteSuccessful = population.remove(cl);
+                    if(!deleteSuccessful)
+                    {
+                        if(cl.hashOnEnter != cl.hashCode())
+                        {
+                            System.out.println("Delete: HashCode changed");
+                        }
+                    }
                 }
                 return;
             }
@@ -292,6 +298,7 @@ public class XCS implements AI {
             }
         }
         population.add(child);
+        child.hashOnEnter = child.hashCode();
     }
 
     private boolean doesSubsume(Classifier parent, Classifier child)
