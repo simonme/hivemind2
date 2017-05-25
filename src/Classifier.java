@@ -35,6 +35,7 @@ public class Classifier {
         setFitness(Double.parseDouble(scanner.next()));
         setExperience(Double.parseDouble(scanner.next()));
         setTimeStamp(Integer.parseInt(scanner.next()));
+        setLastGA(Integer.parseInt(scanner.next()));
         setAction(possibleActions.get(Integer.parseInt(scanner.next())));
         setCondition(new Condition(scanner));
     }
@@ -46,6 +47,7 @@ public class Classifier {
         writer.write(getFitness());
         writer.write(getExperience());
         writer.write(getTimeStamp());
+        writer.write(getLastGA());
         writer.write(possibleActions.indexOf(getAction()));
         getCondition().serialize(writer);
     }
@@ -191,5 +193,9 @@ public class Classifier {
                 + Objects.hashCode(this.numerosity)
                 + Objects.hashCode(this.timeStamp)
                 ;
+    }
+
+    public Classifier copy() {
+        return new Classifier(getCondition(), getAction(), getPrediction(), getError(), getFitness(), getExperience(), getTimeStamp());
     }
 }

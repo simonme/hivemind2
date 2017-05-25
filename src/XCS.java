@@ -1,5 +1,3 @@
-import java.io.FileReader;
-import java.io.PrintWriter;
 import java.util.*;
 
 /**
@@ -61,6 +59,7 @@ public class XCS implements AI {
                 for (Classifier classifier : actionSet) {
                     classifier.update(reward, actionSetSize, accuracies.get(classifier), accuracySum);
                 }
+                runGA(actionSet);
             });
 
             // Only using A and A_-1 right now, so discard older action sets
@@ -210,5 +209,131 @@ public class XCS implements AI {
             vote *= averageFitnessInPopulation / relativeFitness;
         }
         return vote;
+    }
+
+    private void runGA(Set<Classifier> actionSet)
+    {
+        if(timestamp - actionSet.stream().mapToInt(classifier -> classifier.getLastGA() * classifier.getNumerosity()).sum() / actionSet.stream().mapToInt(Classifier::getNumerosity).sum() > XCSConfig.thetaGA)
+        {
+            for (Classifier classifier :
+                    actionSet) {
+                classifier.setLastGA(timestamp);
+            }
+            Classifier parent1 = selectOffspring(actionSet);
+            Classifier parent2 = selectOffspring(actionSet);
+            Classifier child1 = parent1.copy();
+            Classifier child2 = parent2.copy();
+            child1.setNumerosity(1);
+            child1.setTimeStamp(timestamp);
+            child1.setExperience(0);
+            child2.setNumerosity(1);
+            child2.setTimeStamp(timestamp);
+            child2.setExperience(0);
+
+            if(random.nextDouble() < XCSConfig.chi)
+            {
+                child1.getCondition().crossover(child2.getCondition(), random);
+                double prediction = (parent1.getPrediction() + parent2.getPrediction()) / 2;
+                double error = 0.25 * (parent1.getError() + parent2.getError()) / 2;
+                double fitness = 0.1 * (parent1.getFitness() + parent2.getFitness()) / 2;
+
+                child1.setPrediction(prediction);
+                child1.setError(error);
+                child1.setFitness(fitness);
+                child2.setPrediction(prediction);
+                child2.setError(error);
+                child2.setFitness(fitness);
+            }
+
+            continueGA(parent1, parent2, child1);
+            continueGA(parent1, parent2, child2);
+        }
+    }
+
+    private void continueGA(Classifier parent1, Classifier parent2, Classifier child) {
+        child.getCondition().mutate(random);
+        if(random.nextDouble() > XCSConfig.my)
+        {
+            Action action;
+            do {
+                action = possibleActions.get(random.nextInt(possibleActions.size()));
+            } while(action == child.getAction());
+            child.setAction(action);
+        }
+        if(XCSConfig.doGASubsumption)
+        {
+            if(doesSubsume(parent1, child))
+            {
+                parent1.setNumerosity(parent1.getNumerosity() + 1);
+            }
+            else if(doesSubsume(parent2, child))
+            {
+                parent2.setNumerosity(parent2.getNumerosity() + 1);
+            }
+            else
+            {
+                InsertInPopulation(child);
+            }
+        }
+        else
+        {
+            InsertInPopulation(child);
+        }
+        deleteFromPopulation();
+    }
+
+    private void InsertInPopulation(Classifier child) {
+        for (Classifier classifier :
+                population) {
+            if (classifier.getCondition().equals(child.getCondition()) && classifier.getAction().equals(child.getAction()))
+            {
+                classifier.setNumerosity(classifier.getNumerosity() + 1);
+                return;
+            }
+        }
+        population.add(child);
+    }
+
+    private boolean doesSubsume(Classifier parent, Classifier child)
+    {
+        if(parent.getAction().equals(child.getAction()))
+        {
+            if(couldSubsume(parent))
+            {
+                if(parent.getCondition().isMoreGeneral(child.getCondition()))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean couldSubsume(Classifier parent)
+    {
+        if(parent.getExperience() > XCSConfig.thetaSUB)
+        {
+            if(parent.getError() < XCSConfig.epsilon0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Classifier selectOffspring(Set<Classifier> actionSet)
+    {
+        double fitnessSum = actionSet.stream().mapToDouble(Classifier::getFitness).sum();
+        double choicePoint = random.nextDouble() * fitnessSum;
+        fitnessSum = 0;
+        for (Classifier classifier :
+                actionSet) {
+            fitnessSum += classifier.getFitness();
+            if(fitnessSum > choicePoint)
+            {
+                return classifier;
+            }
+        }
+        throw new IndexOutOfBoundsException();
     }
 }

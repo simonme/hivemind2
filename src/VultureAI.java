@@ -64,7 +64,6 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
                 PrintWriter printWriter = new PrintWriter(fileWriter);
                 CSVWriter csvWriter = new CSVWriter(printWriter);
                 this.ai.serialize(csvWriter);
-                System.out.println("Serialized");
             }
             catch (Exception ex)
             {
