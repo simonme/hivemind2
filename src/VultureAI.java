@@ -70,7 +70,7 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
     @Override
     public void onFrame() {
 
-        if (frame % 5 == 0) {
+        if (frame % 1 == 0) {
             vulture.step();
         }
 
@@ -83,10 +83,10 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
     private AI getAI() {
         if (this.ai == null && XCSConfig.SHOULD_LOAD_FROM_CSV) {
             ArrayList<Action> possibleActions = new ArrayList<>();
-            possibleActions.add(new ActionMove(new RelativePosition(0+0.0, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(90+0.0, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(180+0.0, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(270+0.0, 12)));
+            possibleActions.add(new ActionMove(new RelativePosition(0+0.0, 50)));
+            possibleActions.add(new ActionMove(new RelativePosition(90+0.0, 50)));
+            possibleActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
+            possibleActions.add(new ActionMove(new RelativePosition(270+0.0, 50)));
             possibleActions.add(new ActionAttackClosestEnemy());
             try
             {
@@ -101,10 +101,10 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
         if (this.ai == null) {
             ArrayList<Action> possibleActions = new ArrayList<>();
 
-            possibleActions.add(new ActionMove(new RelativePosition(0+0.0, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(90+0.0, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(180+0.0, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(270+0.0, 12)));
+            possibleActions.add(new ActionMove(new RelativePosition(0+0.0, 24)));
+            possibleActions.add(new ActionMove(new RelativePosition(90+0.0, 24)));
+            possibleActions.add(new ActionMove(new RelativePosition(180+0.0, 24)));
+            possibleActions.add(new ActionMove(new RelativePosition(270+0.0, 24)));
             possibleActions.add(new ActionAttackClosestEnemy());
             /*possibleActions.add(new ActionAttackMove(new RelativePosition(0+0.0, 80)));
             possibleActions.add(new ActionAttackMove(new RelativePosition(90+0.0, 80)));
