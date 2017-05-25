@@ -21,8 +21,8 @@ public class XCSConfig {
     public static double chi = 0.8;
     public static double my = 0.04;
     public static int N = 6400;
-    public static double m0 = 0.2;
-    public static double r0 = 0.33;
+    public static double m0 = 0.6;
+    public static double r0 = 1.0;
     public static boolean doActionSetSubsumption = true;
     public static boolean doGASubsumption = true;
     public static double pExp = 0.5; //Wahrscheinlichkeit für exploration
