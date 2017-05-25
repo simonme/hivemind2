@@ -47,7 +47,7 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
     @Override
     public void onFrame() {
 
-        if (frame % 8 == 0) {
+        if (frame % 5 == 0) {
             vulture.step();
         }
 
@@ -76,10 +76,10 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
             possibleActions.add(new ActionMove(new RelativePosition(90+0.0, 8)));
             possibleActions.add(new ActionMove(new RelativePosition(180+0.0, 8)));
             possibleActions.add(new ActionMove(new RelativePosition(270+0.0, 8)));
-            possibleActions.add(new ActionAttackMove(new RelativePosition(0+0.0, 50)));
-            possibleActions.add(new ActionAttackMove(new RelativePosition(90+0.0, 50)));
-            possibleActions.add(new ActionAttackMove(new RelativePosition(180+0.0, 50)));
-            possibleActions.add(new ActionAttackMove(new RelativePosition(270+0.0, 50)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(0+0.0, 80)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(90+0.0, 80)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(180+0.0, 80)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(270+0.0, 80)));
             possibleActions.add(new ActionSpiderMines(new RelativePosition(0+0.0, 8)));
             possibleActions.add(new ActionSpiderMines(new RelativePosition(90+0.0, 8)));
             possibleActions.add(new ActionSpiderMines(new RelativePosition(180+0.0, 8)));
