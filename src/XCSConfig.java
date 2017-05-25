@@ -2,7 +2,7 @@
  * Created by Simon on 15.05.2017.
  */
 public class XCSConfig {
-    public static boolean SHOULD_LOAD_FROM_CSV = false; // makes XCS load from CSV
+    public static boolean SHOULD_LOAD_FROM_CSV = true; // makes XCS load from CSV
     public static boolean SHOULD_SAVE_TO_CSV = false; // makes XCS save to CSV
 
     public static double alpha = 0.1;
