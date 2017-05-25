@@ -52,7 +52,7 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
     @Override
     public void onFrame() {
 
-        if (frame % 8 == 0) {
+        if (frame % 5 == 0) {
             vulture.step();
         }
 
@@ -81,10 +81,10 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
     private AI getAI() {
         if (XCSConfig.SHOULD_LOAD_FROM_CSV) {
             ArrayList<Action> possibleActions = new ArrayList<>();
-            possibleActions.add(new ActionMove(new RelativePosition(0+45, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(90+45, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(180+45, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(270+45, 12)));
+            possibleActions.add(new ActionMove(new RelativePosition(0+0.0, 12)));
+            possibleActions.add(new ActionMove(new RelativePosition(90+0.0, 12)));
+            possibleActions.add(new ActionMove(new RelativePosition(180+0.0, 12)));
+            possibleActions.add(new ActionMove(new RelativePosition(270+0.0, 12)));
             possibleActions.add(new ActionAttackClosestEnemy());
             // TODO load XCS from csv. (one fixed path should suffice for the moment)
             // probably use two files, one for the single properties and one for a classifier list
@@ -102,19 +102,20 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
 
         if (this.ai == null) {
             ArrayList<Action> possibleActions = new ArrayList<>();
-            possibleActions.add(new ActionMove(new RelativePosition(0+45, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(90+45, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(180+45, 12)));
-            possibleActions.add(new ActionMove(new RelativePosition(270+45, 12)));
+
+            possibleActions.add(new ActionMove(new RelativePosition(0+0.0, 12)));
+            possibleActions.add(new ActionMove(new RelativePosition(90+0.0, 12)));
+            possibleActions.add(new ActionMove(new RelativePosition(180+0.0, 12)));
+            possibleActions.add(new ActionMove(new RelativePosition(270+0.0, 12)));
             possibleActions.add(new ActionAttackClosestEnemy());
-            /*possibleActions.add(new ActionAttackMove(new RelativePosition(0+45, 8)));
-            possibleActions.add(new ActionAttackMove(new RelativePosition(90+45, 8)));
-            possibleActions.add(new ActionAttackMove(new RelativePosition(180+45, 8)));
-            possibleActions.add(new ActionAttackMove(new RelativePosition(270+45, 8)));*/
-            /*possibleActions.add(new ActionSpiderMines(new RelativePosition(0+45, 8)));
-            possibleActions.add(new ActionSpiderMines(new RelativePosition(90+45, 8)));
-            possibleActions.add(new ActionSpiderMines(new RelativePosition(180+45, 8)));
-            possibleActions.add(new ActionSpiderMines(new RelativePosition(270+45, 8)));*/
+            /*possibleActions.add(new ActionAttackMove(new RelativePosition(0+0.0, 80)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(90+0.0, 80)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(180+0.0, 80)));
+            possibleActions.add(new ActionAttackMove(new RelativePosition(270+0.0, 80)));*/
+            /*possibleActions.add(new ActionSpiderMines(new RelativePosition(0+0.0, 8)));
+            possibleActions.add(new ActionSpiderMines(new RelativePosition(90+0.0, 8)));
+            possibleActions.add(new ActionSpiderMines(new RelativePosition(180+0.0, 8)));
+            possibleActions.add(new ActionSpiderMines(new RelativePosition(270+0.0, 8)));*/
             this.ai = new XCS(possibleActions);
         }
 

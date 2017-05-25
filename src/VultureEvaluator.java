@@ -25,12 +25,8 @@ public class VultureEvaluator implements IEvaluator {
 
         int visibleEnemyUnitCount = unit.getUnitsInRadius(unit.getType().sightRange()).size();
 
-        double reward = - 1 + deltaKilledUnitCount * 200 + deltaHP * 30 + deltaDamageDealt + visibleEnemyUnitCount; //+ (unit.isAttacking() ? 0.00001 : 0);
-        if(HP <= 0)
-        {
-            reward -= 1000;
-        }
-        //System.out.println("evaluation reward: " + reward);
+        double reward = deltaKilledUnitCount * 200 + deltaHP * 2 + deltaDamageDealt + visibleEnemyUnitCount; //+ (unit.isAttacking() ? 0.00001 : 0);
+        // System.out.println("evaluation reward: " + reward);
         return reward;
     }
 }

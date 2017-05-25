@@ -146,7 +146,7 @@ public class XCS implements AI {
 
     private Action selectAction(Map<Action, Double> predictionArray) {
         Action chosenAction = null;
-        if (Math.random() < XCSConfig.pExp) {
+        if (Math.random() > XCSConfig.pExp) {
             for (Action action : predictionArray.keySet()) {
                 if ((chosenAction == null) || (predictionArray.get(chosenAction) < predictionArray.get(action))) {
                     chosenAction = action;
