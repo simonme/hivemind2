@@ -1,4 +1,7 @@
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * Created by Simon on 15.05.2017.
@@ -23,6 +26,28 @@ public class Classifier {
         setFitness(fitness);
         setExperience(exp);
         setTimeStamp(ts);
+    }
+
+    public Classifier(Scanner scanner, ArrayList<Action> possibleActions)
+    {
+        setPrediction(Double.parseDouble(scanner.next()));
+        setError(Double.parseDouble(scanner.next()));
+        setFitness(Double.parseDouble(scanner.next()));
+        setExperience(Double.parseDouble(scanner.next()));
+        setTimeStamp(Integer.parseInt(scanner.next()));
+        setAction(possibleActions.get(Integer.parseInt(scanner.next())));
+        setCondition(new Condition(scanner));
+    }
+
+    public void serialize(CSVWriter writer, ArrayList<Action> possibleActions)
+    {
+        writer.write(getPrediction());
+        writer.write(getError());
+        writer.write(getFitness());
+        writer.write(getExperience());
+        writer.write(getTimeStamp());
+        writer.write(possibleActions.indexOf(getAction()));
+        getCondition().serialize(writer);
     }
 
     public void update(double reward, int totalActionSetSize,  double accuracy, double accuracySum) {

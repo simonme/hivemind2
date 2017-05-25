@@ -1,5 +1,7 @@
+import java.io.PrintWriter;
 import java.security.InvalidParameterException;
 import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * Created by Ferdi on 23.05.2017.
@@ -16,6 +18,18 @@ public class IntervalPredicate {
         }
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
+    }
+
+    public IntervalPredicate(Scanner scanner)
+    {
+        this.lowerBound = Double.parseDouble(scanner.next());
+        this.upperBound = Double.parseDouble(scanner.next());
+    }
+
+    public void serialize(CSVWriter writer)
+    {
+        writer.write(this.lowerBound);
+        writer.write(this.upperBound);
     }
 
 

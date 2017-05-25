@@ -2,7 +2,7 @@
  * Created by Simon on 15.05.2017.
  */
 public class XCSConfig {
-    public static boolean SHOULD_LOAD_FROM_CSV = true; // makes XCS load fron CSV and prevents save to CSV
+    public static boolean SHOULD_LOAD_FROM_CSV = false; // makes XCS load fron CSV and prevents save to CSV
 
     public static double alpha = 0.1;
     public static double beta = 0.2;
@@ -17,7 +17,7 @@ public class XCSConfig {
     public static int thetaDEL = 50;
     public static double thetaSUB = 50;
     public static double thetaRLS = 1000;
-    public static int thetaMNA = 6; //Anzahl der Aktionen die minimal im Match Set vorhanden sein müssen, damit kein Covering betrieben wird
+    public static int thetaMNA = 5; //Anzahl der Aktionen die minimal im Match Set vorhanden sein müssen, damit kein Covering betrieben wird
     public static double chi = 0.8;
     public static double my = 0.04;
     public static int N = 6400;

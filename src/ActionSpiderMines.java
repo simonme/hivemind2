@@ -14,14 +14,16 @@ public class ActionSpiderMines extends Action {
     }
 
     @Override
-    public void ExecuteOn(Unit unit) {
+    public int ExecuteOn(Unit unit) {
         if(unit.getType() == UnitType.Terran_Vulture)
         {
             if(unit.canUseTech(TechType.Spider_Mines))
             {
                 unit.useTech(TechType.Spider_Mines, target.applyTo(unit.getPosition()));
+                return 0;
             }
         }
+        return -10;
     }
 
     @Override

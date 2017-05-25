@@ -1,3 +1,5 @@
+import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.*;
 
 /**
@@ -17,10 +19,30 @@ public class XCS implements AI {
         this.xcsConfig = new XCSConfig();// TODO not necessary, all XCSConfig parameters are public static final XY
         covering = new Covering();
         population = new LinkedHashSet<>();
-        // TODO: Load population from csv
         timestamp = 0;
         actionSetHistory = new LinkedList<>();
         this.random = new Random();
+    }
+
+    public XCS(ArrayList<Action> possibleActions, Scanner reader) {
+        this(possibleActions);
+        while(reader.hasNextLine())
+        {
+            String line = reader.nextLine();
+            System.out.println("Reading line: " + line);
+            Scanner classifier = new Scanner(line);
+            classifier.useDelimiter(Character.toString(CSVWriter.VALUE_DELIMITER));
+            population.add(new Classifier(classifier, possibleActions));
+        }
+    }
+
+    @Override
+    public void serialize(CSVWriter writer) {
+        for (Classifier classifier:
+             population) {
+            classifier.serialize(writer, possibleActions);
+            writer.newLine();
+        }
     }
 
     @Override
@@ -95,12 +117,12 @@ public class XCS implements AI {
             fitnessSumArray.put(cl.getAction(), fitnessSumArray.get(cl.getAction()) + cl.getFitness());
         }
 
-        LinkedHashMap<Action, Double> resultPredictionarray = new LinkedHashMap<>();
+        LinkedHashMap<Action, Double> resultPredictionArray = new LinkedHashMap<>();
         for (Action a : distinctActions) {
             if (fitnessSumArray.get(a) != 0.0)
-                resultPredictionarray.put(a, predictionArray.get(a) / fitnessSumArray.get(a));
+                resultPredictionArray.put(a, predictionArray.get(a) / fitnessSumArray.get(a));
         }
-        return resultPredictionarray;
+        return resultPredictionArray;
     }
 
     private Action pickRandomAction(Set<Action> actions) {

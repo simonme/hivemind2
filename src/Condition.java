@@ -1,5 +1,7 @@
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * Created by Simon on 15.05.2017.
@@ -10,6 +12,23 @@ public class Condition {
 
     public Condition(ArrayList<IntervalPredicate> predicates) {
         this.intervalPredicates = predicates;
+    }
+
+    public Condition(Scanner scanner)
+    {
+        intervalPredicates = new ArrayList<>();
+        while (scanner.hasNext())
+        {
+            intervalPredicates.add(new IntervalPredicate(scanner));
+        }
+    }
+
+    public void serialize(CSVWriter writer)
+    {
+        for (IntervalPredicate predicate :
+                intervalPredicates) {
+            predicate.serialize(writer);
+        }
     }
 
     public boolean matches(Situation sigmaT) {

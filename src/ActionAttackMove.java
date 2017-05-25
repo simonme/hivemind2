@@ -12,8 +12,10 @@ public class ActionAttackMove extends Action {
     }
 
     @Override
-    public void ExecuteOn(Unit unit) {
+    public int ExecuteOn(Unit unit)
+    {
         unit.attack(movement.applyTo(unit.getPosition()));
+        return 0;
     }
 
     @Override

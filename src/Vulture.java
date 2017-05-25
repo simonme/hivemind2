@@ -7,9 +7,11 @@ public class Vulture {
 
     private final Mirror bwapi;
     private final HashSet<Unit> enemyUnits;
-    final private Unit unit;
+    private final Unit unit;
     private final AI ai;
     private final IEvaluator evaluator;
+
+    private int immediateReward;
 
     public Vulture(Unit unit, Mirror bwapi, HashSet<Unit> enemyUnits, IEvaluator evaluator, AI ai) {
         this.unit = unit;
@@ -22,8 +24,12 @@ public class Vulture {
     public void step() {
         Unit closestEnemy = getClosestEnemy();
         final Situation sigmaT = new Situation(this.unit, closestEnemy);
-        Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit));
-        action.ExecuteOn(this.unit);
+        Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit) + immediateReward);
+        if(action.isRequiresClosestEnemy())
+        {
+            action.setClosestEnemy(closestEnemy);
+        }
+        immediateReward = action.ExecuteOn(this.unit);
     }
 
     private void move(Unit target) {

@@ -22,6 +22,7 @@ public class Situation {
             features.add((double) 0);
             features.add((double) -10000);
         }
+        features.add((double) unit.getGroundWeaponCooldown());
     }
 
     public ArrayList<Double> getFeatures() {
