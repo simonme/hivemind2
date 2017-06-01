@@ -35,9 +35,10 @@ public class XCS implements AI {
             Scanner classifier = new Scanner(line);
             classifier.useDelimiter(Character.toString(CSVWriter.VALUE_DELIMITER));
             Classifier cl = new Classifier(classifier, possibleActions);
+            // Set LastGA to current; maybe save timestamp and LastGA to CSV?
+            cl.setLastGA(timestamp);
             population.add(cl);
             cl.hashOnEnter = cl.hashCode();
-            // TODO set timestamp for later GA usa?
         }
         System.out.println("Reloaded existing population (" + population.stream().mapToInt(Classifier::getNumerosity).sum() + " classifiers)");
     }

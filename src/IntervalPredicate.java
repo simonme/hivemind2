@@ -7,12 +7,9 @@ import java.util.Scanner;
 /**
  * Created by Ferdi on 23.05.2017.
  */
-public class IntervalPredicate {
-
-    private double lowerBound;
-    private double upperBound;
-
-    public IntervalPredicate(double lowerBound, double upperBound) throws InvalidParameterException {
+public class IntervalPredicate extends PredicateBase
+{
+    IntervalPredicate(double lowerBound, double upperBound) throws InvalidParameterException {
         if(lowerBound > upperBound)
         {
             throw new InvalidParameterException("lowerBound has to be less than or equal to upperBound");
@@ -21,58 +18,37 @@ public class IntervalPredicate {
         this.upperBound = upperBound;
     }
 
-    public IntervalPredicate(Scanner scanner)
+    IntervalPredicate(Scanner scanner)
     {
         this.lowerBound = Double.parseDouble(scanner.next());
         this.upperBound = Double.parseDouble(scanner.next());
     }
 
-    public void serialize(CSVWriter writer)
+    void serialize(CSVWriter writer)
     {
         writer.write(this.lowerBound);
         writer.write(this.upperBound);
     }
 
 
-    public boolean contains(double d){
+    boolean contains(double d){
         return (lowerBound <= d) && (upperBound >= d);
     }
 
-    public boolean isMoreGeneral(IntervalPredicate other)
+    void crossover(IntervalPredicate other, boolean firstHalf)
     {
-        return (this.lowerBound <= other.lowerBound) && (this.upperBound >= other.upperBound);
-    }
-
-    public void crossover(IntervalPredicate other, boolean firstHalf)
-    {
-        if(firstHalf)
-        {
-            double tmp = this.lowerBound;
-            this.lowerBound = other.lowerBound;
-            other.lowerBound = tmp;
-        }
-        else
-        {
-            double tmp = this.upperBound;
-            this.upperBound = other.upperBound;
-            other.upperBound = tmp;
-        }
+        super.crossover(other, firstHalf);
         reorder();
         other.reorder();
     }
 
-    public void mutate(Random random)
+    void mutate(Random random)
     {
-        double sign1 = random.nextDouble();
-        double sign2 = random.nextDouble();
-        double rand1 = random.nextDouble() * XCSConfig.m0;
-        double rand2 = random.nextDouble() * XCSConfig.m0;
-        lowerBound += rand1 * sign1 >= 0.5 ? 1 : -1;
-        upperBound += rand2 * sign2 >= 0.5 ? 1 : -1;
+        super.mutate(random);
         reorder();
     }
 
-    public void reorder()
+    private void reorder()
     {
         if(lowerBound > upperBound)
         {

@@ -10,24 +10,20 @@ import java.util.function.Function;
  */
 public class Condition {
 
-    private ArrayList<IntervalPredicate> intervalPredicates;
+    private ArrayList<PredicateBase> intervalPredicates;
 
-    public Condition(ArrayList<IntervalPredicate> predicates) {
+    public Condition(ArrayList<PredicateBase> predicates) {
         this.intervalPredicates = predicates;
     }
 
     public Condition(Scanner scanner)
     {
-        intervalPredicates = new ArrayList<>();
-        while (scanner.hasNext())
-        {
-            intervalPredicates.add(new IntervalPredicate(scanner));
-        }
+        intervalPredicates = PredicateFactory.deserializePredicates(scanner);
     }
 
     public void serialize(CSVWriter writer)
     {
-        for (IntervalPredicate predicate :
+        for (PredicateBase predicate :
                 intervalPredicates) {
             predicate.serialize(writer);
         }
@@ -78,7 +74,7 @@ public class Condition {
         end /= 2;
         for(int index = (int)Math.ceil(start); index < end; index++)
         {
-            IntervalPredicate tmp = intervalPredicates.get(index);
+            PredicateBase tmp = intervalPredicates.get(index);
             intervalPredicates.set(index, other.intervalPredicates.get(index));
             other.intervalPredicates.set(index, tmp);
         }
@@ -86,7 +82,7 @@ public class Condition {
 
     public void mutate(Random random)
     {
-        for (IntervalPredicate predicate :
+        for (PredicateBase predicate :
                 intervalPredicates) {
             predicate.mutate(random);
         }
