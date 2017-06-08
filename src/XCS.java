@@ -69,11 +69,12 @@ public class XCS implements AI {
                 for (Classifier classifier : actionSet) {
                     classifier.update(reward, actionSetSize, accuracies.get(classifier), accuracySum);
                 }
-                if(XCSConfig.doActionSetSubsumption)
-                {
+                if(XCSConfig.doActionSetSubsumption) {
                     actionSetSubsumption(actionSet);
                 }
-                runGA(actionSet);
+                if (actionSet.size() > 0) { // TODO: why could this ever be empty?
+                    runGA(actionSet);
+                }
             });
 
             // Only using A and A_-1 right now, so discard older action sets
