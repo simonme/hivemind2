@@ -29,16 +29,26 @@ public class WrappingIntervalPredicate extends PredicateBase {
     @Override
     boolean contains(double d) {
         double value = d % wrappingValue;
-        if(value >= lowerBound && value <= upperBound)
+        if(lowerBound <= upperBound)
         {
-            return true;
+            return (value >= lowerBound && value <= upperBound);
         }
-        return false;
+        else
+        {
+            return (value <= lowerBound || value >= upperBound);
+        }
     }
 
     @Override
     boolean isMoreGeneral(PredicateBase other) {
-        return this.lowerBound <= other.lowerBound && this.upperBound <= other.upperBound;
+        if(this.lowerBound <= this.upperBound)
+        {
+            return (other.lowerBound >= this.lowerBound && other.upperBound <= this.upperBound);
+        }
+        else
+        {
+            return (other.lowerBound <= this.lowerBound && other.upperBound >= this.upperBound);
+        }
     }
 
     @Override
