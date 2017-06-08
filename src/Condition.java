@@ -21,8 +21,7 @@ public class Condition {
         intervalPredicates = PredicateFactory.deserializePredicates(scanner);
     }
 
-    public void serialize(CSVWriter writer)
-    {
+    public void serialize(CSVWriter writer) {
         for (PredicateBase predicate :
                 intervalPredicates) {
             predicate.serialize(writer);
@@ -38,8 +37,7 @@ public class Condition {
         return true;
     }
 
-    public boolean isMoreGeneral(Condition other)
-    {
+    public boolean isMoreGeneral(Condition other) {
         for (int i = 0; i < intervalPredicates.size(); i++){
             if (!(intervalPredicates.get(i).isMoreGeneral(other.intervalPredicates.get(i))))
                 return false;
@@ -47,41 +45,73 @@ public class Condition {
         return true;
     }
 
-    public void crossover(Condition other, Random random)
-    {
-        int conditionLength = intervalPredicates.size() * 2;
-        double start = random.nextDouble() * conditionLength;
-        double end = random.nextDouble() * conditionLength;
-        if(start > end)
-        {
-            double tmp = start;
-            start = end;
-            end = tmp;
+    public void crossover(Condition other, Random random) {
+        if (XCSConfig.crossoverType == CrossoverType.ONE_POINT) {
+            onePointCrossover(other, random);
+        } else if (XCSConfig.crossoverType == CrossoverType.TWO_POINT) {
+            twoPointCrossover(other, random);
+        } else if (XCSConfig.crossoverType == CrossoverType.UNIFORM) {
+            uniformCrossover(other, random);
         }
-        if(start % 2 >= 1.0)
-        {
-            int index = (int)Math.floor(start / 2);
-            start++;
+    }
+
+    private void onePointCrossover(Condition other, Random random) {
+        int conditionLength = intervalPredicates.size() * 2;
+
+        int cross = random.nextInt(conditionLength);
+        if(cross % 2 == 1) {
+            int index = (int)Math.floor(cross / 2);
+            cross--;
             intervalPredicates.get(index).crossover(other.intervalPredicates.get(index), true);
         }
-        if(end % 2 >= 1.0)
-        {
-            int index = (int)Math.floor(end / 2);
-            end--;
-            intervalPredicates.get(index).crossover(other.intervalPredicates.get(index), false);
-        }
-        start /= 2;
-        end /= 2;
-        for(int index = (int)Math.ceil(start); index < end; index++)
-        {
+        cross /= 2;
+        for(int index = cross; index < intervalPredicates.size(); index++) {
             PredicateBase tmp = intervalPredicates.get(index);
             intervalPredicates.set(index, other.intervalPredicates.get(index));
             other.intervalPredicates.set(index, tmp);
         }
     }
 
-    public void mutate(Random random)
-    {
+    private void twoPointCrossover(Condition other, Random random) {
+        int conditionLength = intervalPredicates.size() * 2;
+
+        int start = random.nextInt(conditionLength);
+        int end = random.nextInt(conditionLength);
+        if(start > end) {
+            int tmp = start;
+            start = end;
+            end = tmp;
+        }
+        if(start % 2 == 1) {
+            int index = (int)Math.floor(start / 2);
+            start++;
+            intervalPredicates.get(index).crossover(other.intervalPredicates.get(index), true);
+        }
+        if(end % 2 == 1) {
+            int index = (int)Math.floor(end / 2);
+            end--;
+            intervalPredicates.get(index).crossover(other.intervalPredicates.get(index), false);
+        }
+        start /= 2;
+        end /= 2;
+        for(int index = start; index < end; index++) {
+            PredicateBase tmp = intervalPredicates.get(index);
+            intervalPredicates.set(index, other.intervalPredicates.get(index));
+            other.intervalPredicates.set(index, tmp);
+        }
+    }
+
+    private void uniformCrossover(Condition other, Random random) {
+        for(int index = 0; index < intervalPredicates.size(); index++) {
+            if (random.nextDouble() < XCSConfig.chi) {
+                PredicateBase tmp = intervalPredicates.get(index);
+                intervalPredicates.set(index, other.intervalPredicates.get(index));
+                other.intervalPredicates.set(index, tmp);
+            }
+        }
+    }
+
+    public void mutate(Random random) {
         for (PredicateBase predicate :
                 intervalPredicates) {
             predicate.mutate(random);
@@ -89,7 +119,7 @@ public class Condition {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
         if (!(obj instanceof Condition))return false;
