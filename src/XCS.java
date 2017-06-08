@@ -35,9 +35,10 @@ public class XCS implements AI {
             Scanner classifier = new Scanner(line);
             classifier.useDelimiter(Character.toString(CSVWriter.VALUE_DELIMITER));
             Classifier cl = new Classifier(classifier, possibleActions);
+            // Set LastGA to current; maybe save timestamp and LastGA to CSV?
+            cl.setLastGA(timestamp);
             population.add(cl);
             cl.hashOnEnter = cl.hashCode();
-            // TODO set timestamp for later GA usa?
         }
         System.out.println("Reloaded existing population (" + population.stream().mapToInt(Classifier::getNumerosity).sum() + " classifiers)");
     }
@@ -184,6 +185,7 @@ public class XCS implements AI {
         return randomAction;
     }
 
+
     private Action selectAction(Map<Action, Double> predictionArray) {
         Action chosenAction = null;
         if (Math.random() > XCSConfig.pExp) {
@@ -263,8 +265,8 @@ public class XCS implements AI {
                     actionSet) {
                 classifier.setLastGA(timestamp);
             }
-            Classifier parent1 = selectOffspring(actionSet);
-            Classifier parent2 = selectOffspring(actionSet);
+            Classifier parent1 = selectParent(actionSet);
+            Classifier parent2 = selectParent(actionSet);
             Classifier child1 = parent1.copy();
             Classifier child2 = parent2.copy();
             child1.setNumerosity(1);
@@ -366,8 +368,39 @@ public class XCS implements AI {
         return false;
     }
 
-    private Classifier selectOffspring(Set<Classifier> actionSet)
+    private Classifier selectParent(Set<Classifier> actionSet)
     {
+        Classifier parent = null;
+        if (XCSConfig.selectionType == SelectionType.ROULETTE_WHEEL){
+            parent = doRouletteWheelSelection(actionSet);
+        }
+        else if (xcsConfig.selectionType == SelectionType.TOURNAMENT){
+            parent = doTournamentSelection(actionSet);
+        }
+        return parent;
+    }
+
+
+    private Classifier doTournamentSelection(Set<Classifier> actionSet) {
+        Classifier parent = null;
+        int tournamentSize = (int)Math.round(actionSet.size() * XCSConfig.tournamentSize);
+        if (tournamentSize <= 1)
+            tournamentSize = 2;
+        int maxFitness = Integer.MIN_VALUE;
+        ArrayList<Classifier>actionSetList = new ArrayList(actionSet);
+        ArrayList<Classifier>selection = new ArrayList();
+        while (selection.size() < tournamentSize){
+            selection.add(actionSetList.get((int)(Math.random()*actionSetList.size())));
+        }
+        for (Classifier cl : selection){
+            if (cl.getFitness() >= maxFitness){
+                parent = cl;
+            }
+        }
+        return parent;
+    }
+
+    private Classifier doRouletteWheelSelection(Set<Classifier> actionSet) {
         double fitnessSum = actionSet.stream().mapToDouble(Classifier::getFitness).sum();
         double choicePoint = random.nextDouble() * fitnessSum;
         fitnessSum = 0;
@@ -381,4 +414,5 @@ public class XCS implements AI {
         }
         throw new IndexOutOfBoundsException();
     }
+
 }
