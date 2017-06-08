@@ -384,12 +384,13 @@ public class XCS implements AI {
     private Classifier doTournamentSelection(Set<Classifier> actionSet) {
         Classifier parent = null;
         int tournamentSize = (int)Math.round(actionSet.size() * XCSConfig.tournamentSize);
-        if (tournamentSize == 0)
-            tournamentSize = 1;
+        if (tournamentSize <= 1)
+            tournamentSize = 2;
         int maxFitness = Integer.MIN_VALUE;
-        ArrayList<Classifier>selection = new ArrayList(actionSet);
-        while (selection.size() > tournamentSize){
-            selection.remove((int)(Math.random()*tournamentSize));
+        ArrayList<Classifier>actionSetList = new ArrayList(actionSet);
+        ArrayList<Classifier>selection = new ArrayList();
+        while (selection.size() < tournamentSize){
+            selection.add(actionSetList.get((int)(Math.random()*actionSetList.size())));
         }
         for (Classifier cl : selection){
             if (cl.getFitness() >= maxFitness){

@@ -26,7 +26,7 @@ public class XCSConfig {
     public static double r0 = 1.0;
     public static boolean doActionSetSubsumption = true;
     public static boolean doGASubsumption = true;
-    public static double tournamentSize = 0.1; //Anteil des ActionSets, der für die Tournament Selection verwendet wird
+    public static double tournamentSize = 0.5; //Anteil des ActionSets, der für die Tournament Selection verwendet wird
     public static SelectionType selectionType = SelectionType.TOURNAMENT;
     public static double pExp = 0.4; //Wahrscheinlichkeit für exploration
 }
