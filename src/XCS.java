@@ -185,6 +185,7 @@ public class XCS implements AI {
         return randomAction;
     }
 
+
     private Action selectAction(Map<Action, Double> predictionArray) {
         Action chosenAction = null;
         if (Math.random() > XCSConfig.pExp) {
@@ -264,8 +265,8 @@ public class XCS implements AI {
                     actionSet) {
                 classifier.setLastGA(timestamp);
             }
-            Classifier parent1 = selectOffspring(actionSet);
-            Classifier parent2 = selectOffspring(actionSet);
+            Classifier parent1 = selectParent(actionSet);
+            Classifier parent2 = selectParent(actionSet);
             Classifier child1 = parent1.copy();
             Classifier child2 = parent2.copy();
             child1.setNumerosity(1);
@@ -367,8 +368,38 @@ public class XCS implements AI {
         return false;
     }
 
-    private Classifier selectOffspring(Set<Classifier> actionSet)
+    private Classifier selectParent(Set<Classifier> actionSet)
     {
+        Classifier parent = null;
+        if (XCSConfig.selectionType == SelectionType.ROULETTE_WHEEL){
+            parent = doRouletteWheelSelection(actionSet);
+        }
+        else if (xcsConfig.selectionType == SelectionType.TOURNAMENT){
+            parent = doTournamentSelection(actionSet);
+        }
+        return parent;
+    }
+
+
+    private Classifier doTournamentSelection(Set<Classifier> actionSet) {
+        Classifier parent = null;
+        int tournamentSize = (int)Math.round(actionSet.size() * XCSConfig.tournamentSize);
+        if (tournamentSize == 0)
+            tournamentSize = 1;
+        int maxFitness = Integer.MIN_VALUE;
+        ArrayList<Classifier>selection = new ArrayList(actionSet);
+        while (selection.size() > tournamentSize){
+            selection.remove((int)(Math.random()*tournamentSize));
+        }
+        for (Classifier cl : selection){
+            if (cl.getFitness() >= maxFitness){
+                parent = cl;
+            }
+        }
+        return parent;
+    }
+
+    private Classifier doRouletteWheelSelection(Set<Classifier> actionSet) {
         double fitnessSum = actionSet.stream().mapToDouble(Classifier::getFitness).sum();
         double choicePoint = random.nextDouble() * fitnessSum;
         fitnessSum = 0;
@@ -382,4 +413,5 @@ public class XCS implements AI {
         }
         throw new IndexOutOfBoundsException();
     }
+
 }
