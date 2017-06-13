@@ -3,7 +3,8 @@
  */
 public class XCSConfig {
     public static boolean SHOULD_LOAD_FROM_CSV = false; // makes XCS load from CSV
-    public static boolean SHOULD_SAVE_TO_CSV = false; // makes XCS save to CSV
+    public static boolean SHOULD_SAVE_TO_CSV = true; // makes XCS save to CSV
+    public static String CSV_PREFIX = "AI_Test_";
 
     public static double alpha = 0.1;
     public static double beta = 0.2;

@@ -3,7 +3,7 @@ import bwapi.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class Vulture {
+public class PlayerAI {
 
     private final Mirror bwapi;
     private final HashSet<Unit> enemyUnits;
@@ -14,7 +14,7 @@ public class Vulture {
 
     private int immediateReward;
 
-    public Vulture(Unit unit, Mirror bwapi, HashSet<Unit> enemyUnits, HashSet<Unit> alliedUnits, IEvaluator evaluator, AI ai) {
+    public PlayerAI(Unit unit, Mirror bwapi, HashSet<Unit> enemyUnits, HashSet<Unit> alliedUnits, IEvaluator evaluator, AI ai) {
         this.unit = unit;
         this.bwapi = bwapi;
         this.enemyUnits = enemyUnits;
@@ -27,8 +27,7 @@ public class Vulture {
         Unit closestEnemy = getClosestEnemy();
         final Situation sigmaT = new Situation(this.unit, closestEnemy, enemyUnits, alliedUnits);
         Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit) + immediateReward);
-        if(action.isRequiresClosestEnemy())
-        {
+        if(action.isRequiresClosestEnemy()) {
             action.setClosestEnemy(closestEnemy);
         }
         immediateReward = action.ExecuteOn(this.unit);
