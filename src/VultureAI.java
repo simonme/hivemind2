@@ -20,6 +20,8 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
 
     private HashSet<Unit> enemyUnits;
 
+    private HashSet<Unit> alliedUnits;
+
     private AI ai = null;
 
     private int frame;
@@ -36,6 +38,7 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
     @Override
     public void onStart() {
         enemyUnits = new HashSet<Unit>();
+        alliedUnits = new HashSet<Unit>();
         this.game = this.bwapi.getGame();
         this.self = game.self();
         this.frame = 0;
@@ -127,12 +130,16 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
 
         if (type == UnitType.Terran_Vulture) {
             if (unit.getPlayer() == this.self) {
-                this.vulture = new Vulture(unit, bwapi, enemyUnits, new VultureEvaluator(), getAI());
+                this.vulture = new Vulture(unit, bwapi, enemyUnits, alliedUnits, new VultureEvaluator(), getAI());
             }
         } else if (type == UnitType.Protoss_Zealot) {
             if (unit.getPlayer() != this.self) {
                 enemyUnits.add(unit);
             }
+        } else if (unit.getPlayer() != this.self) {
+            enemyUnits.add(unit);
+        } else if (unit.getPlayer() == this.self) {
+            alliedUnits.add(unit);
         }
     }
 
@@ -152,7 +159,9 @@ public class VultureAI  extends DefaultBWListener implements Runnable {
     public void onUnitDestroy(Unit unit) {
     	if(this.enemyUnits.contains(unit)){
             this.enemyUnits.remove(unit);
-    	}
+    	} else if (this.alliedUnits.contains(unit)) {
+    	    this.alliedUnits.remove(unit);
+        }
     }
     
 
