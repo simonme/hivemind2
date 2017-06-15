@@ -17,6 +17,7 @@ public class ActionMap {
         marineActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
         marineActions.add(new ActionMove(new RelativePosition(270+0.0, 50)));
         marineActions.add(new ActionAttackClosestEnemy());
+        marineActions.add(new ActionTriggerStimPack());
         actions.put(PlayerAIType.MARINE, marineActions);
 
         ArrayList<Action> medicActions = new ArrayList<>();
@@ -25,6 +26,7 @@ public class ActionMap {
         medicActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
         medicActions.add(new ActionMove(new RelativePosition(270+0.0, 50)));
         medicActions.add(new ActionAttackClosestEnemy());
+        medicActions.add(new ActionHeal());
         actions.put(PlayerAIType.MEDIC, medicActions);
 
         ArrayList<Action> siegeTankActions = new ArrayList<>();
@@ -33,6 +35,7 @@ public class ActionMap {
         siegeTankActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
         siegeTankActions.add(new ActionMove(new RelativePosition(270+0.0, 50)));
         siegeTankActions.add(new ActionAttackClosestEnemy());
+        siegeTankActions.add(new ActionTriggerSiegeMode());
         actions.put(PlayerAIType.SIEGE_TANK, siegeTankActions);
 
         ArrayList<Action> vultureActions = new ArrayList<>();
