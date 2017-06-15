@@ -15,7 +15,7 @@ public class ActionTriggerSiegeMode extends Action {
         {
             if(unit.canUseTech(TechType.Tank_Siege_Mode))
             {
-                unit.useTech(TechType.Tank_Siege_Mode, unit);
+                unit.useTech(TechType.Tank_Siege_Mode);
                 return 0;
             }
         }
@@ -32,6 +32,6 @@ public class ActionTriggerSiegeMode extends Action {
 
     @Override
     public int hashCode() {
-        return this.hashCode();
+        return 3;
     }
 }

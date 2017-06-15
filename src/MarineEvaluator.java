@@ -3,7 +3,7 @@ import bwapi.Unit;
 /**
  * Created by Ferdi on 15.06.2017.
  */
-public class MarineEvaluator {
+public class MarineEvaluator implements IEvaluator {
     private boolean isInitialized = false;
 
     private int killedUnitCount;

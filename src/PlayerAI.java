@@ -1,7 +1,8 @@
 import bwapi.*;
 
-import java.util.ArrayList;
+import javax.swing.text.html.Option;
 import java.util.HashSet;
+import java.util.Optional;
 
 public class PlayerAI {
 
@@ -24,13 +25,23 @@ public class PlayerAI {
     }
 
     public void step() {
-        Unit closestEnemy = getClosestEnemy();
+        System.out.println("stepping " + unit.getID() + " " + unit.getType());
+        final Unit closestEnemy = getClosestEnemy();
+        final Unit lowestHealableAlly = getLowestHealableAlly();
         final Situation sigmaT = new Situation(this.unit, closestEnemy, enemyUnits, alliedUnits);
-        Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit) + immediateReward);
-        if(action.isRequiresClosestEnemy()) {
-            action.setClosestEnemy(closestEnemy);
+        final Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit) + immediateReward, unit.getID());
+        if(action.isRequiresTargetUnit()) {
+            if(action instanceof ActionAttackClosestEnemy)
+            {
+                action.setTargetUnit(closestEnemy);
+            }
+            if(action instanceof  ActionHeal)
+            {
+                 action.setTargetUnit(lowestHealableAlly);
+            }
         }
         immediateReward = action.ExecuteOn(this.unit);
+        System.out.println("stepped " + unit.getID());
     }
 
     private void move(Unit target) {
@@ -54,6 +65,37 @@ public class PlayerAI {
         }
 
         return result;
+    }
+
+    private Unit getLowestHealableAlly()
+    {
+        Optional<Unit> unitOption = alliedUnits.stream().min((current, other) -> {
+            double currentVal, otherVal;
+            if((current.getType() == UnitType.Terran_Marine || current.getType() == UnitType.Terran_Medic) && !current.isBeingHealed())
+            {
+                currentVal = current.getHitPoints() / current.getInitialHitPoints();
+            }
+            else
+            {
+                currentVal = 2;
+            }
+            if((other.getType() == UnitType.Terran_Marine || other.getType() == UnitType.Terran_Medic) && !current.isBeingHealed())
+            {
+                otherVal = other.getHitPoints() / other.getInitialHitPoints();
+            }
+            else
+            {
+                otherVal = 2;
+            }
+            return Double.compare(currentVal, otherVal);
+        });
+        if(unitOption.isPresent()) {
+            Unit result = unitOption.get();
+            if(result.getHitPoints() < result.getInitialHitPoints()) {
+                return result;
+            }
+        }
+        return null;
     }
 
     private double getDistance(Unit enemy) {

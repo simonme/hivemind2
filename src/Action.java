@@ -4,8 +4,8 @@ import bwapi.Unit;
  * Created by Simon on 15.05.2017.
  */
 public abstract class Action {
-    protected boolean requiresClosestEnemy = false;
-    private Unit closestEnemy = null;
+    protected boolean requiresTargetUnit = false;
+    private Unit targetUnit = null;
 
     public abstract int ExecuteOn(Unit unit);
 
@@ -13,16 +13,16 @@ public abstract class Action {
 
     public abstract int hashCode();
 
-    public boolean isRequiresClosestEnemy() {
-        return requiresClosestEnemy;
+    public boolean isRequiresTargetUnit() {
+        return requiresTargetUnit;
     }
 
-    protected Unit getClosestEnemy() {
-        return closestEnemy;
+    protected Unit getTargetUnit() {
+        return targetUnit;
     }
 
-    public void setClosestEnemy(Unit closestEnemy) {
-        this.closestEnemy = closestEnemy;
+    public void setTargetUnit(Unit targetUnit) {
+        this.targetUnit = targetUnit;
     }
 }
 

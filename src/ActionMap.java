@@ -43,6 +43,7 @@ public class ActionMap {
         vultureActions.add(new ActionMove(new RelativePosition(90+0.0, 50)));
         vultureActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
         vultureActions.add(new ActionMove(new RelativePosition(270+0.0, 50)));
+        vultureActions.add(new ActionSpiderMines(new RelativePosition(0+0.0, 0)));
         vultureActions.add(new ActionAttackClosestEnemy());
         actions.put(PlayerAIType.VULTURE, vultureActions);
     }

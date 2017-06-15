@@ -15,7 +15,7 @@ public class ActionTriggerStimPack extends Action {
         {
             if(unit.canUseTech(TechType.Stim_Packs))
             {
-                unit.useTech(TechType.Stim_Packs, unit);
+                unit.useTech(TechType.Stim_Packs);
                 return 0;
             }
         }
@@ -32,6 +32,6 @@ public class ActionTriggerStimPack extends Action {
 
     @Override
     public int hashCode() {
-        return this.hashCode();
+        return 4;
     }
 }

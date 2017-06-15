@@ -17,7 +17,7 @@ public class ActionSpiderMines extends Action {
     public int ExecuteOn(Unit unit) {
         if(unit.getType() == UnitType.Terran_Vulture)
         {
-            if(unit.canUseTech(TechType.Spider_Mines))
+            if(unit.canUseTech(TechType.Spider_Mines, target.applyTo(unit.getPosition())))
             {
                 unit.useTech(TechType.Spider_Mines, target.applyTo(unit.getPosition()));
                 return 0;

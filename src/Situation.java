@@ -30,7 +30,7 @@ public class Situation {
             features.add((double) -10000);
         }
         features.add((double) unit.getGroundWeaponCooldown());
-        System.out.println("Anzahl gegnerischer Einheiten: " + enemyUnits.size());
+        //System.out.println("Anzahl gegnerischer Einheiten: " + enemyUnits.size());
         features.add((double) enemyUnits.size());
         if (enemyUnits.size() > 0) {
             features.add(unit.getPosition().getDistance(calculateCentreOfMass(enemyUnits))); // Distanz zum Masseschwerpunkt der Gegner
@@ -39,7 +39,7 @@ public class Situation {
             features.add((double) -10000);
             features.add((double) -10000);
         }
-        System.out.println("Anzahl verbündeter Einheiten: " + alliedUnits.size());
+        //System.out.println("Anzahl verbündeter Einheiten: " + alliedUnits.size());
         features.add((double) alliedUnits.size());
         features.add(unit.getPosition().getDistance(calculateCentreOfMass(alliedUnits))); // Distanz zum Masseschwerpunkt der Verbündeten
         features.add(RelativePosition.computeAngle(unit.getPosition(), calculateCentreOfMass(alliedUnits)) * 360 / (2*Math.PI)); // Relative Position zum Masseschwerpunkt der Verbündeten

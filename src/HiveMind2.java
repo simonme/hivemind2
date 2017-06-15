@@ -19,7 +19,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
 
     private HashSet<Unit> alliedUnits;
 
-    private HashSet<PlayerAI> playerAIs;
+    private ArrayList<PlayerAI> playerAIs;
 
     private ActionMap actionMap;
 
@@ -30,7 +30,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
     public HiveMind2() {
         System.out.println("This is HiveMind 2.0! :)");
         this.bwapi = new Mirror();
-        this.playerAIs = new HashSet<>();
+        this.playerAIs = new ArrayList<>();
         this.actionMap = new ActionMap();
     }
 
@@ -44,14 +44,14 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
         alliedUnits = new HashSet<Unit>();
         this.game = this.bwapi.getGame();
         this.self = game.self();
-        this.frame = 0;
+        this.frame = -1;
 
         // complete map information
         this.game.enableFlag(0);
         
         // user input
         this.game.enableFlag(1);
-        this.game.setLocalSpeed(10);
+        this.game.setLocalSpeed(100);
     }
 
     private void saveAIToCSV() { // Is saved on every match end
@@ -77,14 +77,26 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
     @Override
     public void onFrame() {
 
+        frame++;
         if (frame % 10 == 0) {
-            playerAIs.forEach(PlayerAI::step);
+            for(int i = 0; i < playerAIs.size(); i++)
+            {
+                try {
+                    playerAIs.get(i).step();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Error executing AI");
+                }
+            }
+            //for (PlayerAI playerAI : playerAIs) {
+            //    playerAI.step();
+            //}
         }
 
         if (frame % 1000 == 0) {
             System.out.println("Frame: " + frame);
         }
-        frame++;
     }
 
     private AI getAI(PlayerAIType playerAIType) {
@@ -99,6 +111,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
 
         if (this.AIs.get(playerAIType) == null) {
             this.AIs.put(playerAIType, new XCS(actionMap.getActions(playerAIType)));
+            System.out.println("Created XCS for " + playerAIType.toString());
         }
 
         return this.AIs.get(playerAIType);
@@ -107,13 +120,17 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
     private void handleNewUnit(Unit unit) {
         UnitType type = unit.getType();
         if (unit.getPlayer() == this.self) {
+            if(alliedUnits.contains(unit))
+            {
+                return;
+            }
             alliedUnits.add(unit);
             if (type == UnitType.Terran_Marine) {
-                this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, /*TODO: marineEvaluator*/ new VultureEvaluator(), getAI(PlayerAIType.MARINE)));
+                this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MarineEvaluator(), getAI(PlayerAIType.MARINE)));
             } else if (type == UnitType.Terran_Medic) {
-                this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, /*TODO: marineMedic*/ new VultureEvaluator(), getAI(PlayerAIType.MEDIC)));
+                this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MedicEvaluator(), getAI(PlayerAIType.MEDIC)));
             } else if (type == UnitType.Terran_Siege_Tank_Tank_Mode || type == UnitType.Terran_Siege_Tank_Siege_Mode) {
-                this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, /*TODO: siegeTankEvaluator*/ new VultureEvaluator(), getAI(PlayerAIType.SIEGE_TANK)));
+                this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new SiegeTankEvaluator(), getAI(PlayerAIType.SIEGE_TANK)));
             } else if (type == UnitType.Terran_Vulture) {
                 this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new VultureEvaluator(), getAI(PlayerAIType.VULTURE)));
             }

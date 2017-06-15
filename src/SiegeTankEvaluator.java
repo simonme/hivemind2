@@ -3,7 +3,7 @@ import bwapi.Unit;
 /**
  * Created by Ferdi on 15.06.2017.
  */
-public class SiegeTankEvaluator {
+public class SiegeTankEvaluator implements IEvaluator {
     private boolean isInitialized = false;
 
     private int killedUnitCount;

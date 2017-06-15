@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Simon on 15.05.2017.
@@ -9,7 +10,7 @@ public class XCS implements AI {
     private XCSConfig xcsConfig;
     private Covering covering;
     private int timestamp;
-    private LinkedList<Set<Classifier>> actionSetHistory;
+    private Map<Integer, LinkedList<Set<Classifier>>> actionSetHistory;
     private Random random;
 
     public XCS(ArrayList<Action> possibleActions) {
@@ -18,7 +19,7 @@ public class XCS implements AI {
         covering = new Covering();
         population = new LinkedHashSet<>();
         timestamp = 0;
-        actionSetHistory = new LinkedList<>();
+        actionSetHistory = new HashMap<>();
         this.random = new Random();
     }
 
@@ -54,10 +55,14 @@ public class XCS implements AI {
     }
 
     @Override
-    public Action step(Situation sigmaT, double reward) {
-        if(actionSetHistory.size() > 0) { // we could also test if timestamp > 0
+    public Action step(Situation sigmaT, double reward, int unitID) {
+        if(actionSetHistory.containsKey(unitID) == false)
+        {
+            actionSetHistory.put(unitID, new LinkedList<>());
+        }
+        if(actionSetHistory.get(unitID).size() > 0) { // we could also test if timestamp > 0
 
-            actionSetHistory.forEach(actionSet -> {
+            actionSetHistory.get(unitID).forEach(actionSet -> {
                 final int actionSetSize = actionSet.stream().mapToInt(Classifier::getNumerosity).sum();
                 double accuracySum = 0;
                 LinkedHashMap<Classifier, Double> accuracies = new LinkedHashMap<>();
@@ -78,15 +83,15 @@ public class XCS implements AI {
             });
 
             // Only using A and A_-1 right now, so discard older action sets
-            if(actionSetHistory.size() > 1) {
-                actionSetHistory.removeLast();
+            if(actionSetHistory.get(unitID).size() > 1) {
+                actionSetHistory.get(unitID).removeLast();
             }
         }
         timestamp++;
         Set<Classifier> matchSet = generateMatchSet(sigmaT);
         Map<Action, Double> predictionArray = generatePredictionArray(matchSet);
         Action chosenAction = selectAction(predictionArray);
-        actionSetHistory.addFirst(generateActionSet(sigmaT, chosenAction, matchSet));
+        actionSetHistory.get(unitID).addFirst(generateActionSet(sigmaT, chosenAction, matchSet));
         return chosenAction;
     }
 
@@ -134,7 +139,8 @@ public class XCS implements AI {
         }
         //Covering, wenn zu wenig Aktionen im Match Set
         while (numberOfDistinctActions(matchSet) < XCSConfig.thetaMNA) {
-            Classifier clc = covering.generateCoveringClassifier(sigmaT, pickRandomActionNotPresentInSet(matchSet), timestamp);
+            Action newAction = pickRandomActionNotPresentInSet(matchSet);
+            Classifier clc = covering.generateCoveringClassifier(sigmaT, newAction, timestamp);
             population.add(clc);
             clc.hashOnEnter = clc.hashCode();
             deleteFromPopulation();
@@ -177,13 +183,17 @@ public class XCS implements AI {
     }
 
     private Action pickRandomActionNotPresentInSet(Set<Classifier> set) {
-        Action randomAction = null;
-        while (randomAction == null) {
-            int randomIndex = (int) (Math.random() * possibleActions.size());
-            if (!set.contains(possibleActions.get(randomIndex)))
-                randomAction = possibleActions.get(randomIndex);
+        ArrayList<Action> unusedActions = new ArrayList<>();
+        Set<Action> usedActions = set.stream().map(Classifier::getAction).collect(Collectors.toSet());
+        for (int i = 0; i < possibleActions.size(); i++) {
+            Action action = possibleActions.get(i);
+            if(!usedActions.contains(action))
+            {
+                unusedActions.add(action);
+            }
         }
-        return randomAction;
+        int randomIndex = (int) (Math.random() * unusedActions.size());
+        return unusedActions.get(randomIndex);
     }
 
 

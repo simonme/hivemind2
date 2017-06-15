@@ -5,6 +5,6 @@ import java.io.PrintWriter;
  */
 public interface AI {
 
-    public Action step(Situation sigmaT, double reward);
+    public Action step(Situation sigmaT, double reward, int unitID);
     public void serialize(CSVWriter writer);
 }
