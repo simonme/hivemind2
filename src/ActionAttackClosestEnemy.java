@@ -1,19 +1,24 @@
+import bwapi.Player;
 import bwapi.Unit;
 
 /**
  * Created by Jakob on 25.05.2017.
  */
 public class ActionAttackClosestEnemy extends Action {
-    public ActionAttackClosestEnemy()
+
+    private Player self;
+
+    public ActionAttackClosestEnemy(Player self)
     {
         this.requiresTargetUnit = true;
+        this.self = self;
     }
 
     @Override
     public int ExecuteOn(Unit unit)
     {
         Unit enemy = getTargetUnit();
-        if(enemy != null)
+        if(enemy != null && enemy.getPlayer() != this.self)
         {
             unit.attack(enemy);
             setTargetUnit(null);

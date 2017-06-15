@@ -31,7 +31,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
         System.out.println("This is HiveMind 2.0! :)");
         this.bwapi = new Mirror();
         this.playerAIs = new ArrayList<>();
-        this.actionMap = new ActionMap();
+        this.actionMap = new ActionMap(this.self);
     }
 
     public static void main(String[] args) {
@@ -51,12 +51,13 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
         
         // user input
         this.game.enableFlag(1);
-        this.game.setLocalSpeed(100);
+        this.game.setLocalSpeed(10);
     }
 
     private void saveAIToCSV() { // Is saved on every match end
         if (XCSConfig.SHOULD_SAVE_TO_CSV) {
             System.out.println("Saving XCS to CSV");
+            Object [] test = AIs.keySet().toArray();
             this.AIs.keySet().forEach(playerAIType -> {
                 String playerAITypeString = playerAIType.toString();
                 try {
