@@ -1,4 +1,5 @@
 import bwapi.Unit;
+import bwapi.UnitType;
 
 import java.util.HashSet;
 
@@ -27,11 +28,28 @@ public class SiegeTankEvaluator implements IEvaluator {
         damageDealt += deltaDamageDealt;
         int deltaHP = unit.getHitPoints() - HP;
         HP += deltaHP;
-
+        int distanceToClosestSupplyDepot = (int)(getClosestUnitOfType(unit, alliedUnits, UnitType.Terran_Supply_Depot));
         int visibleEnemyUnitCount = unit.getUnitsInRadius(unit.getType().sightRange()).size();
 
-        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount; //+ (unit.isAttacking() ? 0.00001 : 0);
+        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount + 2000 / distanceToClosestSupplyDepot; //+ (unit.isAttacking() ? 0.00001 : 0);
         // System.out.println("evaluation reward: " + reward);
         return reward;
+    }
+
+    private double getClosestUnitOfType(Unit unit, HashSet<Unit> alliedUnits, UnitType type) {
+        double minDistance = Double.POSITIVE_INFINITY;
+        for (Unit ally : alliedUnits) {
+            if (ally.getType() == type && ally.exists()){
+                double distance = getDistance(unit, ally);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                }
+            }
+        }
+        return minDistance;
+    }
+
+    private double getDistance(Unit self, Unit unit) {
+        return self.getPosition().getDistance(unit.getPosition());
     }
 }
