@@ -13,11 +13,8 @@ public class ActionTriggerSiegeMode extends Action {
     public int ExecuteOn(Unit unit) {
         if(unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode)
         {
-            if(unit.canUseTech(TechType.Tank_Siege_Mode))
-            {
-                unit.useTech(TechType.Tank_Siege_Mode);
-                return 0;
-            }
+            unit.useTech(TechType.Tank_Siege_Mode);
+            return 0;
         }
         return -10;
     }
