@@ -6,19 +6,16 @@ import bwapi.Unit;
  */
 public class ActionAttackClosestEnemy extends Action {
 
-    private Player self;
-
-    public ActionAttackClosestEnemy(Player self)
+    public ActionAttackClosestEnemy()
     {
         this.requiresTargetUnit = true;
-        this.self = self;
     }
 
     @Override
     public int ExecuteOn(Unit unit)
     {
         Unit enemy = getTargetUnit();
-        if(enemy != null && enemy.getPlayer() != this.self)
+        if(enemy != null)
         {
             unit.attack(enemy);
             setTargetUnit(null);

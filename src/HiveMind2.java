@@ -31,7 +31,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
         System.out.println("This is HiveMind 2.0! :)");
         this.bwapi = new Mirror();
         this.playerAIs = new ArrayList<>();
-        this.actionMap = new ActionMap(this.self);
+        this.actionMap = new ActionMap();
     }
 
     public static void main(String[] args) {
@@ -40,6 +40,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
 
     @Override
     public void onStart() {
+        playerAIs = new ArrayList<>();
         enemyUnits = new HashSet<Unit>();
         alliedUnits = new HashSet<Unit>();
         this.game = this.bwapi.getGame();
@@ -48,10 +49,27 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
 
         // complete map information
         this.game.enableFlag(0);
-        
+
         // user input
         this.game.enableFlag(1);
         this.game.setLocalSpeed(10);
+        for (Unit unit : self.getUnits()) {
+            if (unit.getPlayer() == this.self) {
+                UnitType type = unit.getType();
+                if (!alliedUnits.contains(unit)) {
+                    alliedUnits.add(unit);
+                    if (type == UnitType.Terran_Marine) {
+                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MarineEvaluator(), getAI(PlayerAIType.MARINE)));
+                    } else if (type == UnitType.Terran_Medic) {
+                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MedicEvaluator(), getAI(PlayerAIType.MEDIC)));
+                    } else if (type == UnitType.Terran_Siege_Tank_Tank_Mode || type == UnitType.Terran_Siege_Tank_Siege_Mode) {
+                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new SiegeTankEvaluator(), getAI(PlayerAIType.SIEGE_TANK)));
+                    } else if (type == UnitType.Terran_Vulture) {
+                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new VultureEvaluator(), getAI(PlayerAIType.VULTURE)));
+                    }
+                }
+            }
+        }
     }
 
     private void saveAIToCSV() { // Is saved on every match end
@@ -119,23 +137,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
     }
 
     private void handleNewUnit(Unit unit) {
-        UnitType type = unit.getType();
-        if (unit.getPlayer() == this.self) {
-            if(alliedUnits.contains(unit))
-            {
-                return;
-            }
-            alliedUnits.add(unit);
-            if (type == UnitType.Terran_Marine) {
-                this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MarineEvaluator(), getAI(PlayerAIType.MARINE)));
-            } else if (type == UnitType.Terran_Medic) {
-                this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MedicEvaluator(), getAI(PlayerAIType.MEDIC)));
-            } else if (type == UnitType.Terran_Siege_Tank_Tank_Mode || type == UnitType.Terran_Siege_Tank_Siege_Mode) {
-                this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new SiegeTankEvaluator(), getAI(PlayerAIType.SIEGE_TANK)));
-            } else if (type == UnitType.Terran_Vulture) {
-                this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new VultureEvaluator(), getAI(PlayerAIType.VULTURE)));
-            }
-        } else if (unit.getPlayer() != this.self) {
+        if (unit.getPlayer() != this.self) {
             enemyUnits.add(unit);
         }
     }

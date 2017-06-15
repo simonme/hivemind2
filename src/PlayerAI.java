@@ -25,7 +25,7 @@ public class PlayerAI {
     }
 
     public void step() {
-        System.out.println("stepping " + unit.getID() + " " + unit.getType());
+        // System.out.println("stepping " + unit.getID() + " " + unit.getType());
         final Unit closestEnemy = getClosestEnemy();
         final Unit lowestHealableAlly = getLowestHealableAlly();
         final Situation sigmaT = new Situation(this.unit, closestEnemy, enemyUnits, alliedUnits);
@@ -41,7 +41,7 @@ public class PlayerAI {
             }
         }
         immediateReward = action.ExecuteOn(this.unit);
-        System.out.println("stepped " + unit.getID());
+        // System.out.println("stepped " + unit.getID());
     }
 
     private void move(Unit target) {
@@ -96,6 +96,14 @@ public class PlayerAI {
             }
         }
         return null;
+    }
+
+    public Unit getUnit(){
+        return unit;
+    }
+
+    public AI getAi(){
+        return ai;
     }
 
     private double getDistance(Unit enemy) {

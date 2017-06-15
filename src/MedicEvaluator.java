@@ -17,7 +17,7 @@ public class MedicEvaluator implements IEvaluator {
             return 0;
         }
         int energyUsed = energy - unit.getEnergy();
-        System.out.println("EnergyUsed: " + energyUsed);
+        // System.out.println("EnergyUsed: " + energyUsed);
         energy = unit.getEnergy(); //Energy regeneriert sich...
         int deltaDamageDealt = unit.isAttacking() ? unit.getType().groundWeapon().damageAmount() : 0;
         int deltaHP = unit.getHitPoints() - HP;
