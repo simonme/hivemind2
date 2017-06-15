@@ -1,5 +1,7 @@
 import bwapi.Unit;
 
+import java.util.HashSet;
+
 public class VultureEvaluator implements IEvaluator {
     private boolean isInitialized = false;
 
@@ -7,7 +9,7 @@ public class VultureEvaluator implements IEvaluator {
     private int damageDealt;
     private int HP;
 
-    public double evaluate(Unit unit) {
+    public double evaluate(Unit unit, HashSet<Unit> alliedUnits) {
         if(!isInitialized) {
             killedUnitCount = unit.getKillCount();
             damageDealt += unit.isAttacking() ? unit.getType().groundWeapon().damageAmount() : 0;

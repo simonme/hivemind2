@@ -29,7 +29,7 @@ public class PlayerAI {
         final Unit closestEnemy = getClosestEnemy();
         final Unit lowestHealableAlly = getLowestHealableAlly();
         final Situation sigmaT = new Situation(this.unit, closestEnemy, enemyUnits, alliedUnits);
-        final Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit) + immediateReward, unit.getID());
+        final Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit, this.alliedUnits) + immediateReward, unit.getID());
         if(action.isRequiresTargetUnit()) {
             if(action instanceof ActionAttackClosestEnemy)
             {
@@ -63,9 +63,9 @@ public class PlayerAI {
                 result = enemy;
             }
         }
-
         return result;
     }
+
 
     private Unit getLowestHealableAlly()
     {
