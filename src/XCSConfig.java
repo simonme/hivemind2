@@ -30,5 +30,5 @@ public class XCSConfig {
     public static boolean doGASubsumption = true;
     public static double tournamentSize = 0.2; //Anteil des ActionSets, der für die Tournament Selection verwendet wird
     public static SelectionType selectionType = SelectionType.TOURNAMENT;
-    public static double pExp = 0.4; //Wahrscheinlichkeit für exploration
+    public static double pExp = 0.1; //Wahrscheinlichkeit für exploration
 }
