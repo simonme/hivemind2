@@ -2,6 +2,7 @@ import bwapi.Unit;
 import bwapi.UnitType;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by Ferdi on 15.06.2017.
@@ -28,10 +29,21 @@ public class SiegeTankEvaluator implements IEvaluator {
         damageDealt += deltaDamageDealt;
         int deltaHP = unit.getHitPoints() - HP;
         HP += deltaHP;
-        int distanceToClosestSupplyDepot = (int)(getClosestUnitOfType(unit, alliedUnits, UnitType.Terran_Supply_Depot));
-        int visibleEnemyUnitCount = unit.getUnitsInRadius(unit.getType().sightRange()).size();
 
-        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount + 2000 / distanceToClosestSupplyDepot; //+ (unit.isAttacking() ? 0.00001 : 0);
+        List<Unit> unitsInRadius = unit.getUnitsInRadius(unit.getType().sightRange());
+        unitsInRadius.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
+        int visibleEnemyUnitCount = unitsInRadius.size();
+
+        List<Unit> unitsInWeaponRange = unit.getUnitsInRadius(unit.getType().groundWeapon().maxRange());
+        unitsInWeaponRange.removeAll(unit.getUnitsInRadius(unit.getType().groundWeapon().minRange()));
+        unitsInWeaponRange.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
+        int attackableEnemyUnitCount = unitsInWeaponRange.size();
+
+        List<Unit> unitsInWeaponRangeMin = unit.getUnitsInRadius(unit.getType().groundWeapon().minRange());
+        unitsInWeaponRangeMin.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
+        int closeEnemyUnitCount = unitsInWeaponRangeMin.size();
+
+        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount + attackableEnemyUnitCount * 5 - closeEnemyUnitCount * 10; //+ (unit.isAttacking() ? 0.00001 : 0);
         // System.out.println("evaluation reward: " + reward);
         return reward;
     }

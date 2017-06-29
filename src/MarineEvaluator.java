@@ -2,6 +2,7 @@ import bwapi.Unit;
 import bwapi.UnitType;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by Ferdi on 15.06.2017.
@@ -29,7 +30,9 @@ public class MarineEvaluator implements IEvaluator {
         int deltaHP = unit.getHitPoints() - HP;
         HP += deltaHP;
         int distanceToClosestMedic = (int)(getClosestUnitOfType(unit, alliedUnits, UnitType.Terran_Medic));
-        int visibleEnemyUnitCount = unit.getUnitsInRadius(unit.getType().sightRange()).size();
+        List<Unit> unitsInRadius = unit.getUnitsInRadius(unit.getType().sightRange());
+        unitsInRadius.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
+        int visibleEnemyUnitCount = unitsInRadius.size();
 
         double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount + 2000 / distanceToClosestMedic; //+ (unit.isAttacking() ? 0.00001 : 0);
         // System.out.println("evaluation reward: " + reward);

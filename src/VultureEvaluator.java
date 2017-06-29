@@ -1,6 +1,7 @@
 import bwapi.Unit;
 
 import java.util.HashSet;
+import java.util.List;
 
 public class VultureEvaluator implements IEvaluator {
     private boolean isInitialized = false;
@@ -25,9 +26,27 @@ public class VultureEvaluator implements IEvaluator {
         int deltaHP = unit.getHitPoints() - HP;
         HP += deltaHP;
 
-        int visibleEnemyUnitCount = unit.getUnitsInRadius(unit.getType().sightRange()).size();
+        List<Unit> unitsInRadius = unit.getUnitsInRadius(unit.getType().sightRange());
+        unitsInRadius.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
+        int visibleEnemyUnitCount = unitsInRadius.size();
 
-        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount; //+ (unit.isAttacking() ? 0.00001 : 0);
+        List<Unit> unitsInWeaponRange = unit.getUnitsInRadius(unit.getType().groundWeapon().maxRange());
+        unitsInWeaponRange.removeAll(unit.getUnitsInRadius(unit.getType().groundWeapon().minRange()));
+        unitsInWeaponRange.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
+        int attackableEnemyUnitCount = unitsInWeaponRange.size();
+
+        // Ist das vielleicht ein bisschen zu explizit?
+        double attackableEnemyReward = 0;
+        if(attackableEnemyUnitCount == 0)
+        {
+            attackableEnemyReward = -20;
+        }
+        else
+        {
+            attackableEnemyReward = (2 - attackableEnemyUnitCount) * 40;
+        }
+
+        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount * 2 + attackableEnemyReward; //+ (unit.isAttacking() ? 0.00001 : 0);
         // System.out.println("evaluation reward: " + reward);
         return reward;
     }

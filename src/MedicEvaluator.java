@@ -26,9 +26,8 @@ public class MedicEvaluator implements IEvaluator {
         int deltaHP = unit.getHitPoints() - HP;
         HP += deltaHP;
         int distanceToClosestMarine = (int)(getClosestUnitOfType(unit, alliedUnits, UnitType.Terran_Marine));
-        int visibleEnemyUnitCount = unit.getUnitsInRadius(unit.getType().sightRange()).size();
 
-        double reward = 50 * energyUsed + deltaHP * 15 + visibleEnemyUnitCount + 2000 / distanceToClosestMarine; //+ (unit.isAttacking() ? 0.00001 : 0);
+        double reward = 50 * energyUsed + deltaHP * 15 + 2000 / distanceToClosestMarine; //+ (unit.isAttacking() ? 0.00001 : 0);
         // System.out.println("evaluation reward: " + reward);
         return reward;
     }
