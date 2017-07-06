@@ -2,6 +2,7 @@ import Actions.Action;
 import Actions.ActionAttackClosestEnemy;
 import Actions.ActionHeal;
 import Evaluator.IEvaluator;
+import Situation.ISituationFactory;
 import Situation.Situation;
 import bwapi.*;
 
@@ -16,23 +17,25 @@ public class PlayerAI {
     private final Unit unit;
     private final AI ai;
     private final IEvaluator evaluator;
+    private final ISituationFactory situationFactory;
 
     private int immediateReward;
 
-    public PlayerAI(Unit unit, Mirror bwapi, HashSet<Unit> enemyUnits, HashSet<Unit> alliedUnits, IEvaluator evaluator, AI ai) {
+    public PlayerAI(Unit unit, Mirror bwapi, HashSet<Unit> enemyUnits, HashSet<Unit> alliedUnits, IEvaluator evaluator, AI ai, ISituationFactory situationFactory) {
         this.unit = unit;
         this.bwapi = bwapi;
         this.enemyUnits = enemyUnits;
         this.evaluator = evaluator;
         this.ai = ai;
         this.alliedUnits = alliedUnits;
+        this.situationFactory = situationFactory;
     }
 
     public void step() {
         // System.out.println("stepping " + unit.getID() + " " + unit.getType());
         final Unit closestEnemy = getClosestEnemy();
         final Unit lowestHealableAlly = getLowestHealableAlly();
-        final Situation sigmaT = new Situation(this.unit, closestEnemy, enemyUnits, alliedUnits);
+        final Situation sigmaT = situationFactory.create(this.unit, closestEnemy, enemyUnits, alliedUnits);
         final Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit, this.alliedUnits) + immediateReward, unit.getID());
         if(action.isRequiresTargetUnit()) {
             if(action instanceof ActionAttackClosestEnemy)

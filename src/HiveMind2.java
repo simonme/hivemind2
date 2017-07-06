@@ -6,6 +6,7 @@ import Evaluator.MedicEvaluator;
 import Evaluator.SiegeTankEvaluator;
 import Evaluator.VultureEvaluator;
 import Serialization.CSVWriter;
+import Situation.SituationFactoryBase;
 import bwapi.*;
 
 import java.io.FileReader;
@@ -67,13 +68,13 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
                 if (!alliedUnits.contains(unit)) {
                     alliedUnits.add(unit);
                     if (type == UnitType.Terran_Marine) {
-                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MarineEvaluator(), getAI(PlayerAIType.MARINE)));
+                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MarineEvaluator(), getAI(PlayerAIType.MARINE), new SituationFactoryBase()));
                     } else if (type == UnitType.Terran_Medic) {
-                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MedicEvaluator(), getAI(PlayerAIType.MEDIC)));
+                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MedicEvaluator(), getAI(PlayerAIType.MEDIC), new SituationFactoryBase()));
                     } else if (type == UnitType.Terran_Siege_Tank_Tank_Mode || type == UnitType.Terran_Siege_Tank_Siege_Mode) {
-                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new SiegeTankEvaluator(), getAI(PlayerAIType.SIEGE_TANK)));
+                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new SiegeTankEvaluator(), getAI(PlayerAIType.SIEGE_TANK), new SituationFactoryBase()));
                     } else if (type == UnitType.Terran_Vulture) {
-                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new VultureEvaluator(), getAI(PlayerAIType.VULTURE)));
+                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new VultureEvaluator(), getAI(PlayerAIType.VULTURE), new SituationFactoryBase()));
                     }
                 }
             }
