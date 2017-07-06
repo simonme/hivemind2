@@ -9,12 +9,15 @@ import Condition.PredicateFactory;
  */
 public class Covering {
 
-    public Covering() {
+    private PredicateFactory predicateFactory;
+
+    public Covering(PredicateFactory predicateFactory) {
+        this.predicateFactory = predicateFactory;
     }
 
     public Classifier generateCoveringClassifier(Situation sigmaT, Action action, int timestamp){
 
-        Condition condition = new Condition(PredicateFactory.coverSituation(sigmaT));
+        Condition condition = new Condition(predicateFactory.coverSituation(sigmaT));
         return new Classifier(condition,
                 action,
                 XCSConfig.predictionI,

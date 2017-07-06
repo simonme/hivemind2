@@ -20,9 +20,9 @@ public class Condition {
         this.intervalPredicates = predicates;
     }
 
-    public Condition(Scanner scanner)
+    public Condition(Scanner scanner, PredicateFactory predicateFactory)
     {
-        intervalPredicates = PredicateFactory.deserializePredicates(scanner);
+        intervalPredicates = predicateFactory.deserializePredicates(scanner);
     }
 
     public void serialize(CSVWriter writer) {

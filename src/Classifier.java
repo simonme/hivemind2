@@ -1,5 +1,5 @@
 import Actions.Action;
-import Condition.Condition;
+import Condition.*;
 import Configuration.XCSConfig;
 import Serialization.CSVWriter;
 import Situation.Situation;
@@ -35,7 +35,7 @@ public class Classifier {
         setTimeStamp(ts);
     }
 
-    public Classifier(Scanner scanner, ArrayList<Action> possibleActions)
+    public Classifier(Scanner scanner, ArrayList<Action> possibleActions, PredicateFactory predicateFactory)
     {
         setPrediction(Double.parseDouble(scanner.next()));
         setError(Double.parseDouble(scanner.next()));
@@ -45,7 +45,7 @@ public class Classifier {
         setTimeStamp(Integer.parseInt(scanner.next()));
         setLastGA(Integer.parseInt(scanner.next()));
         setAction(possibleActions.get(Integer.parseInt(scanner.next())));
-        setCondition(new Condition(scanner));
+        setCondition(new Condition(scanner, predicateFactory));
     }
 
     public void serialize(CSVWriter writer, ArrayList<Action> possibleActions)

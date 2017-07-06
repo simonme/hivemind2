@@ -1,4 +1,5 @@
 import Actions.Action;
+import Condition.PredicateFactory;
 import Configuration.SelectionType;
 import Configuration.XCSConfig;
 import Serialization.CSVWriter;
@@ -19,18 +20,18 @@ public class XCS implements AI {
     private Map<Integer, LinkedList<Set<Classifier>>> actionSetHistory;
     private Random random;
 
-    public XCS(ArrayList<Action> possibleActions) {
+    public XCS(ArrayList<Action> possibleActions, PredicateFactory predicateFactory) {
         this.possibleActions = possibleActions;
         this.xcsConfig = new XCSConfig();// TODO not necessary, all Configuration.XCSConfig parameters are public static final XY
-        covering = new Covering();
+        this.covering = new Covering(predicateFactory);
         population = new LinkedHashSet<>();
         timestamp = 0;
         actionSetHistory = new HashMap<>();
         this.random = new Random();
     }
 
-    public XCS(ArrayList<Action> possibleActions, Scanner reader) {
-        this(possibleActions);
+    public XCS(ArrayList<Action> possibleActions, Scanner reader, PredicateFactory predicateFactory) {
+        this(possibleActions, predicateFactory);
         while(reader.hasNextLine())
         {
             String line = reader.nextLine();
@@ -41,7 +42,7 @@ public class XCS implements AI {
 
             Scanner classifier = new Scanner(line);
             classifier.useDelimiter(Character.toString(CSVWriter.VALUE_DELIMITER));
-            Classifier cl = new Classifier(classifier, possibleActions);
+            Classifier cl = new Classifier(classifier, possibleActions, predicateFactory);
             // Set LastGA to current; maybe save timestamp and LastGA to CSV?
             cl.setLastGA(timestamp);
             population.add(cl);

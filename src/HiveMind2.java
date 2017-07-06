@@ -1,4 +1,5 @@
 import Actions.ActionMap;
+import Condition.PredicateMap;
 import Configuration.PlayerAIType;
 import Configuration.XCSConfig;
 import Evaluator.MarineEvaluator;
@@ -130,7 +131,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
     private AI getAI(PlayerAIType playerAIType) {
         if (this.AIs.get(playerAIType) == null && XCSConfig.SHOULD_LOAD_FROM_CSV) {
             try {
-                this.AIs.put(playerAIType, new XCS(actionMap.getActions(playerAIType), new Scanner(new FileReader(XCSConfig.CSV_PREFIX + playerAIType.toString() + CSV_SUFFIX))));
+                this.AIs.put(playerAIType, new XCS(actionMap.getActions(playerAIType), new Scanner(new FileReader(XCSConfig.CSV_PREFIX + playerAIType.toString() + CSV_SUFFIX)), PredicateMap.getFactory(playerAIType)));
             }
             catch(Exception ex) {
                 System.out.println("Failed reading csv: " + ex.getMessage());
@@ -138,7 +139,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
         }
 
         if (this.AIs.get(playerAIType) == null) {
-            this.AIs.put(playerAIType, new XCS(actionMap.getActions(playerAIType)));
+            this.AIs.put(playerAIType, new XCS(actionMap.getActions(playerAIType), PredicateMap.getFactory(playerAIType)));
             System.out.println("Created XCS for " + playerAIType.toString());
         }
 

@@ -12,9 +12,14 @@ import java.util.Scanner;
  */
 public class PredicateFactory {
 
-    private final static double[] boundaries = { 0.0, 0.0, 0.0, 2 * Math.PI, 0.0, 0.0, 0.0, 0.0, 2 * Math.PI, 0.0, 0.0, 2 * Math.PI };
+    private double[] boundaries;
 
-    public static ArrayList<PredicateBase> deserializePredicates(Scanner scanner)
+    public PredicateFactory(double[] boundaries)
+    {
+        this.boundaries = boundaries;
+    }
+
+    public ArrayList<PredicateBase> deserializePredicates(Scanner scanner)
     {
         ArrayList<PredicateBase> intervalPredicates = new ArrayList<>();
         for (double boundary :
@@ -31,7 +36,7 @@ public class PredicateFactory {
         return intervalPredicates;
     }
 
-    private static double spread(double feature, double sign)
+    private double spread(double feature, double sign)
     {
         double rand = Math.random() * XCSConfig.r0;
         double bound;
@@ -42,7 +47,7 @@ public class PredicateFactory {
         return bound;
     }
 
-    private static PredicateBase generateIntervalPredicate(double feature){
+    private PredicateBase generateIntervalPredicate(double feature){
         double sign = Math.random();
         double lower = spread(feature, sign);
         double upper = spread(feature, 1-sign);
@@ -54,14 +59,14 @@ public class PredicateFactory {
         return new IntervalPredicate(lower, upper);
     }
 
-    private static PredicateBase generateWrappingIntervalPredicate(double feature, double wrapValue) {
+    private PredicateBase generateWrappingIntervalPredicate(double feature, double wrapValue) {
         double sign = Math.random();
         double lower = spread(feature, sign);
         double upper = spread(feature, 1-sign);
         return new WrappingIntervalPredicate(lower, upper, wrapValue);
     }
 
-    public static ArrayList<PredicateBase> coverSituation(Situation sigmaT)
+    public ArrayList<PredicateBase> coverSituation(Situation sigmaT)
     {
         ArrayList<PredicateBase> intervalPredicates = new ArrayList<>();
         for (int index = 0; index < boundaries.length; index++) {
