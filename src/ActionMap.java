@@ -14,6 +14,7 @@ public class ActionMap {
 
     public ActionMap() { // TODO: set correct actions per unit type (include their special abilities!)
         ArrayList<Action> marineActions = new ArrayList<>();
+        marineActions.add(new ActionIdle());
         marineActions.add(new ActionMove(new RelativePosition(0+0.0, 50)));
         marineActions.add(new ActionMove(new RelativePosition(90+0.0, 50)));
         marineActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
@@ -23,6 +24,7 @@ public class ActionMap {
         actions.put(PlayerAIType.MARINE, marineActions);
 
         ArrayList<Action> medicActions = new ArrayList<>();
+        medicActions.add(new ActionIdle());
         medicActions.add(new ActionMove(new RelativePosition(0+0.0, 50)));
         medicActions.add(new ActionMove(new RelativePosition(90+0.0, 50)));
         medicActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
@@ -32,6 +34,7 @@ public class ActionMap {
         actions.put(PlayerAIType.MEDIC, medicActions);
 
         ArrayList<Action> siegeTankActions = new ArrayList<>();
+        siegeTankActions.add(new ActionIdle());
         siegeTankActions.add(new ActionMove(new RelativePosition(0+0.0, 50)));
         siegeTankActions.add(new ActionMove(new RelativePosition(90+0.0, 50)));
         siegeTankActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
@@ -41,6 +44,7 @@ public class ActionMap {
         actions.put(PlayerAIType.SIEGE_TANK, siegeTankActions);
 
         ArrayList<Action> vultureActions = new ArrayList<>();
+        vultureActions.add(new ActionIdle());
         vultureActions.add(new ActionMove(new RelativePosition(0+0.0, 50)));
         vultureActions.add(new ActionMove(new RelativePosition(90+0.0, 50)));
         vultureActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
