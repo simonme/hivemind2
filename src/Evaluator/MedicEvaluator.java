@@ -1,40 +1,35 @@
+package Evaluator;
+
 import bwapi.Unit;
 import bwapi.UnitType;
 
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * Created by Ferdi on 15.06.2017.
  */
-public class MarineEvaluator implements IEvaluator {
+public class MedicEvaluator implements IEvaluator {
     private boolean isInitialized = false;
 
-    private int killedUnitCount;
-    private int damageDealt;
     private int HP;
+    private int energy;
 
     public double evaluate(Unit unit, HashSet<Unit> alliedUnits) {
         if(!isInitialized) {
-            killedUnitCount = unit.getKillCount();
-            damageDealt += unit.isAttacking() ? unit.getType().groundWeapon().damageAmount() : 0;
             HP = unit.getHitPoints();
+            energy = unit.getEnergy();
             isInitialized = true;
             return 0;
         }
-
-        int deltaKilledUnitCount = unit.getKillCount() - killedUnitCount;
-        killedUnitCount += deltaKilledUnitCount;
+        int energyUsed = energy - unit.getEnergy();
+        // System.out.println("EnergyUsed: " + energyUsed);
+        energy = unit.getEnergy(); //Energy regeneriert sich...
         int deltaDamageDealt = unit.isAttacking() ? unit.getType().groundWeapon().damageAmount() : 0;
-        damageDealt += deltaDamageDealt;
         int deltaHP = unit.getHitPoints() - HP;
         HP += deltaHP;
-        int distanceToClosestMedic = (int)(getClosestUnitOfType(unit, alliedUnits, UnitType.Terran_Medic));
-        List<Unit> unitsInRadius = unit.getUnitsInRadius(unit.getType().sightRange());
-        unitsInRadius.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
-        int visibleEnemyUnitCount = unitsInRadius.size();
+        int distanceToClosestMarine = (int)(getClosestUnitOfType(unit, alliedUnits, UnitType.Terran_Marine));
 
-        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount + 2000 / distanceToClosestMedic; //+ (unit.isAttacking() ? 0.00001 : 0);
+        double reward = 50 * energyUsed + deltaHP * 15 + 2000 / distanceToClosestMarine; //+ (unit.isAttacking() ? 0.00001 : 0);
         // System.out.println("evaluation reward: " + reward);
         return reward;
     }

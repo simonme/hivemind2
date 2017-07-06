@@ -1,9 +1,15 @@
+package Evaluator;
+
 import bwapi.Unit;
+import bwapi.UnitType;
 
 import java.util.HashSet;
 import java.util.List;
 
-public class VultureEvaluator implements IEvaluator {
+/**
+ * Created by Ferdi on 15.06.2017.
+ */
+public class MarineEvaluator implements IEvaluator {
     private boolean isInitialized = false;
 
     private int killedUnitCount;
@@ -25,29 +31,30 @@ public class VultureEvaluator implements IEvaluator {
         damageDealt += deltaDamageDealt;
         int deltaHP = unit.getHitPoints() - HP;
         HP += deltaHP;
-
+        int distanceToClosestMedic = (int)(getClosestUnitOfType(unit, alliedUnits, UnitType.Terran_Medic));
         List<Unit> unitsInRadius = unit.getUnitsInRadius(unit.getType().sightRange());
         unitsInRadius.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
         int visibleEnemyUnitCount = unitsInRadius.size();
 
-        List<Unit> unitsInWeaponRange = unit.getUnitsInRadius(unit.getType().groundWeapon().maxRange());
-        unitsInWeaponRange.removeAll(unit.getUnitsInRadius(unit.getType().groundWeapon().minRange()));
-        unitsInWeaponRange.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
-        int attackableEnemyUnitCount = unitsInWeaponRange.size();
-
-        // Ist das vielleicht ein bisschen zu explizit?
-        double attackableEnemyReward = 0;
-        if(attackableEnemyUnitCount == 0)
-        {
-            attackableEnemyReward = -20;
-        }
-        else
-        {
-            attackableEnemyReward = (2 - attackableEnemyUnitCount) * 40;
-        }
-
-        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount * 2 + attackableEnemyReward; //+ (unit.isAttacking() ? 0.00001 : 0);
+        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount + 2000 / distanceToClosestMedic; //+ (unit.isAttacking() ? 0.00001 : 0);
         // System.out.println("evaluation reward: " + reward);
         return reward;
+    }
+
+    private double getClosestUnitOfType(Unit unit, HashSet<Unit> alliedUnits, UnitType type) {
+        double minDistance = Double.POSITIVE_INFINITY;
+        for (Unit ally : alliedUnits) {
+            if (ally.getType() == type && ally.exists()){
+                double distance = getDistance(unit, ally);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                }
+            }
+        }
+        return minDistance;
+    }
+
+    private double getDistance(Unit self, Unit unit) {
+        return self.getPosition().getDistance(unit.getPosition());
     }
 }

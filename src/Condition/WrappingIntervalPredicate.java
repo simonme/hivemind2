@@ -1,5 +1,8 @@
+package Condition;
+
 import java.util.Objects;
 import java.util.Scanner;
+import Serialization.CSVWriter;
 
 /**
  * Created by Jakob on 01.06.2017.

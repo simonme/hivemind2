@@ -1,13 +1,11 @@
+package Evaluator;
+
 import bwapi.Unit;
-import bwapi.UnitType;
 
 import java.util.HashSet;
 import java.util.List;
 
-/**
- * Created by Ferdi on 15.06.2017.
- */
-public class SiegeTankEvaluator implements IEvaluator {
+public class VultureEvaluator implements IEvaluator {
     private boolean isInitialized = false;
 
     private int killedUnitCount;
@@ -39,29 +37,19 @@ public class SiegeTankEvaluator implements IEvaluator {
         unitsInWeaponRange.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
         int attackableEnemyUnitCount = unitsInWeaponRange.size();
 
-        List<Unit> unitsInWeaponRangeMin = unit.getUnitsInRadius(unit.getType().groundWeapon().minRange());
-        unitsInWeaponRangeMin.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
-        int closeEnemyUnitCount = unitsInWeaponRangeMin.size();
+        // Ist das vielleicht ein bisschen zu explizit?
+        double attackableEnemyReward = 0;
+        if(attackableEnemyUnitCount == 0)
+        {
+            attackableEnemyReward = -20;
+        }
+        else
+        {
+            attackableEnemyReward = (2 - attackableEnemyUnitCount) * 40;
+        }
 
-        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount + attackableEnemyUnitCount * 5 - closeEnemyUnitCount * 10; //+ (unit.isAttacking() ? 0.00001 : 0);
+        double reward = deltaKilledUnitCount * 200 + deltaHP * 15 + deltaDamageDealt + visibleEnemyUnitCount * 2 + attackableEnemyReward; //+ (unit.isAttacking() ? 0.00001 : 0);
         // System.out.println("evaluation reward: " + reward);
         return reward;
-    }
-
-    private double getClosestUnitOfType(Unit unit, HashSet<Unit> alliedUnits, UnitType type) {
-        double minDistance = Double.POSITIVE_INFINITY;
-        for (Unit ally : alliedUnits) {
-            if (ally.getType() == type && ally.exists()){
-                double distance = getDistance(unit, ally);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                }
-            }
-        }
-        return minDistance;
-    }
-
-    private double getDistance(Unit self, Unit unit) {
-        return self.getPosition().getDistance(unit.getPosition());
     }
 }

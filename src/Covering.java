@@ -1,4 +1,8 @@
-import java.util.ArrayList;
+import Actions.Action;
+import Condition.Condition;
+import Configuration.XCSConfig;
+import Situation.Situation;
+import Condition.PredicateFactory;
 
 /**
  * Created by Ferdi on 23.05.2017.

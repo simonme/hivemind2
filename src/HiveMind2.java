@@ -1,3 +1,11 @@
+import Actions.ActionMap;
+import Configuration.PlayerAIType;
+import Configuration.XCSConfig;
+import Evaluator.MarineEvaluator;
+import Evaluator.MedicEvaluator;
+import Evaluator.SiegeTankEvaluator;
+import Evaluator.VultureEvaluator;
+import Serialization.CSVWriter;
 import bwapi.*;
 
 import java.io.FileReader;
@@ -89,7 +97,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
                 }
             });
         } else {
-            System.out.println("Did not save XCS to CSV, XCSConfig.SHOULD_SAVE_TO_CSV is false");
+            System.out.println("Did not save XCS to CSV, Configuration.XCSConfig.SHOULD_SAVE_TO_CSV is false");
         }
     }
 

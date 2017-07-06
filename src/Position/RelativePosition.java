@@ -1,3 +1,5 @@
+package Position;
+
 import bwapi.Position;
 
 import java.util.Objects;

@@ -1,6 +1,10 @@
+import Actions.Action;
+import Actions.ActionAttackClosestEnemy;
+import Actions.ActionHeal;
+import Evaluator.IEvaluator;
+import Situation.Situation;
 import bwapi.*;
 
-import javax.swing.text.html.Option;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -35,7 +39,7 @@ public class PlayerAI {
             {
                 action.setTargetUnit(closestEnemy);
             }
-            if(action instanceof  ActionHeal)
+            if(action instanceof ActionHeal)
             {
                  action.setTargetUnit(lowestHealableAlly);
             }

@@ -1,3 +1,9 @@
+import Actions.Action;
+import Configuration.SelectionType;
+import Configuration.XCSConfig;
+import Serialization.CSVWriter;
+import Situation.Situation;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,7 +21,7 @@ public class XCS implements AI {
 
     public XCS(ArrayList<Action> possibleActions) {
         this.possibleActions = possibleActions;
-        this.xcsConfig = new XCSConfig();// TODO not necessary, all XCSConfig parameters are public static final XY
+        this.xcsConfig = new XCSConfig();// TODO not necessary, all Configuration.XCSConfig parameters are public static final XY
         covering = new Covering();
         population = new LinkedHashSet<>();
         timestamp = 0;

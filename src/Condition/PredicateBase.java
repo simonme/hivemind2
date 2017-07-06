@@ -1,3 +1,8 @@
+package Condition;
+
+import Configuration.XCSConfig;
+import Serialization.CSVWriter;
+
 import java.util.Random;
 
 /**

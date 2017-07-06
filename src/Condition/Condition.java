@@ -1,9 +1,13 @@
-import java.io.PrintWriter;
+package Condition;
+
+import Configuration.CrossoverType;
+import Configuration.XCSConfig;
+import Serialization.CSVWriter;
+import Situation.Situation;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.function.Function;
 
 /**
  * Created by Simon on 15.05.2017.

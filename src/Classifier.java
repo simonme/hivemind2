@@ -1,4 +1,9 @@
-import java.io.PrintWriter;
+import Actions.Action;
+import Condition.Condition;
+import Configuration.XCSConfig;
+import Serialization.CSVWriter;
+import Situation.Situation;
+
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -65,7 +70,7 @@ public class Classifier {
             prediction += XCSConfig.beta * (reward - prediction);
         }
         // update prediction error
-        if (experience < 1/XCSConfig.beta) {
+        if (experience < 1/ XCSConfig.beta) {
             error += (Math.abs(reward - prediction) - error) / experience;
         } else {
             error += XCSConfig.beta * (Math.abs(reward - prediction) - error);

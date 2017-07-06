@@ -1,3 +1,9 @@
+package Condition;
+
+import Configuration.XCSConfig;
+
+import Situation.Situation;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
