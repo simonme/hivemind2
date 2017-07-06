@@ -1,4 +1,5 @@
 import bwapi.Unit;
+import bwapi.UnitType;
 
 /**
  * Created by Jakob on 23.05.2017.
@@ -13,6 +14,10 @@ public class ActionMove extends Action {
     @Override
     public int ExecuteOn(Unit unit)
     {
+        if(unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode)
+        {
+            return -50;
+        }
         unit.move(movement.applyTo(unit.getPosition()));
         return 0;
     }

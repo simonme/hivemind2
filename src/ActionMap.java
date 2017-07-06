@@ -40,7 +40,8 @@ public class ActionMap {
         siegeTankActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
         siegeTankActions.add(new ActionMove(new RelativePosition(270+0.0, 50)));
         siegeTankActions.add(new ActionAttackClosestEnemy());
-        siegeTankActions.add(new ActionTriggerSiegeMode());
+        siegeTankActions.add(new ActionEnterSiegeMode());
+        siegeTankActions.add(new ActionExitSiegeMode());
         actions.put(PlayerAIType.SIEGE_TANK, siegeTankActions);
 
         ArrayList<Action> vultureActions = new ArrayList<>();
