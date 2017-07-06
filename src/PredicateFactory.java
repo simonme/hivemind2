@@ -6,7 +6,7 @@ import java.util.Scanner;
  */
 public class PredicateFactory {
 
-    private final static double[] boundaries = { 0.0, 0.0, 0.0, 2 * Math.PI, 0.0, 0.0, 0.0, 2 * Math.PI, 0.0, 0.0, 2 * Math.PI };
+    private final static double[] boundaries = { 0.0, 0.0, 0.0, 2 * Math.PI, 0.0, 0.0, 0.0, 0.0, 2 * Math.PI, 0.0, 0.0, 2 * Math.PI };
 
     public static ArrayList<PredicateBase> deserializePredicates(Scanner scanner)
     {

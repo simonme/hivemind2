@@ -24,6 +24,7 @@ public class Situation {
             features.add((double) closestEnemy.getHitPoints());
             features.add((double) closestEnemy.getDistance(unit));
             features.add(RelativePosition.computeAngle(unit.getPosition(), closestEnemy.getPosition()) * 360 / (2*Math.PI));
+            features.add((double)closestEnemy.getType().groundWeapon().maxRange());
         } else {
             features.add((double) -10000);
             features.add((double) -10000);
