@@ -45,6 +45,21 @@ public class Parameters {
         this.fitness = fitness;
     }
 
+    public Parameters(Parameters p) {
+        this.neighborhoodRange = p.getNeighborhoodRange();
+        this.separationRange = p.getSeparationRange();
+        this.columnWidth = p.getColumnWidth();
+        this.columnSeparationRange = p.getColumnSeparationRange();
+        this.lineHeight = p.getLineHeight();
+        this.lineSeparationRange = p.getLineSeparationRange();
+        this.weightEnemy = p.getWeightEnemy();
+        this.weightEnemyVisible = p.getWeightEnemyVisible();
+        this.weightSeparation = p.getWeightSeparation();
+        this.weightColumn = p.getWeightColumn();
+        this.weightLine = p.getWeightLine();
+        this.fitness = p.getFitness();
+    }
+
     public double getNeighborhoodRange() {
         return neighborhoodRange;
     }
@@ -196,5 +211,6 @@ public class Parameters {
         this.fitness = fitness;
     }
 
+    //TODO
     public void mutate(double mutationProbability){}
 }
