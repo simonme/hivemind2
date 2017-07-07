@@ -1,0 +1,402 @@
+commit b34cbae901c1f15ef4f4e83b863d52e40b81d2d3
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Thu Jul 6 21:02:01 2017 +0200
+
+    continued implementation of GA
+
+commit ee6ac8bd00cdecdbe1074b735bfa923ac175aa4a
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Thu Jul 6 20:19:40 2017 +0200
+
+    changed attributes in Parameters to double and started implementing the GA
+
+commit 61b3a20589943ed007a8c73a110e4719d30b65ac
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu Jul 6 19:00:49 2017 +0200
+
+    Added possibility to use different conditions per unit
+
+commit 930fc6ce34cf180b079a78918a983f4c5f736714
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu Jul 6 18:42:46 2017 +0200
+
+    Added possibility to use different situations per unit
+
+commit 0b1064bf08500704f038ada04401a53066ac754e
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu Jul 6 18:31:17 2017 +0200
+
+    Organized project into packages
+
+commit 7b3b144572b2657a1f01db29810fd62f59616c7a
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu Jul 6 18:12:10 2017 +0200
+
+    Implemented Issue #5 Include closest enemy range in situation
+
+commit d7846397ef8ccc0fb346bbdcc18b3c167ae83e5f
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu Jul 6 18:03:42 2017 +0200
+
+    Implemented Issue #6 Siege Tank movement invalid in Siege Mode
+    
+    Also split Sieging and Unsieging into separate actions
+
+commit fea9159a53959a86b15258b2d54bb681cdc7c9aa
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu Jul 6 17:52:44 2017 +0200
+
+    Implemented Issue #8 Empty Action
+
+commit 1ca3ece44c3d2cbe3c66822852c95946f29eca96
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Wed Jul 5 11:29:27 2017 +0200
+
+    Boiding Projekt eingefÃgt
+    
+    Boiding Projekt unter /Boiding
+    Beinhaltet Berechnungsalgorithmus, es fehlt noch der genetische
+    Algorithmus (sollte ggf. auch erst mal getestet werden ob es
+    funktioniert)
+
+commit c751faef41cec5d257a331187b322de5e2c2dce6
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu Jun 29 17:06:20 2017 +0200
+
+    Changed Reward functions according to #1 and #2
+    
+    Siege tank rewards consider the range of the tank and check for
+    attackable units
+    Vulture rewards are only positive if only 1 enemy unit is in weapon
+    range
+
+commit 8dd7f2b7abc2f5724b7c8f73696192260bb9d8e2
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Fri Jun 16 11:10:53 2017 +0300
+
+    Add learned AI (12 h) and set exploration probability to 0.1
+
+commit 4b4f073a2b29ccad4cc8bf1b234cb3e742682b45
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu Jun 15 21:52:58 2017 +0300
+
+    Fix siege tank mode.
+
+commit 7801d3f65a437f46b9fa65f8fe5bfb87fcea4afb
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Thu Jun 15 19:23:49 2017 +0200
+
+    SiegeTanks get Reward for staying close to SupplyDepots
+
+commit 8e109a0f7cac39089c19e18610d0b821cc0d88ee
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Thu Jun 15 19:11:15 2017 +0200
+
+    Added Reward for Medics staying near Marines and vice versa
+
+commit ca181d2579361b6bf3d4f00fa427a5d8ea59db8b
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Thu Jun 15 16:58:37 2017 +0200
+
+    properly fixed the teamkiller problem
+
+commit 2c0f5d0a21f5a968ded7094d0ea0fca1bf586f15
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Thu Jun 15 14:37:43 2017 +0200
+
+    Attack no longer able to focus allied units
+
+commit c3bbebda9eacaadd7d5be16fff087185a69dc555
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu Jun 15 10:15:09 2017 +0200
+
+    Bugfix Commit
+    
+    Fixed infinite recursion in actionHeal, actionSiege, actionStimpack
+    Fixed tech usage in all tech actions
+    Added logic to find closest healable ally for heal action
+    Changed XCS Setup to utilize new Evaluator classes
+    Fixed PlayerAI creation logic to add only one Instance per Unit
+
+commit 63871044ba02ad8e30f4da00fe13a135a375e9d1
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Thu Jun 15 07:16:07 2017 +0200
+
+    additional Actions (Heal, SiegeMode, StimPack) and created missing Evaluators (specific implementation still to be done)
+
+commit 2d7b10540332409a4d42eda5a1b474e5ee64558f
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Tue Jun 13 21:59:16 2017 +0300
+
+    Implement basic Hivemind logic.
+    TODO before friday:
+     - implement and use different evaluators
+     - set different action types per unit type in ActionMap.java
+     - Maybe expand Situation with medical info (e.g. which friendly unit has the lowest hp)
+
+commit b3dd72a3acd677afd0b2b071cdf9def0e8b103cb
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Tue Jun 13 14:31:47 2017 +0200
+
+    added allied and enemy centres of mass
+
+commit c1e8e09254cac6b0ff2bc099338655cac5172074
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu Jun 8 22:49:25 2017 +0300
+
+    Add crossoverType to config and set optimal parameters
+
+commit a5daccf9bc59b4351bba554a56a57df0a020db54
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu Jun 8 22:36:22 2017 +0300
+
+    Add different crossover types one-point, two-point and uniform.
+
+commit 13a8b46148353b3e35007b475411196feba40f94
+Merge: 5e6f98b 3cc6f33
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu Jun 8 18:24:52 2017 +0300
+
+    Merge branch 'master' of github.com:simonme/hivemind2
+
+commit 3cc6f330bff1b71667974d34c71d7454a450c6fe
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu Jun 8 19:15:39 2017 +0200
+
+    Fixed contains and isMoreGeneral for WrappingIntervalPredicate
+
+commit 5e6f98b32ec55ec6f7a48e1be830c3ed2f17df78
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu Jun 8 18:24:07 2017 +0300
+
+    Only execute runGA when actionSet is not empty. This fixes the bug where after a few iterations the vulture would stand still (because it tried to divide by zero and crashed).
+
+commit 34b01c8457a46545949c4728ad75ca7140fd0c83
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Thu Jun 8 17:12:44 2017 +0200
+
+    improved tournament selection
+
+commit 34078923ef30caab92471c67adead8f161c3f222
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Thu Jun 8 15:24:11 2017 +0200
+
+    added tournament selection
+
+commit afa84e0ecf8335a710e2534d6807cd963b48570c
+Merge: 7b4a61c 34b01c8
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu Jun 8 16:18:52 2017 +0300
+
+    Merge branch 'master' of github.com:simonme/hivemind2
+
+commit 1460bb74740f38fb75fc349267bf8c069220e9d9
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu Jun 1 23:01:02 2017 +0200
+
+    Added wraparound interval predicate
+
+commit 7b4a61c376fe03c8a8dd4731921300d96c7db094
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 22:56:46 2017 +0300
+
+    config change
+
+commit 39dcfb74056f51c5feddd2c8273fe10b20464bdf
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 22:46:15 2017 +0300
+
+    config changes
+
+commit 6199db0d31bc48e8083e9100a317f70c521817f1
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 22:42:42 2017 +0300
+
+    add learner and increase action distance and increase step rate to every frame
+
+commit 7ece7af0daec76ded4f3d5cae39cb55f4b05da8d
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 22:17:04 2017 +0300
+
+    add TODO and save XCS only on match end
+
+commit 53cf7a35602592be06f4008606520ea303010a24
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu May 25 19:11:36 2017 +0200
+
+    Fixed another issue with CSV loading
+
+commit 3ce544b645e9a8a5c0db45ed5aa816a78de7fb49
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu May 25 19:02:46 2017 +0200
+
+    Fixed issue with CSV loading
+
+commit ab58ce6d00f8ecc57202f69f27de24fbf83cd075
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu May 25 18:06:26 2017 +0200
+
+    Added action set subsumption
+
+commit b7fa8b007e31bc398a70fdcb20e64d829224e4d5
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu May 25 17:44:48 2017 +0200
+
+    Fixed delete from population
+
+commit 6288f9c0fd9dddcb4286f31b694142e045914d22
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu May 25 16:17:23 2017 +0200
+
+    Added GA
+
+commit 30077760cb3ed6f1459ced9d6bdaba30d7bcb0c5
+Merge: 6495d44 0bb1275
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu May 25 13:38:45 2017 +0200
+
+    Merge branch 'master' of github.com:simonme/hivemind2
+
+commit 6495d4447aeec6b61b343f59d6061ba74817b431
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Thu May 25 13:32:44 2017 +0200
+
+    Addded serialization and action to attack nearest enemy
+    
+    Removed spider mine action from possible actions because the tech is not
+    available in the map. Removed attack moves from possible actions. Added
+    attack neares enemy to possible actions. Fixed enemy detection. Added
+    attack cooldown to situation. Added functions to write and read
+    population to/from CSV files.
+
+commit 0bb1275129b16a78273ee4aeb0256fe74ec3a2f2
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 12:30:40 2017 +0300
+
+    fix distances
+
+commit 097be8a2a4ae329c5d6210280707087e10c3449c
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 12:16:24 2017 +0300
+
+    fix attack range
+
+commit 8f5e514f3dfbc167c0a10fe450615603a6042af2
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 12:08:03 2017 +0300
+
+    fix movement
+
+commit 51f4c6f04b54437e672e9b334f370fe643fa8714
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 11:57:36 2017 +0300
+
+    increase r0 to reduce classifier number and increase generality
+
+commit ecc938bc669ee0766c71ffb8583a1a31444ca2c9
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 11:54:13 2017 +0300
+
+    fix reward function and increase thetaMna
+
+commit e047ecda3afc724031c9353e6436b8ffaf820db8
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 02:39:35 2017 +0300
+
+    (hopefully) fix stay-still behaviour of vulture
+
+commit 91ccc93911abbe2beab1b6c1a41f421b418efdfa
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Thu May 25 02:28:24 2017 +0300
+
+    fix bugs, make AI work, save to CSV still missing
+
+commit 2494af2c0637b03b43a603ca44b13253af5674e0
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Wed May 24 18:44:33 2017 +0300
+
+    Fix ai, rewards still missing
+
+commit b490a318d1f31b71fa6d009810cbe872631be0a9
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Wed May 24 16:57:09 2017 +0200
+
+    Added reward function
+
+commit e2f5dcefd2f4218d66c7d9771b2d1219ead2e6c7
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Wed May 24 10:58:00 2017 +0200
+
+    Started on situation detection
+
+commit 88c2faa448756c3bb3de6427f8d42fa898ec0f58
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Wed May 24 10:11:32 2017 +0200
+
+    Added attack-move action
+
+commit 34ad21a2e8fd33c388f68b6bbfc843730631298a
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Wed May 24 10:02:21 2017 +0200
+
+    Added relative position construct and spider mine action
+    
+    The relative position construct uses polar coordinates. The move action
+    now uses this instead of the previous directions to determine the
+    direction and distance of the move. The spider mine action also uses
+    this to compute the target point for the ability.
+
+commit f1e41396f93e9c923f4619c45fdb873065c8854d
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Tue May 23 19:34:46 2017 +0200
+
+    Sketched out idea for Action implementation
+
+commit 3c05fe8aab1a4805bd71a657ea53340783f57d9d
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Tue May 23 18:35:16 2017 +0200
+
+    Added DeleteFromPopulation
+
+commit 2a7e517e51fe324b2ad964c54efe7f69c082f8a3
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Tue May 23 14:27:48 2017 +0200
+
+    implemented most of the main loop
+
+commit b0fdf1b6e5bb2c9b404dee489cdbc390314b82c7
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Tue May 23 12:01:16 2017 +0200
+
+    continued implementation of XCS
+
+commit b37d07d718258ead51b9b305afde570f9f3f50ea
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Mon May 22 00:42:52 2017 +0300
+
+    extend XCS.java
+
+commit 77d02e22dab73ec101a985eed171580284429eb7
+Merge: 37463e0 326c439
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Sun May 21 11:40:19 2017 +0300
+
+    Merge branch 'master' of https://github.com/simonme/hivemind2
+
+commit 37463e06563e1eb16292598a679cb824a4745d13
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Sun May 21 11:21:58 2017 +0300
+
+    initial commit
+
+commit 326c439d629052f9e7faa5ce14159f57afb51e9c
+Author: simonme <simonme@users.noreply.github.com>
+Date:   Tue May 9 10:26:42 2017 +0200
+
+    Create activity-log.md
+
+commit 97a8c5d876f8fd8e1ee994338c11a61144937c5a
+Author: simonme <simonme@users.noreply.github.com>
+Date:   Mon May 8 14:45:53 2017 +0200
+
+    Initial commit

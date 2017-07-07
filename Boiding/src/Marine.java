@@ -26,6 +26,8 @@ public class Marine {
                 && !this.unit.isAttacking() && target != null) {
             if (WeaponType.Gauss_Rifle.maxRange() > getDistance(target) - 20.0) {
                 this.unit.attack(target);
+            } else {
+                move(target);
             }
         } else {
             move(target);
@@ -37,9 +39,10 @@ public class Marine {
             return;
         }
         Parameters params = new Parameters();
-        Position unitPosition = (Position) unit.getPosition();
+        bwapi.Position unitPositionBwapi = unit.getPosition();
+        Position unitPosition = new Position(unitPositionBwapi.getX(), unitPositionBwapi.getY());
 
-        List<Unit> closeAllies = getAlliesInRadius(params.separationRange);
+        List<Unit> closeAllies = getAlliesInRadius((int) Math.ceil(params.separationRange));
 
         // delta_r2(c) = delta_sep(c)
         Position vecSeparation = computeSeparationVector(unitPosition, closeAllies);
@@ -51,10 +54,10 @@ public class Marine {
         }
 
         // delta_r1(c)
-        Position vecToEnemy = Position.sub(target.getPosition(), unitPosition);
+        Position vecToEnemy = Position.sub(new Position(target.getX(), target.getY()), unitPosition);
 
 
-        List<Unit> relevantAllies = getAlliesInRadius(params.neighborhoodRange);
+        List<Unit> relevantAllies = getAlliesInRadius((int) Math.ceil(params.neighborhoodRange));
 
         // delta_r3(c)
         Position vecColumn = computeFormationCohesionVector(unitPosition, vecToEnemy.getPerpendicularClockwise(), relevantAllies, params.columnWidth, params.neighborhoodRange, params.columnSeparationRange);
@@ -64,7 +67,7 @@ public class Marine {
 
         double weightEnemy = params.weightEnemyVisible;
         Position targetPosition = unitPosition.add(vecToEnemy.mul(weightEnemy)).add(vecColumn.mul(params.weightColumn)).add(vecLine.mul(params.weightLine));
-        this.unit.move(targetPosition, false);
+        this.unit.move(new bwapi.Position(targetPosition.getX(), targetPosition.getY()), false);
     }
 
     private Position computeSeparationVector(Position unitPosition, List<Unit> closeAllies) {

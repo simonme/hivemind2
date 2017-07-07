@@ -3,17 +3,23 @@
  */
 public class Parameters {
     // r_sig
-    public double neighborhoodRange = 0.2;
+//    public double neighborhoodRange = 0.2;
+    public double neighborhoodRange = 20;
     // r_sep
-    public double separationRange = 0.04;
+//    public double separationRange = 0.04;
+    public double separationRange = 4;
     // r_col
-    public double columnWidth = 0.05;
+//    public double columnWidth = 0.05;
+    public double columnWidth = 5;
     // r_col-sep
-    public double columnSeparationRange = 0.03;
+//    public double columnSeparationRange = 0.03;
+    public double columnSeparationRange = 3;
     // r_lin
-    public double lineHeight = 0.05;
+//    public double lineHeight = 0.05;
+    public double lineHeight = 5;
     // r_lin-sep
-    public double lineSeparationRange = 0.03;
+//    public double lineSeparationRange = 0.03;
+    public double lineSeparationRange = 3;
     // w_r1-a
     public double weightEnemy = 0.0;
     // w_r1-b
@@ -58,6 +64,10 @@ public class Parameters {
         this.weightColumn = p.getWeightColumn();
         this.weightLine = p.getWeightLine();
         this.fitness = p.getFitness();
+    }
+
+    public Parameters() {
+
     }
 
     public double getNeighborhoodRange() {

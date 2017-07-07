@@ -40,8 +40,12 @@ public class StupidMarineAI extends DefaultBWListener implements Runnable {
 		// complete map information
 		this.game.enableFlag(0);
 
-		// user input
-		this.game.enableFlag(1);
+		for (Unit unit: this.game.enemy().getUnits())
+		{
+			System.out.println("Added enemy unit!");
+			enemyUnits.add(unit);
+		}
+
 		this.game.setLocalSpeed(10);
 	}
 
@@ -61,12 +65,27 @@ public class StupidMarineAI extends DefaultBWListener implements Runnable {
 	public void onUnitCreate(Unit unit) {
 		if (unit.getType() == UnitType.Terran_Marine) {
 			if (unit.getPlayer().equals(this.self)) {
+                System.out.println("Added marine!");
 				this.marines.add(new Marine(unit, this.enemyUnits));
 			} else {
+                System.out.println("Added enemy marine unit!");
 				this.enemyUnits.add(unit);
 			}
 		}
 	}
+
+    @Override
+    public void onUnitDiscover(Unit unit) {
+        if (unit.getType() == UnitType.Terran_Marine) {
+            if (unit.getPlayer().equals(this.self)) {
+                System.out.println("Added marine!");
+                this.marines.add(new Marine(unit, this.enemyUnits));
+            } else {
+                System.out.println("Added enemy marine unit!");
+                this.enemyUnits.add(unit);
+            }
+        }
+    }
 
 	@Override
 	public void onUnitDestroy(Unit unit) {
