@@ -42,14 +42,14 @@ public class Marine {
         bwapi.Position unitPositionBwapi = unit.getPosition();
         Position unitPosition = new Position(unitPositionBwapi.getX(), unitPositionBwapi.getY());
 
-        List<Unit> closeAllies = getAlliesInRadius((int) Math.ceil(params.separationRange));
+        List<Unit> closeAllies = getAlliesInRadius((int) Math.ceil(params.getSeparationRange()));
 
         // delta_r2(c) = delta_sep(c)
         Position vecSeparation = computeSeparationVector(unitPosition, closeAllies);
 
         if(vecSeparation.getLength() > 0)
         {
-            this.unit.move(unitPosition.add(vecSeparation.mul(params.weightSeparation)), false);
+            this.unit.move(unitPosition.add(vecSeparation.mul(params.getWeightSeparation())), false);
             return;
         }
 
@@ -57,16 +57,16 @@ public class Marine {
         Position vecToEnemy = Position.sub(new Position(target.getX(), target.getY()), unitPosition);
 
 
-        List<Unit> relevantAllies = getAlliesInRadius((int) Math.ceil(params.neighborhoodRange));
+        List<Unit> relevantAllies = getAlliesInRadius((int) Math.ceil(params.getNeighborhoodRange()));
 
         // delta_r3(c)
-        Position vecColumn = computeFormationCohesionVector(unitPosition, vecToEnemy.getPerpendicularClockwise(), relevantAllies, params.columnWidth, params.neighborhoodRange, params.columnSeparationRange);
+        Position vecColumn = computeFormationCohesionVector(unitPosition, vecToEnemy.getPerpendicularClockwise(), relevantAllies, params.getColumnWidth(), params.getNeighborhoodRange(), params.getColumnSeparationRange());
 
         // delta_r4(c)
-        Position vecLine = computeFormationCohesionVector(unitPosition, vecToEnemy, relevantAllies, params.lineHeight, params.neighborhoodRange, params.lineSeparationRange);
+        Position vecLine = computeFormationCohesionVector(unitPosition, vecToEnemy, relevantAllies, params.getLineHeight(), params.getNeighborhoodRange(), params.getLineSeparationRange());
 
-        double weightEnemy = params.weightEnemyVisible;
-        Position targetPosition = unitPosition.add(vecToEnemy.mul(weightEnemy)).add(vecColumn.mul(params.weightColumn)).add(vecLine.mul(params.weightLine));
+        double weightEnemy = params.getWeightEnemyVisible();
+        Position targetPosition = unitPosition.add(vecToEnemy.mul(weightEnemy)).add(vecColumn.mul(params.getWeightColumn())).add(vecLine.mul(params.getWeightLine()));
         this.unit.move(new bwapi.Position(targetPosition.getX(), targetPosition.getY()), false);
     }
 
