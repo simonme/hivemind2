@@ -1,37 +1,42 @@
+import java.util.ArrayList;
+
 /**
  * Created by Jakob on 04.07.2017.
  */
+
 public class Parameters {
     // r_sig
 //    public double neighborhoodRange = 0.2;
-    public double neighborhoodRange = 20;
+    private double neighborhoodRange = 20;
     // r_sep
 //    public double separationRange = 0.04;
-    public double separationRange = 4;
+    private double separationRange = 4;
     // r_col
 //    public double columnWidth = 0.05;
-    public double columnWidth = 5;
+    private double columnWidth = 5;
     // r_col-sep
 //    public double columnSeparationRange = 0.03;
-    public double columnSeparationRange = 3;
+    private double columnSeparationRange = 3;
     // r_lin
 //    public double lineHeight = 0.05;
-    public double lineHeight = 5;
+    private double lineHeight = 5;
     // r_lin-sep
 //    public double lineSeparationRange = 0.03;
-    public double lineSeparationRange = 3;
+    private double lineSeparationRange = 3;
     // w_r1-a
-    public double weightEnemy = 0.0;
+    private double weightEnemy = 0.0;
     // w_r1-b
-    public double weightEnemyVisible = 0.1;
+    private double weightEnemyVisible = 0.1;
     // w_r2
-    public double weightSeparation = 0.5;
+    private double weightSeparation = 0.5;
     // w_r3
-    public double weightColumn = 0.2;
+    private double weightColumn = 0.2;
     // w_r4
-    public double weightLine = 0.2;
+    private double weightLine = 0.2;
     // Summe der Hitpoints verbuendeter Einheiten bei Spielende bzw. negativ bei Niederlage
-    public int fitness = 10;
+    private int fitness = 10;
+
+    private ArrayList<Double> parameterList = new ArrayList<>();
 
     public Parameters(double neighborhoodRange, double separationRange, double columnWidth,
                       double columnSeparationRange, double lineHeight, double lineSeparationRange,
@@ -63,11 +68,47 @@ public class Parameters {
         this.weightSeparation = p.getWeightSeparation();
         this.weightColumn = p.getWeightColumn();
         this.weightLine = p.getWeightLine();
+        updateParameterList();
         this.fitness = p.getFitness();
     }
 
     public Parameters() {
 
+    }
+
+    public ArrayList<Double> getParameterList() {
+        return parameterList;
+    }
+
+    public void updateParameterList() {
+        this.parameterList = new ArrayList<Double>();
+        this.parameterList.add(neighborhoodRange);
+        this.parameterList.add(separationRange);
+        this.parameterList.add(columnWidth);
+        this.parameterList.add(columnSeparationRange);
+        this.parameterList.add(lineHeight);
+        this.parameterList.add(lineSeparationRange);
+        this.parameterList.add(weightEnemy);
+        this.parameterList.add(weightEnemyVisible);
+        this.parameterList.add(weightSeparation);
+        this.parameterList.add(weightColumn);
+        this.parameterList.add(weightLine);
+    }
+
+    public void setParameterList(ArrayList<Double> parameterList){
+        this.parameterList = parameterList;
+        setNeighborhoodRange(parameterList.get(0));
+        setSeparationRange(parameterList.get(1));
+        setColumnWidth(parameterList.get(2));
+        setColumnSeparationRange(parameterList.get(3));
+        setLineHeight(parameterList.get(4));
+        setLineSeparationRange(parameterList.get(5));
+        setWeightEnemy(parameterList.get(6));
+        setWeightEnemyVisible(parameterList.get(7));
+        setWeightSeparation(parameterList.get(8));
+        setWeightColumn(parameterList.get(9));
+        setWeightLine(parameterList.get(10));
+        updateParameterList();
     }
 
     public double getNeighborhoodRange() {
@@ -81,6 +122,7 @@ public class Parameters {
             this.neighborhoodRange = 1;
         else
             this.neighborhoodRange = neighborhoodRange;
+        updateParameterList();
     }
 
     public double getSeparationRange() {
@@ -94,6 +136,7 @@ public class Parameters {
             this.separationRange = 1;
         else
             this.separationRange = separationRange;
+        updateParameterList();
     }
 
     public double getColumnWidth() {
@@ -107,6 +150,7 @@ public class Parameters {
             this.columnWidth = 1;
         else
             this.columnWidth = columnWidth;
+        updateParameterList();
     }
 
     public double getColumnSeparationRange() {
@@ -120,6 +164,7 @@ public class Parameters {
             this.columnSeparationRange = 1;
         else
             this.columnSeparationRange = columnSeparationRange;
+        updateParameterList();
     }
 
     public double getLineHeight() {
@@ -133,6 +178,7 @@ public class Parameters {
             this.lineHeight = 1;
         else
             this.lineHeight = lineHeight;
+        updateParameterList();
     }
 
     public double getLineSeparationRange() {
@@ -146,6 +192,7 @@ public class Parameters {
             this.lineSeparationRange = 1;
         else
             this.lineSeparationRange = lineSeparationRange;
+        updateParameterList();
     }
 
     public double getWeightEnemy() {
@@ -159,6 +206,7 @@ public class Parameters {
             this.weightEnemy = 2;
         else
             this.weightEnemy = weightEnemy;
+        updateParameterList();
     }
 
     public double getWeightEnemyVisible() {
@@ -172,6 +220,7 @@ public class Parameters {
             this.weightEnemyVisible = 2;
         else
             this.weightEnemyVisible = weightEnemyVisible;
+        updateParameterList();
     }
 
     public double getWeightSeparation() {
@@ -185,6 +234,7 @@ public class Parameters {
             this.weightSeparation = 2;
         else
             this.weightSeparation = weightSeparation;
+        updateParameterList();
     }
 
     public double getWeightColumn() {
@@ -198,6 +248,7 @@ public class Parameters {
             this.weightColumn = 2;
         else
             this.weightColumn = weightColumn;
+        updateParameterList();
     }
 
     public double getWeightLine() {
@@ -211,6 +262,7 @@ public class Parameters {
             this.weightLine = 2;
         else
             this.weightLine = weightLine;
+        updateParameterList();
     }
 
     public int getFitness() {
@@ -221,6 +273,29 @@ public class Parameters {
         this.fitness = fitness;
     }
 
-    //TODO
-    public void mutate(double mutationProbability){}
+    public double mutateAttribute(double attributeValue, double probability, double delta){
+        double newAttributeValue = attributeValue;
+        if (Math.random()<=probability){
+            double actualDelta = Math.random()*delta;
+            if (Math.random() < 0.5)
+                newAttributeValue = attributeValue + actualDelta;
+            else
+                newAttributeValue = attributeValue - actualDelta;
+        }
+        return newAttributeValue;
+    }
+
+    public void mutate(double mutationProbability, double mutationDelta){
+        setNeighborhoodRange(mutateAttribute(neighborhoodRange, mutationProbability, mutationDelta));
+        setSeparationRange(mutateAttribute(separationRange, mutationProbability, mutationDelta));
+        setColumnWidth(mutateAttribute(columnWidth, mutationProbability, mutationDelta));
+        setColumnSeparationRange(mutateAttribute(columnSeparationRange, mutationProbability, mutationDelta));
+        setLineHeight(mutateAttribute(lineHeight, mutationProbability, mutationDelta));
+        setLineSeparationRange(mutateAttribute(lineSeparationRange, mutationProbability, mutationDelta));
+        setWeightEnemy(mutateAttribute(weightEnemy, mutationProbability, mutationDelta));
+        setWeightEnemyVisible(mutateAttribute(weightEnemyVisible, mutationProbability, mutationDelta));
+        setWeightSeparation(mutateAttribute(weightSeparation, mutationProbability, mutationDelta));
+        setWeightColumn(mutateAttribute(weightColumn, mutationProbability, mutationDelta));
+        setWeightLine(mutateAttribute(weightLine, mutationProbability, mutationDelta));
+    }
 }

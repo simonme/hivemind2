@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
@@ -6,8 +7,9 @@ import java.util.LinkedHashSet;
  */
 public class GeneticAlgorithm {
 
-    private double CROSSOVER_PROBABILITY = 0.4;
-    private double MUTATION_PROBABILITY = 0.1;
+    private double CROSSOVER_PROBABILITY = 0.9;
+    private double MUTATION_PROBABILITY = 2/11;
+    private double MUTATION_DELTA = 0.15;
     private int POPULATION_SIZE = 20;
     private LinkedHashSet<Parameters> population = new LinkedHashSet();
 
@@ -55,8 +57,8 @@ public class GeneticAlgorithm {
         offspring2.setFitness(offspringFitness);
         if (Math.random() <= CROSSOVER_PROBABILITY)
             crossover(offspring1, offspring2);
-        offspring1.mutate(MUTATION_PROBABILITY);
-        offspring2.mutate(MUTATION_PROBABILITY);
+        offspring1.mutate(MUTATION_PROBABILITY, MUTATION_DELTA);
+        offspring2.mutate(MUTATION_PROBABILITY, MUTATION_DELTA);
         if(population.size() + 2 > POPULATION_SIZE) {
             dropWorst(population);
             dropWorst(population);
@@ -65,9 +67,18 @@ public class GeneticAlgorithm {
         population.add(offspring2);
     }
 
-
-    //TODO
-    private void crossover(Parameters offspring1 , Parameters offspring2){}
+    private void crossover(Parameters offspring1 , Parameters offspring2){
+        int conditionLength = 11;
+        int cross = (int)(Math.random()*conditionLength - 1) + 1;
+        ArrayList<Double> off1Start = (ArrayList<Double>) offspring1.getParameterList().subList(0, cross);
+        ArrayList<Double> off1End = (ArrayList<Double>) offspring1.getParameterList().subList(cross, 10);
+        ArrayList<Double> off2Start = (ArrayList<Double>) offspring2.getParameterList().subList(0, cross);
+        ArrayList<Double> off2End = (ArrayList<Double>) offspring2.getParameterList().subList(cross, 10);
+        off1Start.addAll(off2End);
+        off2Start.addAll(off1End);
+        offspring1.setParameterList(off1Start);
+        offspring2.setParameterList(off2Start);
+    }
 
 
     private Parameters pickRandomParameters(HashSet<Parameters> population){
