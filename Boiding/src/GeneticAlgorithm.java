@@ -6,22 +6,39 @@ import java.util.Random;
  */
 public class GeneticAlgorithm {
 
-    private Random random = new Random();
     private double CROSSOVER_PROBABILITY = 0.9;
     private double MUTATION_PROBABILITY = 2/11;
     private double MUTATION_DELTA = 0.15;
-    public int POPULATION_SIZE = 20;
-    private ArrayList<Parameters> population = new ArrayList();
-    private ArrayList<Parameters> nextGeneration = new ArrayList<>();
+    private int MAX_POPULATION_SIZE = 20;
+    private Random random;
+    private ArrayList<Parameters> population;
+    private ArrayList<Parameters> nextGeneration;
     private Parameters lastUsedParameters;
 
+    public GeneticAlgorithm() {
+        population = generateRandomPopulation();
+        nextGeneration = generateRandomPopulation();
+        random = new Random(42);
+    }
+
+    private ArrayList<Parameters> generateRandomPopulation() {
+        final ArrayList<Parameters> pop = new ArrayList<>(MAX_POPULATION_SIZE);
+
+        for (int i = 0; i < MAX_POPULATION_SIZE; i++){
+            Parameters params = new Parameters();
+            params.mutate(0.8, 0.25);
+            pop.add(params);
+        }
+
+        return pop;
+    }
 
     public Parameters execute(int rewardLastGame, int parametersIndex) {
         //update Fitness for last used parameters
         if (parametersIndex != 0)
             lastUsedParameters.setFitness(rewardLastGame);
         //instance next generation and reset index if every Parameters fitness has been determined
-        if (parametersIndex == POPULATION_SIZE) {
+        if (parametersIndex == MAX_POPULATION_SIZE) {
             nextGeneration = new ArrayList<>();
             generateNextGeneration();
             this.lastUsedParameters = null;
@@ -34,7 +51,7 @@ public class GeneticAlgorithm {
     }
 
     public void generateNextGeneration(){
-        for (int i = 0; i < POPULATION_SIZE / 2; i++){
+        for (int i = 0; i < MAX_POPULATION_SIZE / 2; i++){
             generateOffsprings();
         }
     }
@@ -84,6 +101,10 @@ public class GeneticAlgorithm {
     private Parameters pickRandomParameters(){
         int randomIndex = random.nextInt(population.size());
         return population.get(randomIndex);
+    }
+
+    public int getPopulationSize() {
+        return MAX_POPULATION_SIZE;
     }
 
 }

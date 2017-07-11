@@ -5,24 +5,25 @@ import java.util.Random;
  */
 
 public class Parameters {
+    public static final int RANGE_MULTIPLIER = 2000;
     // r_sig
-//    public double neighborhoodRange = 0.2;
-    private double neighborhoodRange = 20;
+    public double neighborhoodRange = 0.2;
+//    private double neighborhoodRange = 400;
     // r_sep
-//    public double separationRange = 0.04;
-    private double separationRange = 4;
+    public double separationRange = 0.04;
+//    private double separationRange = 80;
     // r_col
-//    public double columnWidth = 0.05;
-    private double columnWidth = 5;
+    public double columnWidth = 0.05;
+//    private double columnWidth = 100;
     // r_col-sep
-//    public double columnSeparationRange = 0.03;
-    private double columnSeparationRange = 3;
+    public double columnSeparationRange = 0.03;
+//    private double columnSeparationRange = 60;
     // r_lin
-//    public double lineHeight = 0.05;
-    private double lineHeight = 5;
+    public double lineHeight = 0.05;
+//    private double lineHeight = 100;
     // r_lin-sep
-//    public double lineSeparationRange = 0.03;
-    private double lineSeparationRange = 3;
+    public double lineSeparationRange = 0.03;
+//    private double lineSeparationRange = 60;
     // w_r1-a
     private double weightEnemy = 0.0;
     // w_r1-b
@@ -75,7 +76,8 @@ public class Parameters {
     }
 
     public Parameters() {
-
+        updateParameterList();
+        this.fitness = 0;
     }
 
     public ArrayList<Double> getParameterList() {
@@ -114,7 +116,7 @@ public class Parameters {
     }
 
     public double getNeighborhoodRange() {
-        return neighborhoodRange;
+        return neighborhoodRange * RANGE_MULTIPLIER;
     }
 
     public void setNeighborhoodRange(double neighborhoodRange) {
@@ -128,7 +130,7 @@ public class Parameters {
     }
 
     public double getSeparationRange() {
-        return separationRange;
+        return separationRange * RANGE_MULTIPLIER;
     }
 
     public void setSeparationRange(double separationRange) {
@@ -142,7 +144,7 @@ public class Parameters {
     }
 
     public double getColumnWidth() {
-        return columnWidth;
+        return columnWidth * RANGE_MULTIPLIER;
     }
 
     public void setColumnWidth(double columnWidth) {
@@ -156,7 +158,7 @@ public class Parameters {
     }
 
     public double getColumnSeparationRange() {
-        return columnSeparationRange;
+        return columnSeparationRange * RANGE_MULTIPLIER;
     }
 
     public void setColumnSeparationRange(double columnSeparationRange) {
@@ -170,7 +172,7 @@ public class Parameters {
     }
 
     public double getLineHeight() {
-        return lineHeight;
+        return lineHeight * RANGE_MULTIPLIER;
     }
 
     public void setLineHeight(double lineHeight) {
@@ -184,7 +186,7 @@ public class Parameters {
     }
 
     public double getLineSeparationRange() {
-        return lineSeparationRange;
+        return lineSeparationRange * RANGE_MULTIPLIER;
     }
 
     public void setLineSeparationRange(double lineSeparationRange) {
@@ -202,7 +204,7 @@ public class Parameters {
     }
 
     public void setWeightEnemy(double weightEnemy) {
-        if (weightEnemy < 0)
+        if (weightEnemy < -1)
             this.weightEnemy = 0;
         else if (weightEnemy > 2)
             this.weightEnemy = 2;

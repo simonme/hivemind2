@@ -19,7 +19,7 @@ public class MarineAI  extends DefaultBWListener implements Runnable{
 
     private int frame;
 
-    private GeneticAlgorithm GA = new GeneticAlgorithm();
+    private GeneticAlgorithm GA;
     private int parameterIndex = 0;
     private Parameters params;
     private int lastGameReward = 0;
@@ -27,9 +27,14 @@ public class MarineAI  extends DefaultBWListener implements Runnable{
     public MarineAI() {
         System.out.println("This is the MarineAI! :)");
 
+        this.GA = new GeneticAlgorithm();
         this.bwapi = new Mirror();
         this.marines = new HashSet<Marine>();
         this.enemyUnits = new HashSet<Unit>();
+    }
+
+    public static void main(String[] args) {
+        new MarineAI().run();
     }
 
     public int calculateReward(){
@@ -45,7 +50,7 @@ public class MarineAI  extends DefaultBWListener implements Runnable{
     @Override
     public void onStart() {
         this.params = GA.execute(lastGameReward, parameterIndex);
-        if (parameterIndex == GA.POPULATION_SIZE)
+        if (parameterIndex == GA.getPopulationSize())
             parameterIndex = 0;
         for (Marine marine : marines)
             marine.setParams(this.params);
@@ -63,6 +68,7 @@ public class MarineAI  extends DefaultBWListener implements Runnable{
         }
 
         this.game.setLocalSpeed(10);
+        System.out.println("Started");
     }
 
     @Override
@@ -82,7 +88,9 @@ public class MarineAI  extends DefaultBWListener implements Runnable{
         if (unit.getType() == UnitType.Terran_Marine) {
             if (unit.getPlayer().equals(this.self)) {
                 System.out.println("Added marine!");
-                this.marines.add(new Marine(unit, this.enemyUnits));
+                Marine marine = new Marine(unit, this.enemyUnits);
+                marine.setParams(params);
+                this.marines.add(marine);
             } else {
                 System.out.println("Added enemy marine unit!");
                 this.enemyUnits.add(unit);
@@ -95,7 +103,9 @@ public class MarineAI  extends DefaultBWListener implements Runnable{
         if (unit.getType() == UnitType.Terran_Marine) {
             if (unit.getPlayer().equals(this.self)) {
                 System.out.println("Added marine!");
-                this.marines.add(new Marine(unit, this.enemyUnits));
+                Marine marine = new Marine(unit, this.enemyUnits);
+                marine.setParams(params);
+                this.marines.add(marine);
             } else {
                 System.out.println("Added enemy marine unit!");
                 this.enemyUnits.add(unit);
