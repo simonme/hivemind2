@@ -10,21 +10,26 @@ public class GeneticAlgorithm {
     private double CROSSOVER_PROBABILITY = 0.9;
     private double MUTATION_PROBABILITY = 2/11;
     private double MUTATION_DELTA = 0.15;
-    private int POPULATION_SIZE = 20;
+    public int POPULATION_SIZE = 20;
     private ArrayList<Parameters> population = new ArrayList();
     private ArrayList<Parameters> nextGeneration = new ArrayList<>();
     private Parameters lastUsedParameters;
 
-    private Parameters execute(int rewardLastGame, int parametersIndex) {
+
+    public Parameters execute(int rewardLastGame, int parametersIndex) {
         //update Fitness for last used parameters
-        lastUsedParameters.setFitness(rewardLastGame);
+        if (parametersIndex != 0)
+            lastUsedParameters.setFitness(rewardLastGame);
         //instance next generation and reset index if every Parameters fitness has been determined
         if (parametersIndex == POPULATION_SIZE) {
             nextGeneration = new ArrayList<>();
             generateNextGeneration();
+            this.lastUsedParameters = null;
             this.population = this.nextGeneration;
-            parametersIndex = 0;
+            this.lastUsedParameters = population.get(0);
+            return population.get(0);
         }
+        this.lastUsedParameters = population.get(parametersIndex);
         return population.get(parametersIndex);
     }
 

@@ -7,26 +7,16 @@ import java.util.List;
 /**
  * Created by Steffen Wilke on 31.05.2016.
  */
-public class Marine extends DefaultBWListener implements Runnable {
+public class Marine{
 
-    private final Mirror bwapi;
-    private Game game;
-
-    private Player self;
-
-    private final HashSet<Marine> marines;
-
-    private int frame;
 
     private final HashSet<Unit> enemyUnits;
     final private Unit unit;
+    private Parameters params;
 
     public Marine(Unit unit, HashSet<Unit> enemyUnits) {
-        System.out.println("This is the MarineAI! :)");
-        this.bwapi = new Mirror();
-        this.marines = new HashSet<Marine>();
         this.unit = unit;
-        this.enemyUnits = new HashSet<Unit>();
+        this.enemyUnits = enemyUnits;
     }
 
     public void step() {
@@ -50,7 +40,7 @@ public class Marine extends DefaultBWListener implements Runnable {
         if (target == null) {
             return;
         }
-        Parameters params = new Parameters();
+        //Parameters params = new Parameters();
         bwapi.Position unitPositionBwapi = unit.getPosition();
         Position unitPosition = new Position(unitPositionBwapi.getX(), unitPositionBwapi.getY());
 
@@ -59,8 +49,7 @@ public class Marine extends DefaultBWListener implements Runnable {
         // delta_r2(c) = delta_sep(c)
         Position vecSeparation = computeSeparationVector(unitPosition, closeAllies);
 
-        if(vecSeparation.getLength() > 0)
-        {
+        if (vecSeparation.getLength() > 0) {
             this.unit.move(unitPosition.add(vecSeparation.mul(params.getWeightSeparation())), false);
             return;
         }
@@ -168,159 +157,15 @@ public class Marine extends DefaultBWListener implements Runnable {
         return this.unit.getID();
     }
 
-    @Override
-    public void onStart() {
-
-        this.game = this.bwapi.getGame();
-        this.self = game.self();
-        this.frame = 0;
-
-        // complete map information
-        this.game.enableFlag(0);
-
-        for (Unit unit: this.game.enemy().getUnits())
-        {
-            System.out.println("Added enemy unit!");
-            enemyUnits.add(unit);
-        }
-
-        this.game.setLocalSpeed(10);
+    public Parameters getParams() {
+        return params;
     }
 
-    @Override
-    public void onFrame() {
-        for (Marine m : this.marines) {
-            m.step();
-        }
-
-        if (frame % 1000 == 0) {
-            System.out.println("Frame: " + frame);
-        }
-        frame++;
+    public void setParams(Parameters params) {
+        this.params = params;
     }
 
-    @Override
-    public void onUnitCreate(Unit unit) {
-        if (unit.getType() == UnitType.Terran_Marine) {
-            if (unit.getPlayer().equals(this.self)) {
-                System.out.println("Added marine!");
-                this.marines.add(new Marine(unit, this.enemyUnits));
-            } else {
-                System.out.println("Added enemy marine unit!");
-                this.enemyUnits.add(unit);
-            }
-        }
-    }
-
-    @Override
-    public void onUnitDiscover(Unit unit) {
-        if (unit.getType() == UnitType.Terran_Marine) {
-            if (unit.getPlayer().equals(this.self)) {
-                System.out.println("Added marine!");
-                this.marines.add(new Marine(unit, this.enemyUnits));
-            } else {
-                System.out.println("Added enemy marine unit!");
-                this.enemyUnits.add(unit);
-            }
-        }
-    }
-
-    @Override
-    public void onUnitDestroy(Unit unit) {
-        if (unit == null) {
-            return;
-        }
-
-        Marine rm = null;
-        for (Marine marine : marines) {
-            if (marine.getID() == unit.getID()) {
-                rm = marine;
-                break;
-            }
-        }
-        marines.remove(rm);
-
-        Unit rmUnit = null;
-        for (Unit u : enemyUnits) {
-            if (u.getID() == unit.getID()) {
-                rmUnit = u;
-                break;
-            }
-        }
-
-        enemyUnits.remove(rmUnit);
-    }
-
-    @Override
-    public void onEnd(boolean winner) {
-        this.marines.clear();
-        this.enemyUnits.clear();
-    }
-
-    @Override
-    public void onSendText(String text) {
-    }
-
-    @Override
-    public void onReceiveText(Player player, String text) {
-    }
-
-    @Override
-    public void onPlayerLeft(Player player) {
-    }
-
-    @Override
-    public void onNukeDetect(bwapi.Position position) {
-    }
-
-    @Override
-    public void onUnitEvade(Unit unit) {
-    }
-
-    @Override
-    public void onUnitShow(Unit unit) {
-
-        if (unit.getType() == UnitType.Terran_Marine && !unit.getPlayer().equals(this.self)) {
-            if (!this.enemyUnits.contains(unit)) {
-                this.enemyUnits.add(unit);
-            }
-        }
-    }
-
-    @Override
-    public void onUnitHide(Unit unit) {
-        if (unit.getType() == UnitType.Terran_Marine && !unit.getPlayer().equals(this.self)) {
-            if (!this.enemyUnits.contains(unit)) {
-                this.enemyUnits.remove(unit);
-            }
-        }
-    }
-
-    @Override
-    public void onUnitMorph(Unit unit) {
-
-    }
-
-    @Override
-    public void onUnitRenegade(Unit unit) {
-
-    }
-
-    @Override
-    public void onSaveGame(String gameName) {
-    }
-
-    @Override
-    public void onUnitComplete(Unit unit) {
-    }
-
-    @Override
-    public void onPlayerDropped(Player player) {
-    }
-
-    @Override
-    public void run() {
-        this.bwapi.getModule().setEventListener(this);
-        this.bwapi.startGame();
+    public int getHP(){
+        return this.unit.getHitPoints();
     }
 }
