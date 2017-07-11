@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+import java.util.Random;
 /**
  * Created by Jakob on 04.07.2017.
  */
@@ -34,7 +34,9 @@ public class Parameters {
     // w_r4
     private double weightLine = 0.2;
     // Summe der Hitpoints verbuendeter Einheiten bei Spielende bzw. negativ bei Niederlage
-    private int fitness = 10;
+    private int fitness = Integer.MIN_VALUE;
+
+    private Random random = new Random();
 
     private ArrayList<Double> parameterList = new ArrayList<>();
 
@@ -275,9 +277,9 @@ public class Parameters {
 
     public double mutateAttribute(double attributeValue, double probability, double delta){
         double newAttributeValue = attributeValue;
-        if (Math.random()<=probability){
-            double actualDelta = Math.random()*delta;
-            if (Math.random() < 0.5)
+        if (random.nextDouble() <= probability){
+            double actualDelta = random.nextDouble()*delta;
+            if (random.nextDouble() < 0.5)
                 newAttributeValue = attributeValue + actualDelta;
             else
                 newAttributeValue = attributeValue - actualDelta;
