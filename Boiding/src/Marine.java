@@ -21,19 +21,42 @@ public class Marine{
 
     public void step() {
         Unit target = getClosestEnemy();
-        if (target == null) {
+
+        if (target == null || this.unit.isAttackFrame()
+                || this.unit.isStartingAttack() || this.unit.isAttacking()) {
             return;
         }
-        if (this.unit.getGroundWeaponCooldown() == 0 && !this.unit.isAttackFrame() && !this.unit.isStartingAttack()
-                && !this.unit.isAttacking() && target != null) {
-            if (WeaponType.Gauss_Rifle.maxRange() > getDistance(target) - 20.0) {
-                this.unit.attack(target);
-            } else {
-                move(target);
-            }
+
+        int cd = this.unit.getGroundWeaponCooldown();
+        if (cd >= 1) {
+            return;
+        }
+
+        int maxRange = WeaponType.Gauss_Rifle.maxRange();
+        double distance = getDistance(target);
+
+        if (maxRange > distance - 25.0) {
+            this.unit.attack(target);
         } else {
             move(target);
         }
+
+
+
+
+//        if (this.unit.getGroundWeaponCooldown() == 0 && !this.unit.isAttackFrame()
+//                && !this.unit.isStartingAttack() && !this.unit.isAttacking()) {
+//            int maxRange = WeaponType.Gauss_Rifle.maxRange();
+//            double distance = getDistance(target);
+//            if (maxRange > distance - 25.0) {
+//                this.unit.attack(target);
+//            } else {
+//                move(target);
+//            }
+//        }
+//        else if (!this.unit.isAttackFrame() && !this.unit.isStartingAttack() && !this.unit.isAttacking()) {
+//            move(target);
+//        }
     }
 
     private void move(Unit target) {
@@ -50,7 +73,8 @@ public class Marine{
         Position vecSeparation = computeSeparationVector(unitPosition, closeAllies);
 
         if (vecSeparation.getLength() > 0) {
-            this.unit.move(unitPosition.add(vecSeparation.mul(-1).mul(params.getWeightSeparation())), false);
+            Position moveVector = unitPosition.add(vecSeparation.mul(-1).mul(params.getWeightSeparation()));
+            this.unit.move(moveVector, false);
             return;
         }
 
@@ -73,8 +97,7 @@ public class Marine{
 
     private Position computeSeparationVector(Position unitPosition, List<Unit> closeAllies) {
         Position vecSeparation = new Position(0, 0);
-        for (Unit ally :
-                closeAllies) {
+        for (Unit ally : closeAllies) {
             vecSeparation = vecSeparation.add(unitPosition.sub(ally.getPosition()).mul(-1));
         }
         return vecSeparation;
@@ -98,8 +121,7 @@ public class Marine{
             int columnUnitCount = columnUnits.size();
             Position columnCentroid = computeCentroid(columnUnits);
 
-            for (Unit columnUnit :
-                    columnUnits) {
+            for (Unit columnUnit : columnUnits) {
                 double value = columnUnitCount / unitPosition.add(columnCentroid.sub(columnUnit.getPosition())).getLength();
                 if (value > max) {
                     max = value;
@@ -116,17 +138,16 @@ public class Marine{
 //        bestColumnUnits.removeIf(unit1 -> Position.sub(unit1.getPosition(), centroid).getLength() > separation);
         bestColumnUnits.removeIf(unit1 -> centroid.sub(unit1.getPosition()).mul(-1).getLength() > separation);
 
-        Position vecSeparation = computeSeparationVector(vecCohesion, bestColumnUnits);
+        Position vecSeparation = computeSeparationVector(unitPosition, bestColumnUnits);
         return vecCohesion.add(vecSeparation);
     }
 
     private Position computeCentroid(List<Unit> units) {
         Position centroid = new Position(0, 0);
-        for (Unit unit_s :
-                units) {
+        for (Unit unit_s : units) {
             centroid = centroid.add(unit_s.getPosition());
         }
-        centroid = centroid.div(1.0d / units.size());
+        centroid = centroid.div(units.size());
         return centroid;
     }
 

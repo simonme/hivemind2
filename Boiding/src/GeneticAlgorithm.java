@@ -9,7 +9,7 @@ public class GeneticAlgorithm {
     private double CROSSOVER_PROBABILITY = 0.9;
     private double MUTATION_PROBABILITY = 2/11;
     private double MUTATION_DELTA = 0.15;
-    private int MAX_POPULATION_SIZE = 20;
+    private int MAX_POPULATION_SIZE = 10;
     private Random random;
     private ArrayList<Parameters> population;
     private ArrayList<Parameters> nextGeneration;
@@ -82,10 +82,10 @@ public class GeneticAlgorithm {
     private void crossover(Parameters offspring1 , Parameters offspring2){
         int conditionLength = 11;
         int cross = random.nextInt(9) + 1;
-        ArrayList<Double> off1Start = (ArrayList<Double>) offspring1.getParameterList().subList(0, cross);
-        ArrayList<Double> off1End = (ArrayList<Double>) offspring1.getParameterList().subList(cross, 10);
-        ArrayList<Double> off2Start = (ArrayList<Double>) offspring2.getParameterList().subList(0, cross);
-        ArrayList<Double> off2End = (ArrayList<Double>) offspring2.getParameterList().subList(cross, 10);
+        ArrayList<Double> off1Start = new ArrayList<>(offspring1.getParameterList().subList(0, cross));
+        ArrayList<Double> off1End = new ArrayList<> (offspring1.getParameterList().subList(cross, 11));
+        ArrayList<Double> off2Start = new ArrayList<> (offspring2.getParameterList().subList(0, cross));
+        ArrayList<Double> off2End = new ArrayList<> (offspring2.getParameterList().subList(cross, 11));
         off1Start.addAll(off2End);
         off2Start.addAll(off1End);
         offspring1.setParameterList(off1Start);

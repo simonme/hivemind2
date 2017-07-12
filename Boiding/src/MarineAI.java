@@ -29,8 +29,8 @@ public class MarineAI  extends DefaultBWListener implements Runnable{
 
         this.GA = new GeneticAlgorithm();
         this.bwapi = new Mirror();
-        this.marines = new HashSet<Marine>();
-        this.enemyUnits = new HashSet<Unit>();
+        this.marines = new HashSet<>();
+        this.enemyUnits = new HashSet<>();
     }
 
     public static void main(String[] args) {
@@ -50,7 +50,7 @@ public class MarineAI  extends DefaultBWListener implements Runnable{
     @Override
     public void onStart() {
         this.params = GA.execute(lastGameReward, parameterIndex);
-        if (parameterIndex == GA.getPopulationSize())
+        if (parameterIndex >= GA.getPopulationSize())
             parameterIndex = 0;
         for (Marine marine : marines)
             marine.setParams(this.params);
@@ -141,10 +141,10 @@ public class MarineAI  extends DefaultBWListener implements Runnable{
 
     @Override
     public void onEnd(boolean winner) {
+        this.lastGameReward = calculateReward();
         this.marines.clear();
         this.enemyUnits.clear();
         parameterIndex++;
-        this.lastGameReward = calculateReward();
     }
 
     @Override

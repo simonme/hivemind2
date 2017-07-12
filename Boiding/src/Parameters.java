@@ -5,7 +5,7 @@ import java.util.Random;
  */
 
 public class Parameters {
-    public static final int RANGE_MULTIPLIER = 2000;
+    public static final int RANGE_MULTIPLIER = 1200;
     // r_sig
     public double neighborhoodRange = 0.2;
 //    private double neighborhoodRange = 400;
@@ -25,9 +25,9 @@ public class Parameters {
     public double lineSeparationRange = 0.03;
 //    private double lineSeparationRange = 60;
     // w_r1-a
-    private double weightEnemy = 0.0;
+    private double weightEnemy = 0.08;
     // w_r1-b
-    private double weightEnemyVisible = 0.1;
+    private double weightEnemyVisible = 0.35;
     // w_r2
     private double weightSeparation = 0.5;
     // w_r3
@@ -60,19 +60,19 @@ public class Parameters {
     }
 
     public Parameters(Parameters p) {
-        this.neighborhoodRange = p.getNeighborhoodRange();
-        this.separationRange = p.getSeparationRange();
-        this.columnWidth = p.getColumnWidth();
-        this.columnSeparationRange = p.getColumnSeparationRange();
-        this.lineHeight = p.getLineHeight();
-        this.lineSeparationRange = p.getLineSeparationRange();
-        this.weightEnemy = p.getWeightEnemy();
-        this.weightEnemyVisible = p.getWeightEnemyVisible();
-        this.weightSeparation = p.getWeightSeparation();
-        this.weightColumn = p.getWeightColumn();
-        this.weightLine = p.getWeightLine();
+        this.neighborhoodRange = p.neighborhoodRange;
+        this.separationRange = p.separationRange;
+        this.columnWidth = p.columnWidth;
+        this.columnSeparationRange = p.columnSeparationRange;
+        this.lineHeight = p.lineHeight;
+        this.lineSeparationRange = p.lineSeparationRange;
+        this.weightEnemy = p.weightEnemy;
+        this.weightEnemyVisible = p.weightEnemyVisible;
+        this.weightSeparation = p.weightSeparation;
+        this.weightColumn = p.weightColumn;
+        this.weightLine = p.weightLine;
         updateParameterList();
-        this.fitness = p.getFitness();
+        this.fitness = p.fitness;
     }
 
     public Parameters() {
@@ -204,7 +204,7 @@ public class Parameters {
     }
 
     public void setWeightEnemy(double weightEnemy) {
-        if (weightEnemy < -1)
+        if (weightEnemy < 0)
             this.weightEnemy = 0;
         else if (weightEnemy > 2)
             this.weightEnemy = 2;
