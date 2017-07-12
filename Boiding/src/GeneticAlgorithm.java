@@ -26,7 +26,7 @@ public class GeneticAlgorithm {
 
         for (int i = 0; i < MAX_POPULATION_SIZE; i++){
             Parameters params = new Parameters();
-            params.mutate(0.8, 0.25);
+            params.mutate(0.6, MUTATION_DELTA);
             pop.add(params);
         }
 

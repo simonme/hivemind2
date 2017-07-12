@@ -291,11 +291,11 @@ public class Parameters {
 
     public void mutate(double mutationProbability, double mutationDelta){
         setNeighborhoodRange(mutateAttribute(neighborhoodRange, mutationProbability, mutationDelta));
-        setSeparationRange(mutateAttribute(separationRange, mutationProbability, mutationDelta));
-        setColumnWidth(mutateAttribute(columnWidth, mutationProbability, mutationDelta));
-        setColumnSeparationRange(mutateAttribute(columnSeparationRange, mutationProbability, mutationDelta));
-        setLineHeight(mutateAttribute(lineHeight, mutationProbability, mutationDelta));
-        setLineSeparationRange(mutateAttribute(lineSeparationRange, mutationProbability, mutationDelta));
+        setSeparationRange(mutateAttribute(separationRange, mutationProbability, 0.1*mutationDelta));
+        setColumnWidth(mutateAttribute(columnWidth, mutationProbability, 0.1*mutationDelta));
+        setColumnSeparationRange(mutateAttribute(columnSeparationRange, mutationProbability, 0.1*mutationDelta));
+        setLineHeight(mutateAttribute(lineHeight, mutationProbability, 0.1*mutationDelta));
+        setLineSeparationRange(mutateAttribute(lineSeparationRange, mutationProbability, 0.1*mutationDelta));
         setWeightEnemy(mutateAttribute(weightEnemy, mutationProbability, mutationDelta));
         setWeightEnemyVisible(mutateAttribute(weightEnemyVisible, mutationProbability, mutationDelta));
         setWeightSeparation(mutateAttribute(weightSeparation, mutationProbability, mutationDelta));

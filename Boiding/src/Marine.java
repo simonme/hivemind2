@@ -50,12 +50,12 @@ public class Marine{
         Position vecSeparation = computeSeparationVector(unitPosition, closeAllies);
 
         if (vecSeparation.getLength() > 0) {
-            this.unit.move(unitPosition.add(vecSeparation.mul(params.getWeightSeparation())), false);
+            this.unit.move(unitPosition.add(vecSeparation.mul(-1).mul(params.getWeightSeparation())), false);
             return;
         }
 
         // delta_r1(c)
-        Position vecToEnemy = Position.sub(new Position(target.getX(), target.getY()), unitPosition);
+        Position vecToEnemy = unitPosition.sub(target.getPosition()).mul(-1);
 
 
         List<Unit> relevantAllies = getAlliesInRadius((int) Math.ceil(params.getNeighborhoodRange()));
@@ -75,7 +75,7 @@ public class Marine{
         Position vecSeparation = new Position(0, 0);
         for (Unit ally :
                 closeAllies) {
-            vecSeparation = vecSeparation.add(Position.sub(ally.getPosition(), unitPosition));
+            vecSeparation = vecSeparation.add(unitPosition.sub(ally.getPosition()).mul(-1));
         }
         return vecSeparation;
     }
@@ -113,7 +113,8 @@ public class Marine{
         Position vecCohesion = bestColumnCentroid.sub(unitPosition);
 
         final Position centroid = bestColumnCentroid;
-        bestColumnUnits.removeIf(unit1 -> Position.sub(unit1.getPosition(), centroid).getLength() > separation);
+//        bestColumnUnits.removeIf(unit1 -> Position.sub(unit1.getPosition(), centroid).getLength() > separation);
+        bestColumnUnits.removeIf(unit1 -> centroid.sub(unit1.getPosition()).mul(-1).getLength() > separation);
 
         Position vecSeparation = computeSeparationVector(vecCohesion, bestColumnUnits);
         return vecCohesion.add(vecSeparation);
