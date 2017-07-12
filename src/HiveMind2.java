@@ -7,6 +7,8 @@ import Evaluator.MedicEvaluator;
 import Evaluator.SiegeTankEvaluator;
 import Evaluator.VultureEvaluator;
 import Serialization.CSVWriter;
+import Situation.MedicSituationFactory;
+import Situation.SiegeTankSituationFactory;
 import Situation.SituationFactoryBase;
 import bwapi.*;
 
@@ -71,9 +73,9 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
                     if (type == UnitType.Terran_Marine) {
                         this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MarineEvaluator(), getAI(PlayerAIType.MARINE), new SituationFactoryBase()));
                     } else if (type == UnitType.Terran_Medic) {
-                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MedicEvaluator(), getAI(PlayerAIType.MEDIC), new SituationFactoryBase()));
+                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new MedicEvaluator(), getAI(PlayerAIType.MEDIC), new MedicSituationFactory()));
                     } else if (type == UnitType.Terran_Siege_Tank_Tank_Mode || type == UnitType.Terran_Siege_Tank_Siege_Mode) {
-                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new SiegeTankEvaluator(), getAI(PlayerAIType.SIEGE_TANK), new SituationFactoryBase()));
+                        this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new SiegeTankEvaluator(), getAI(PlayerAIType.SIEGE_TANK), new SiegeTankSituationFactory()));
                     } else if (type == UnitType.Terran_Vulture) {
                         this.playerAIs.add(new PlayerAI(unit, bwapi, enemyUnits, alliedUnits, new VultureEvaluator(), getAI(PlayerAIType.VULTURE), new SituationFactoryBase()));
                     }
