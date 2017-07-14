@@ -1,7 +1,4 @@
-import Actions.Action;
-import Actions.ActionAttackClosestEnemy;
-import Actions.ActionAwayFromClosestEnemy;
-import Actions.ActionHeal;
+import Actions.*;
 import Evaluator.IEvaluator;
 import Situation.ISituationFactory;
 import Situation.Situation;
@@ -41,7 +38,10 @@ public class PlayerAI {
         final Situation sigmaT = situationFactory.create(this.unit, closestEnemy, enemyUnits, alliedUnits);
         final Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit, this.alliedUnits) + immediateReward, unit.getID());
         if(action.isRequiresTargetUnit()) {
-            if(action instanceof ActionAttackClosestEnemy || action instanceof ActionAwayFromClosestEnemy)
+            if(action instanceof ActionAttackClosestEnemy
+                    || action instanceof ActionAwayFromClosestEnemy
+                    || action instanceof ActionSpiderMines
+                    || action instanceof ActionTriggerStimPack)
             {
                 action.setTargetUnit(closestEnemy);
             }

@@ -11,22 +11,23 @@ import bwapi.UnitType;
 public class ActionSpiderMines extends Action {
     private RelativePosition target;
 
-    public ActionSpiderMines(RelativePosition target)
-    {
+    public ActionSpiderMines(RelativePosition target) {
         this.target = target;
+        this.requiresTargetUnit = true;
     }
 
     @Override
     public int ExecuteOn(Unit unit) {
-        if(unit.getType() == UnitType.Terran_Vulture)
-        {
-            if(unit.canUseTech(TechType.Spider_Mines, target.applyTo(unit.getPosition())))
-            {
+        Unit enemy = getTargetUnit();
+        if(unit.getType() == UnitType.Terran_Vulture) {
+            if(unit.canUseTech(TechType.Spider_Mines, target.applyTo(unit.getPosition()))
+                    && enemy != null
+                    && unit.getDistance(enemy) < 200) {
                 unit.useTech(TechType.Spider_Mines, target.applyTo(unit.getPosition()));
                 return 0;
             }
         }
-        return -10;
+        return -20;
     }
 
     @Override

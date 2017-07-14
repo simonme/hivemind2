@@ -9,19 +9,22 @@ import bwapi.UnitType;
  */
 public class ActionTriggerStimPack extends Action {
 
-    public ActionTriggerStimPack() {  }
+    public ActionTriggerStimPack() {
+        this.requiresTargetUnit = true;
+    }
 
     @Override
     public int ExecuteOn(Unit unit) {
-        if(unit.getType() == UnitType.Terran_Marine)
-        {
-            if(unit.canUseTech(TechType.Stim_Packs))
-            {
+        Unit enemy = getTargetUnit();
+        if(unit.getType() == UnitType.Terran_Marine) {
+            if(unit.canUseTech(TechType.Stim_Packs)
+                    && enemy != null
+                    && unit.getDistance(enemy) < 350) {
                 unit.useTech(TechType.Stim_Packs);
                 return 0;
             }
         }
-        return -10;
+        return -30;
     }
 
     @Override

@@ -9,17 +9,17 @@ public class Boiding {
     private final HashSet<Unit> enemyUnits;
     final private Unit unit;    public static final int RANGE_MULTIPLIER = 1000;
     // r_sig
-    public double neighborhoodRange = 0.2 * RANGE_MULTIPLIER;
+    private double neighborhoodRange = 0.2 * RANGE_MULTIPLIER;
     // r_sep
-    public double separationRange = 0.04 * RANGE_MULTIPLIER;
+    private double separationRange = 0.04 * RANGE_MULTIPLIER;
     // r_col
-    public double columnWidth = 0.05 * RANGE_MULTIPLIER;
+    private double columnWidth = 0.05 * RANGE_MULTIPLIER;
     // r_col-sep
-    public double columnSeparationRange = 0.03 * RANGE_MULTIPLIER;
+    private double columnSeparationRange = 0.03 * RANGE_MULTIPLIER;
     // r_lin
-    public double lineHeight = 0.05 * RANGE_MULTIPLIER;
+    private double lineHeight = 0.05 * RANGE_MULTIPLIER;
     // r_lin-sep
-    public double lineSeparationRange = 0.03 * RANGE_MULTIPLIER;
+    private double lineSeparationRange = 0.03 * RANGE_MULTIPLIER;
     // w_r1-a
     private double weightEnemy = 0.08;
     // w_r1-b
@@ -144,6 +144,7 @@ public class Boiding {
     private List<Unit> getAlliesInRadius(int radius) {
         List<Unit> unitsInRadius = unit.getUnitsInRadius(radius);
         unitsInRadius.removeIf(unit2 -> unit2.getPlayer() != unit.getPlayer());
+        unitsInRadius.removeIf(unit2 -> unit2.getType() != unit.getType());
         return unitsInRadius;
     }
 
