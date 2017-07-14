@@ -4,17 +4,17 @@ package Configuration;
  * Created by Simon on 15.05.2017.
  */
 public class XCSConfig {
-    public static boolean SHOULD_LOAD_FROM_CSV = false; // makes XCS load from CSV
-    public static boolean SHOULD_SAVE_TO_CSV = true; // makes XCS save to CSV
-    public static String CSV_PREFIX = "AI_Test_";
+    public static boolean SHOULD_LOAD_FROM_CSV = true; // makes XCS load from CSV
+    public static boolean SHOULD_SAVE_TO_CSV = false; // makes XCS save to CSV
+    public static String CSV_PREFIX = "AI_";
 
     public static double alpha = 0.1;
     public static double beta = 0.2;
     public static double gamma = 0.71;
     public static double delta = 0.1;
     public static double nu = 5;
-    public static double epsilon0 = 0.01;
-    public static double predictionI = 0.0; //TODO richtigen Wert herausfinden bzw berechnen
+    public static double epsilon0 = 0.05;
+    public static double predictionI = 0.0;
     public static double epsilonI = 0.0;
     public static double FI = 0.01;
     public static int thetaGA = 40;
@@ -25,12 +25,12 @@ public class XCSConfig {
     public static double chi = 0.8;
     public static CrossoverType crossoverType = CrossoverType.UNIFORM;
     public static double my = 0.04;
-    public static int N = 6400;
+    public static int N = 8000;
     public static double m0 = 2.0;
-    public static double r0 = 2.0;
+    public static double r0 = 3.0;
     public static boolean doActionSetSubsumption = true;
     public static boolean doGASubsumption = true;
     public static double tournamentSize = 0.2; //Anteil des ActionSets, der für die Tournament Selection verwendet wird
     public static SelectionType selectionType = SelectionType.TOURNAMENT;
-    public static double pExp = 0.1; //Wahrscheinlichkeit für exploration
+    public static double pExp = 0.04; //Wahrscheinlichkeit für exploration
 }

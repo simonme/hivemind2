@@ -19,10 +19,12 @@ public class ActionSpiderMines extends Action {
     @Override
     public int ExecuteOn(Unit unit) {
         Unit enemy = getTargetUnit();
-        if (unit.getType() == UnitType.Terran_Vulture) {
+        setTargetUnit(null);
+        if (unit.getType() == UnitType.Terran_Vulture && enemy != null) {
+            bwapi.Position enemyPosition = enemy.getPosition();
+            int unitDistance = unit.getDistance(enemyPosition);
             if (unit.canUseTech(TechType.Spider_Mines, target.applyTo(unit.getPosition()))
-                    && enemy != null
-                    && unit.getDistance(enemy) < 200) {
+                    && unitDistance < 200) {
                 unit.useTech(TechType.Spider_Mines, target.applyTo(unit.getPosition()));
                 return 0;
             }

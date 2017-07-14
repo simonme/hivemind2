@@ -11,6 +11,7 @@ public class ActionHeal extends Action {
 
     public ActionHeal() {
         this.requiresTargetUnit = true;
+        this.duration = 15;
     }
 
     @Override
@@ -20,14 +21,17 @@ public class ActionHeal extends Action {
             if (ally != null) {
                 if (unit.canUseTech(TechType.Healing, ally)) {
                     unit.useTech(TechType.Healing, ally);
+                    setTargetUnit(null);
                     return 0;
                 }
                 setTargetUnit(null);
             } else {
                 System.out.println("Heal failed (Missing target).");
-                return -100;
+                setTargetUnit(null);
+                return -10;
             }
         }
+        setTargetUnit(null);
         return -10;
     }
 

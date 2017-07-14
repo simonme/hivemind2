@@ -37,7 +37,6 @@ public class PlayerAI {
     public void step() {
         // System.out.println("stepping " + unit.getID() + " " + unit.getType());
         final Unit closestEnemy = getClosestEnemy();
-        final Unit lowestHealableAlly = PositionHelper.getLowestHealable(alliedUnits);
         if (actionTime > 0) {
 //            System.out.println(actionTime);
             actionTime--;
@@ -45,17 +44,12 @@ public class PlayerAI {
         }
         final Situation sigmaT = situationFactory.create(this.unit, closestEnemy, enemyUnits, alliedUnits);
         final Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit, this.alliedUnits) + immediateReward, unit.getID());
-        if (action.hasDuration())
-            this.actionTime = action.getDuration();
         if (action.isRequiresTargetUnit()) {
-            if (action instanceof ActionAttackClosestEnemy
-                    || action instanceof ActionAwayFromClosestEnemy
-                    || action instanceof ActionSpiderMines
-                    || action instanceof ActionTriggerStimPack) {
-                action.setTargetUnit(closestEnemy);
-            }
             if (action instanceof ActionHeal) {
+                final Unit lowestHealableAlly = PositionHelper.getLowestHealable(alliedUnits);
                 action.setTargetUnit(lowestHealableAlly);
+            } else {
+                action.setTargetUnit(closestEnemy);
             }
         }
         if (action.isRequiresBoidingMove()) {
@@ -63,6 +57,10 @@ public class PlayerAI {
         }
         immediateReward = action.ExecuteOn(this.unit);
         // System.out.println("stepped " + unit.getID());
+
+        // only set duration if action could be taken.. Hack but it works
+        if (action.hasDuration() && immediateReward >= 0)
+            this.actionTime = action.getDuration();
     }
 
     private void move(Unit target) {

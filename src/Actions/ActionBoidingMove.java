@@ -13,6 +13,7 @@ public class ActionBoidingMove extends Action {
     @Override
     public int ExecuteOn(Unit unit) {
         if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode) {
+            setBoidingMove(null);
             return -50;
         }
         if (getBoidingMove() == null) {

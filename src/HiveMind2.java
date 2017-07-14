@@ -131,7 +131,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
             try {
                 this.AIs.put(playerAIType, new XCS(actionMap.getActions(playerAIType), new Scanner(new FileReader(XCSConfig.CSV_PREFIX + playerAIType.toString() + CSV_SUFFIX)), PredicateMap.getFactory(playerAIType)));
             } catch (Exception ex) {
-                System.out.println("Failed reading csv: " + ex.getMessage());
+                System.out.println("Failed reading csv: " + ex.getMessage() + " " +  ex + " " + Arrays.toString(ex.getStackTrace()));
             }
         }
 

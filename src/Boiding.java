@@ -1,4 +1,5 @@
 import bwapi.Unit;
+import bwapi.UnitType;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,7 @@ public class Boiding {
     // r_sig
     private double neighborhoodRange = 0.2 * RANGE_MULTIPLIER;
     // r_sep
-    private double separationRange = 0.04 * RANGE_MULTIPLIER;
+    private double separationRange = 0.03 * RANGE_MULTIPLIER;
     // r_col
     private double columnWidth = 0.05 * RANGE_MULTIPLIER;
     // r_col-sep
@@ -144,7 +145,13 @@ public class Boiding {
     private List<Unit> getAlliesInRadius(int radius) {
         List<Unit> unitsInRadius = unit.getUnitsInRadius(radius);
         unitsInRadius.removeIf(unit2 -> unit2.getPlayer() != unit.getPlayer());
-        unitsInRadius.removeIf(unit2 -> unit2.getType() != unit.getType());
+
+        if (unit.getType() == UnitType.Terran_Marine || unit.getType() == UnitType.Terran_Medic) {
+            unitsInRadius.removeIf(unit2 -> unit.getType() != UnitType.Terran_Marine && unit.getType() != UnitType.Terran_Medic);
+        } else {
+            unitsInRadius.removeIf(unit2 -> unit2.getType() != unit.getType());
+        }
+
         return unitsInRadius;
     }
 

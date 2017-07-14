@@ -34,17 +34,21 @@ public class XCS implements AI {
         this(possibleActions, predicateFactory);
         while (reader.hasNextLine()) {
             String line = reader.nextLine();
-            if (line.split(";").length != 18) {
+            if (line.split(";").length <= 25) {
                 break;
             }
 
-            Scanner classifier = new Scanner(line);
-            classifier.useDelimiter(Character.toString(CSVWriter.VALUE_DELIMITER));
-            Classifier cl = new Classifier(classifier, possibleActions, predicateFactory);
+            Scanner classifierScanner = new Scanner(line);
+            classifierScanner.useDelimiter(Character.toString(CSVWriter.VALUE_DELIMITER));
+            try {
+                Classifier cl = new Classifier(classifierScanner, possibleActions, predicateFactory);
+                cl.setLastGA(timestamp);
+                population.add(cl);
+                cl.hashOnEnter = cl.hashCode();
+            } catch (Exception e) {
+                System.out.println("Failed parsing Classifier from CSV: " + e.getMessage() + " " +  e + " " + Arrays.toString(e.getStackTrace()));
+            }
             // Set LastGA to current; maybe save timestamp and LastGA to CSV?
-            cl.setLastGA(timestamp);
-            population.add(cl);
-            cl.hashOnEnter = cl.hashCode();
         }
         System.out.println("Reloaded existing population (" + population.stream().mapToInt(Classifier::getNumerosity).sum() + " classifiers)");
     }
@@ -368,8 +372,8 @@ public class XCS implements AI {
         if (tournamentSize <= 1)
             tournamentSize = 2;
         int maxFitness = Integer.MIN_VALUE;
-        ArrayList<Classifier> actionSetList = new ArrayList(actionSet);
-        ArrayList<Classifier> selection = new ArrayList();
+        ArrayList<Classifier> actionSetList = new ArrayList<>(actionSet);
+        ArrayList<Classifier> selection = new ArrayList<>();
         while (selection.size() < tournamentSize) {
             selection.add(actionSetList.get((int) (Math.random() * actionSetList.size())));
         }

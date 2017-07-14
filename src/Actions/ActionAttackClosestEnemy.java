@@ -15,13 +15,19 @@ public class ActionAttackClosestEnemy extends Action {
     @Override
     public int ExecuteOn(Unit unit) {
         Unit enemy = getTargetUnit();
-        if (enemy != null) {
-            unit.attack(enemy);
-            setTargetUnit(null);
-        } else {
+        if (enemy == null) {
             System.out.println("AttackClosestEnemy failed (Missing target).");
-            return -100;
+            return -40;
         }
+        bwapi.Position enemyPosition = enemy.getPosition();
+        int unitDistance = unit.getDistance(enemyPosition);
+        if (unitDistance > 160) {
+            System.out.println("AttackClosestEnemy failed (target unit too far away).");
+            setTargetUnit(null);
+            return -20;
+        }
+        unit.attack(enemy);
+        setTargetUnit(null);
         return 0;
     }
 

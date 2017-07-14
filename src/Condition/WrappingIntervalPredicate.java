@@ -26,7 +26,8 @@ public class WrappingIntervalPredicate extends PredicateBase {
 
     @Override
     void serialize(CSVWriter writer) {
-
+        writer.write(this.lowerBound);
+        writer.write(this.upperBound);
     }
 
     @Override

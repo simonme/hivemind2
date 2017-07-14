@@ -33,6 +33,7 @@ public class ActionAwayFromClosestEnemy extends Action {
             unit.move(targetPosition);
 
             setTargetUnit(null);
+
             return 0;
         }
         System.out.println("ActionAwayFromClosestEnemy failed (Missing target).");

@@ -16,14 +16,17 @@ public class ActionTriggerStimPack extends Action {
     @Override
     public int ExecuteOn(Unit unit) {
         Unit enemy = getTargetUnit();
-        if (unit.getType() == UnitType.Terran_Marine) {
+        if (unit.getType() == UnitType.Terran_Marine && enemy != null) {
+            bwapi.Position enemyPosition = enemy.getPosition();
+            int unitDistance = unit.getDistance(enemyPosition);
             if (unit.canUseTech(TechType.Stim_Packs)
-                    && enemy != null
-                    && unit.getDistance(enemy) < 350) {
+                    && unitDistance < 385) {
                 unit.useTech(TechType.Stim_Packs);
+                setTargetUnit(null);
                 return 0;
             }
         }
+        setTargetUnit(null);
         return -30;
     }
 

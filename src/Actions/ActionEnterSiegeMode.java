@@ -16,12 +16,17 @@ public class ActionEnterSiegeMode extends Action {
     @Override
     public int ExecuteOn(Unit unit) {
         Unit enemy = getTargetUnit();
-        if (unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode
-                && enemy != null
-                && unit.getDistance(enemy) < 350) {
-            unit.useTech(TechType.Tank_Siege_Mode);
-            return 0;
+        UnitType unitType = unit.getType();
+        if (unitType == UnitType.Terran_Siege_Tank_Tank_Mode && enemy != null) {
+            bwapi.Position enemyPosition = enemy.getPosition();
+            int unitDistance = unit.getDistance(enemyPosition);
+            if (unitDistance < 350) {
+                unit.useTech(TechType.Tank_Siege_Mode);
+                setTargetUnit(null);
+                return 0;
+            }
         }
+        setTargetUnit(null);
         return -20;
     }
 
