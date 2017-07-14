@@ -19,8 +19,8 @@ public class ActionSpiderMines extends Action {
     @Override
     public int ExecuteOn(Unit unit) {
         Unit enemy = getTargetUnit();
-        if(unit.getType() == UnitType.Terran_Vulture) {
-            if(unit.canUseTech(TechType.Spider_Mines, target.applyTo(unit.getPosition()))
+        if (unit.getType() == UnitType.Terran_Vulture) {
+            if (unit.canUseTech(TechType.Spider_Mines, target.applyTo(unit.getPosition()))
                     && enemy != null
                     && unit.getDistance(enemy) < 200) {
                 unit.useTech(TechType.Spider_Mines, target.applyTo(unit.getPosition()));
@@ -31,10 +31,10 @@ public class ActionSpiderMines extends Action {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof ActionSpiderMines))return false;
+        if (!(obj instanceof ActionSpiderMines)) return false;
         ActionSpiderMines other = (ActionSpiderMines) obj;
         return this.target.equals(other.target);
     }

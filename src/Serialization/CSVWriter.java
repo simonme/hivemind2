@@ -12,43 +12,34 @@ public class CSVWriter {
     private PrintWriter writer;
     private boolean isNewLine = true;
 
-    public CSVWriter(PrintWriter writer)
-    {
+    public CSVWriter(PrintWriter writer) {
         this.writer = writer;
     }
 
-    private void writeDelimiter()
-    {
-        if(isNewLine == false)
-        {
+    private void writeDelimiter() {
+        if (isNewLine == false) {
             writer.write(VALUE_DELIMITER);
-        }
-        else
-        {
+        } else {
             isNewLine = false;
         }
     }
 
-    public void write(double value)
-    {
+    public void write(double value) {
         writeDelimiter();
         writer.write(Double.toString(value));
     }
 
-    public void write(int value)
-    {
+    public void write(int value) {
         writeDelimiter();
         writer.write(Integer.toString(value));
     }
 
-    public void write(String value)
-    {
+    public void write(String value) {
         writeDelimiter();
         writer.write(value);
     }
 
-    public void newLine()
-    {
+    public void newLine() {
         writer.write(ENTRY_DELIMITER);
         isNewLine = true;
     }

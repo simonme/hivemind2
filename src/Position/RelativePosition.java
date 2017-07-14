@@ -17,11 +17,18 @@ public class RelativePosition {
         this.distance = distance;
     }
 
+    public static double computeAngle(Position origin, Position target) {
+        double deltaX = target.getX() - origin.getX();
+        double deltaY = target.getY() - origin.getY();
+
+        return Math.atan2(deltaY, deltaX);
+    }
+
     public Position applyTo(Position origin) {
         double deltaX = distance * Math.cos(angle);
         double deltaY = distance * Math.sin(angle);
 
-        return new Position(origin.getX() + (int)Math.round(deltaX), origin.getY() + (int)Math.round(deltaY));
+        return new Position(origin.getX() + (int) Math.round(deltaX), origin.getY() + (int) Math.round(deltaY));
     }
 
     public double getAngle() {
@@ -32,18 +39,11 @@ public class RelativePosition {
         return distance;
     }
 
-    public static double computeAngle(Position origin, Position target) {
-        double deltaX = target.getX() - origin.getX();
-        double deltaY = target.getY() - origin.getY();
-
-        return Math.atan2(deltaY, deltaX);
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof RelativePosition))return false;
+        if (!(obj instanceof RelativePosition)) return false;
         RelativePosition other = (RelativePosition) obj;
         return (this.angle == other.angle) && (this.distance == other.distance);
     }

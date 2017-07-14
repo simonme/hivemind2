@@ -13,7 +13,7 @@ public class VultureEvaluator implements IEvaluator {
     private int HP;
 
     public double evaluate(Unit unit, HashSet<Unit> alliedUnits) {
-        if(!isInitialized) {
+        if (!isInitialized) {
             killedUnitCount = unit.getKillCount();
             damageDealt += unit.isAttacking() ? unit.getType().groundWeapon().damageAmount() : 0;
             HP = unit.getHitPoints();
@@ -39,12 +39,9 @@ public class VultureEvaluator implements IEvaluator {
 
         // Ist das vielleicht ein bisschen zu explizit?
         double attackableEnemyReward = 0;
-        if(attackableEnemyUnitCount == 0)
-        {
+        if (attackableEnemyUnitCount == 0) {
             attackableEnemyReward = -20;
-        }
-        else
-        {
+        } else {
             attackableEnemyReward = (2 - attackableEnemyUnitCount) * 40;
         }
 

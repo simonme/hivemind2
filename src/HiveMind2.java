@@ -19,10 +19,10 @@ import java.util.*;
 
 public class HiveMind2 extends DefaultBWListener implements Runnable {
 
+    private static final String CSV_SUFFIX = ".csv";
+
     private final Mirror bwapi;
 
-    private static final String CSV_SUFFIX = ".csv";
-    
     private Game game;
 
     private Player self;
@@ -87,7 +87,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
     private void saveAIToCSV() { // Is saved on every match end
         if (XCSConfig.SHOULD_SAVE_TO_CSV) {
             System.out.println("Saving XCS to CSV");
-            Object [] test = AIs.keySet().toArray();
+            Object[] test = AIs.keySet().toArray();
             this.AIs.keySet().forEach(playerAIType -> {
                 String playerAITypeString = playerAIType.toString();
                 try {
@@ -95,8 +95,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
                     PrintWriter printWriter = new PrintWriter(fileWriter);
                     CSVWriter csvWriter = new CSVWriter(printWriter);
                     AIs.get(playerAIType).serialize(csvWriter);
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     System.out.println("Failed to serialize " + playerAITypeString);
                 }
             });
@@ -110,13 +109,10 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
 
         frame++;
         if (frame % 8 == 0) {
-            for(int i = 0; i < playerAIs.size(); i++)
-            {
+            for (int i = 0; i < playerAIs.size(); i++) {
                 try {
                     playerAIs.get(i).step();
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     System.out.println("Error executing AI");
                 }
             }
@@ -134,8 +130,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
         if (this.AIs.get(playerAIType) == null && XCSConfig.SHOULD_LOAD_FROM_CSV) {
             try {
                 this.AIs.put(playerAIType, new XCS(actionMap.getActions(playerAIType), new Scanner(new FileReader(XCSConfig.CSV_PREFIX + playerAIType.toString() + CSV_SUFFIX)), PredicateMap.getFactory(playerAIType)));
-            }
-            catch(Exception ex) {
+            } catch (Exception ex) {
                 System.out.println("Failed reading csv: " + ex.getMessage());
             }
         }
@@ -166,13 +161,13 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
 
     @Override
     public void onUnitDestroy(Unit unit) {
-    	if(this.enemyUnits.contains(unit)){
+        if (this.enemyUnits.contains(unit)) {
             this.enemyUnits.remove(unit);
-    	} else if (this.alliedUnits.contains(unit)) {
-    	    this.alliedUnits.remove(unit);
+        } else if (this.alliedUnits.contains(unit)) {
+            this.alliedUnits.remove(unit);
         }
     }
-    
+
 
     @Override
     public void onEnd(boolean winner) {

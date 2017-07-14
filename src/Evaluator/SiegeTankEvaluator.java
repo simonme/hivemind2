@@ -17,7 +17,7 @@ public class SiegeTankEvaluator implements IEvaluator {
     private int HP;
 
     public double evaluate(Unit unit, HashSet<Unit> alliedUnits) {
-        if(!isInitialized) {
+        if (!isInitialized) {
             killedUnitCount = unit.getKillCount();
             damageDealt += unit.isAttacking() ? unit.getType().groundWeapon().damageAmount() : 0;
             HP = unit.getHitPoints();
@@ -53,7 +53,7 @@ public class SiegeTankEvaluator implements IEvaluator {
     private double getClosestUnitOfType(Unit unit, HashSet<Unit> alliedUnits, UnitType type) {
         double minDistance = Double.POSITIVE_INFINITY;
         for (Unit ally : alliedUnits) {
-            if (ally.getType() == type && ally.exists()){
+            if (ally.getType() == type && ally.exists()) {
                 double distance = getDistance(unit, ally);
                 if (distance < minDistance) {
                     minDistance = distance;

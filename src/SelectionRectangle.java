@@ -11,8 +11,7 @@ public class SelectionRectangle {
     private double offsetBase;
     private double offsetRange;
 
-    public SelectionRectangle(CustomPosition base, CustomPosition offsetDirection, double offsetLength, double offsetRange)
-    {
+    public SelectionRectangle(CustomPosition base, CustomPosition offsetDirection, double offsetLength, double offsetRange) {
         // Nur so als Verständnishilfe:
         // Das berechnet hier eine inverse Basiswechselmatrix und behält dann nur die erste Zeile.
         // Die andere Basis ist aus der offsetDirection (normalisiert) und einem dazu orthogonalen Vektor aufgebaut.
@@ -39,18 +38,15 @@ public class SelectionRectangle {
         this.offsetRange = offsetRange;
     }
 
-    public void setOffsetLength(double offsetLength)
-    {
+    public void setOffsetLength(double offsetLength) {
         this.offsetLength = offsetLength;
     }
 
-    private double getDistanceInOffsetDirection(bwapi.Position position)
-    {
+    private double getDistanceInOffsetDirection(bwapi.Position position) {
         return v1 * position.getX() + v2 * position.getY();
     }
 
-    public List<Unit> apply(List<Unit> units)
-    {
+    public List<Unit> apply(List<Unit> units) {
         List<Unit> selection = new ArrayList<>(units);
 
         selection.removeIf(unit -> Math.abs(getDistanceInOffsetDirection(unit.getPosition()) - offsetBase - offsetLength) > offsetRange);

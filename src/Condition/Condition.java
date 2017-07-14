@@ -20,8 +20,7 @@ public class Condition {
         this.intervalPredicates = predicates;
     }
 
-    public Condition(Scanner scanner, PredicateFactory predicateFactory)
-    {
+    public Condition(Scanner scanner, PredicateFactory predicateFactory) {
         intervalPredicates = predicateFactory.deserializePredicates(scanner);
     }
 
@@ -33,8 +32,8 @@ public class Condition {
     }
 
     public boolean matches(Situation sigmaT) {
-        ArrayList<Double>features = sigmaT.getFeatures();
-        for (int i = 0; i < features.size(); i++){
+        ArrayList<Double> features = sigmaT.getFeatures();
+        for (int i = 0; i < features.size(); i++) {
             if (!(intervalPredicates.get(i).contains(features.get(i))))
                 return false;
         }
@@ -42,7 +41,7 @@ public class Condition {
     }
 
     public boolean isMoreGeneral(Condition other) {
-        for (int i = 0; i < intervalPredicates.size(); i++){
+        for (int i = 0; i < intervalPredicates.size(); i++) {
             if (!(intervalPredicates.get(i).isMoreGeneral(other.intervalPredicates.get(i))))
                 return false;
         }
@@ -63,13 +62,13 @@ public class Condition {
         int conditionLength = intervalPredicates.size() * 2;
 
         int cross = random.nextInt(conditionLength);
-        if(cross % 2 == 1) {
-            int index = (int)Math.floor(cross / 2);
+        if (cross % 2 == 1) {
+            int index = (int) Math.floor(cross / 2);
             cross--;
             intervalPredicates.get(index).crossover(other.intervalPredicates.get(index), true);
         }
         cross /= 2;
-        for(int index = cross; index < intervalPredicates.size(); index++) {
+        for (int index = cross; index < intervalPredicates.size(); index++) {
             PredicateBase tmp = intervalPredicates.get(index);
             intervalPredicates.set(index, other.intervalPredicates.get(index));
             other.intervalPredicates.set(index, tmp);
@@ -81,24 +80,24 @@ public class Condition {
 
         int start = random.nextInt(conditionLength);
         int end = random.nextInt(conditionLength);
-        if(start > end) {
+        if (start > end) {
             int tmp = start;
             start = end;
             end = tmp;
         }
-        if(start % 2 == 1) {
-            int index = (int)Math.floor(start / 2);
+        if (start % 2 == 1) {
+            int index = (int) Math.floor(start / 2);
             start++;
             intervalPredicates.get(index).crossover(other.intervalPredicates.get(index), true);
         }
-        if(end % 2 == 1) {
-            int index = (int)Math.floor(end / 2);
+        if (end % 2 == 1) {
+            int index = (int) Math.floor(end / 2);
             end--;
             intervalPredicates.get(index).crossover(other.intervalPredicates.get(index), false);
         }
         start /= 2;
         end /= 2;
-        for(int index = start; index < end; index++) {
+        for (int index = start; index < end; index++) {
             PredicateBase tmp = intervalPredicates.get(index);
             intervalPredicates.set(index, other.intervalPredicates.get(index));
             other.intervalPredicates.set(index, tmp);
@@ -106,7 +105,7 @@ public class Condition {
     }
 
     private void uniformCrossover(Condition other, Random random) {
-        for(int index = 0; index < intervalPredicates.size(); index++) {
+        for (int index = 0; index < intervalPredicates.size(); index++) {
             if (random.nextDouble() < XCSConfig.chi) {
                 PredicateBase tmp = intervalPredicates.get(index);
                 intervalPredicates.set(index, other.intervalPredicates.get(index));
@@ -126,7 +125,7 @@ public class Condition {
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof Condition))return false;
+        if (!(obj instanceof Condition)) return false;
         Condition other = (Condition) obj;
         return this.intervalPredicates.equals(other.intervalPredicates);
     }

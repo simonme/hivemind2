@@ -1,9 +1,11 @@
 import Actions.*;
 import Evaluator.IEvaluator;
+import Position.PositionHelper;
 import Situation.ISituationFactory;
 import Situation.Situation;
-import Position.PositionHelper;
-import bwapi.*;
+import bwapi.Mirror;
+import bwapi.Position;
+import bwapi.Unit;
 
 import java.util.HashSet;
 
@@ -36,7 +38,7 @@ public class PlayerAI {
         // System.out.println("stepping " + unit.getID() + " " + unit.getType());
         final Unit closestEnemy = getClosestEnemy();
         final Unit lowestHealableAlly = PositionHelper.getLowestHealable(alliedUnits);
-        if (actionTime > 0){
+        if (actionTime > 0) {
 //            System.out.println(actionTime);
             actionTime--;
             return;
@@ -45,17 +47,15 @@ public class PlayerAI {
         final Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit, this.alliedUnits) + immediateReward, unit.getID());
         if (action.hasDuration())
             this.actionTime = action.getDuration();
-        if(action.isRequiresTargetUnit()) {
-            if(action instanceof ActionAttackClosestEnemy
+        if (action.isRequiresTargetUnit()) {
+            if (action instanceof ActionAttackClosestEnemy
                     || action instanceof ActionAwayFromClosestEnemy
                     || action instanceof ActionSpiderMines
-                    || action instanceof ActionTriggerStimPack)
-            {
+                    || action instanceof ActionTriggerStimPack) {
                 action.setTargetUnit(closestEnemy);
             }
-            if(action instanceof ActionHeal)
-            {
-                 action.setTargetUnit(lowestHealableAlly);
+            if (action instanceof ActionHeal) {
+                action.setTargetUnit(lowestHealableAlly);
             }
         }
         if (action.isRequiresBoidingMove()) {
@@ -87,15 +87,15 @@ public class PlayerAI {
         return result;
     }
 
-    public Unit getUnit(){
+    public Unit getUnit() {
         return unit;
     }
 
-    public AI getAi(){
+    public AI getAi() {
         return ai;
     }
 
     private double getDistance(Unit enemy) {
-    	return this.unit.getPosition().getDistance(enemy.getPosition());
+        return this.unit.getPosition().getDistance(enemy.getPosition());
     }
 }

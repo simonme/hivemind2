@@ -17,29 +17,23 @@ public abstract class PredicateBase {
 
     abstract boolean contains(double d);
 
-    boolean isMoreGeneral(PredicateBase other)
-    {
+    boolean isMoreGeneral(PredicateBase other) {
         return (this.lowerBound <= other.lowerBound) && (this.upperBound >= other.upperBound);
     }
 
-    void crossover(PredicateBase other, boolean firstHalf)
-    {
-        if(firstHalf)
-        {
+    void crossover(PredicateBase other, boolean firstHalf) {
+        if (firstHalf) {
             double tmp = this.lowerBound;
             this.lowerBound = other.lowerBound;
             other.lowerBound = tmp;
-        }
-        else
-        {
+        } else {
             double tmp = this.upperBound;
             this.upperBound = other.upperBound;
             other.upperBound = tmp;
         }
     }
 
-    void mutate(Random random)
-    {
+    void mutate(Random random) {
         double sign1 = random.nextDouble();
         double sign2 = random.nextDouble();
         double rand1 = random.nextDouble() * XCSConfig.m0;

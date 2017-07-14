@@ -15,10 +15,8 @@ public class ActionMove extends Action {
     }
 
     @Override
-    public int ExecuteOn(Unit unit)
-    {
-        if(unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode)
-        {
+    public int ExecuteOn(Unit unit) {
+        if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode) {
             return -50;
         }
         unit.move(movement.applyTo(unit.getPosition()));
@@ -26,10 +24,10 @@ public class ActionMove extends Action {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof ActionMove))return false;
+        if (!(obj instanceof ActionMove)) return false;
         ActionMove other = (ActionMove) obj;
         return this.movement.equals(other.movement);
     }

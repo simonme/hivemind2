@@ -8,9 +8,9 @@ import bwapi.Unit;
 public abstract class Action {
     protected boolean requiresTargetUnit = false;
     protected boolean requiresBoidingMove = false;
+    protected int duration = 0;
     private Unit targetUnit = null;
     private bwapi.Position boidingMove;
-    protected int duration = 0;
 
     public abstract int ExecuteOn(Unit unit);
 
@@ -42,7 +42,9 @@ public abstract class Action {
         this.boidingMove = boidingMove;
     }
 
-    public boolean hasDuration(){ return duration != 0; }
+    public boolean hasDuration() {
+        return duration != 0;
+    }
 
     public int getDuration() {
         return duration;

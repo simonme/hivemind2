@@ -32,11 +32,9 @@ public class XCS implements AI {
 
     public XCS(ArrayList<Action> possibleActions, Scanner reader, PredicateFactory predicateFactory) {
         this(possibleActions, predicateFactory);
-        while(reader.hasNextLine())
-        {
+        while (reader.hasNextLine()) {
             String line = reader.nextLine();
-            if(line.split(";").length != 18)
-            {
+            if (line.split(";").length != 18) {
                 break;
             }
 
@@ -54,8 +52,8 @@ public class XCS implements AI {
     @Override
     public void serialize(CSVWriter writer) {
         //System.out.println("Population count: " + population.stream().mapToInt(Classifier::getNumerosity).sum());
-        for (Classifier classifier:
-             population) {
+        for (Classifier classifier :
+                population) {
             classifier.serialize(writer, possibleActions);
             writer.newLine();
         }
@@ -63,11 +61,10 @@ public class XCS implements AI {
 
     @Override
     public Action step(Situation sigmaT, double reward, int unitID) {
-        if(actionSetHistory.containsKey(unitID) == false)
-        {
+        if (actionSetHistory.containsKey(unitID) == false) {
             actionSetHistory.put(unitID, new LinkedList<>());
         }
-        if(actionSetHistory.get(unitID).size() > 0) { // we could also test if timestamp > 0
+        if (actionSetHistory.get(unitID).size() > 0) { // we could also test if timestamp > 0
 
             actionSetHistory.get(unitID).forEach(actionSet -> {
                 final int actionSetSize = actionSet.stream().mapToInt(Classifier::getNumerosity).sum();
@@ -75,13 +72,14 @@ public class XCS implements AI {
                 LinkedHashMap<Classifier, Double> accuracies = new LinkedHashMap<>();
                 for (Classifier classifier1 : actionSet) {
                     if (classifier1.getError() < XCSConfig.epsilon0) accuracies.put(classifier1, 1.0);
-                    else accuracies.put(classifier1, XCSConfig.alpha * Math.pow(classifier1.getError() / XCSConfig.epsilon0, XCSConfig.nu));
+                    else
+                        accuracies.put(classifier1, XCSConfig.alpha * Math.pow(classifier1.getError() / XCSConfig.epsilon0, XCSConfig.nu));
                     accuracySum += accuracies.get(classifier1) * classifier1.getNumerosity();
                 }
                 for (Classifier classifier : actionSet) {
                     classifier.update(reward, actionSetSize, accuracies.get(classifier), accuracySum);
                 }
-                if(XCSConfig.doActionSetSubsumption) {
+                if (XCSConfig.doActionSetSubsumption) {
                     actionSetSubsumption(actionSet);
                 }
                 if (actionSet.size() > 0) { // TODO: why could this ever be empty?
@@ -90,7 +88,7 @@ public class XCS implements AI {
             });
 
             // Only using A and A_-1 right now, so discard older action sets
-            if(actionSetHistory.get(unitID).size() > 1) {
+            if (actionSetHistory.get(unitID).size() > 1) {
                 actionSetHistory.get(unitID).removeLast();
             }
         }
@@ -102,25 +100,20 @@ public class XCS implements AI {
         return chosenAction;
     }
 
-    private void actionSetSubsumption(Set<Classifier> actionSet)
-    {
+    private void actionSetSubsumption(Set<Classifier> actionSet) {
         Classifier cl = null;
         for (Classifier classifier :
                 actionSet) {
-            if (couldSubsume(classifier))
-            {
-                if(cl == null || classifier.getCondition().isMoreGeneral(cl.getCondition()))
-                {
+            if (couldSubsume(classifier)) {
+                if (cl == null || classifier.getCondition().isMoreGeneral(cl.getCondition())) {
                     cl = classifier;
                 }
             }
         }
-        if(cl != null)
-        {
+        if (cl != null) {
             for (Classifier classifier :
                     actionSet) {
-                if(cl.getCondition().isMoreGeneral(classifier.getCondition()))
-                {
+                if (cl.getCondition().isMoreGeneral(classifier.getCondition())) {
                     cl.setNumerosity(cl.getNumerosity() + classifier.getNumerosity());
                     actionSet.remove(classifier);
                     population.remove(classifier);
@@ -194,8 +187,7 @@ public class XCS implements AI {
         Set<Action> usedActions = set.stream().map(Classifier::getAction).collect(Collectors.toSet());
         for (int i = 0; i < possibleActions.size(); i++) {
             Action action = possibleActions.get(i);
-            if(!usedActions.contains(action))
-            {
+            if (!usedActions.contains(action)) {
                 unusedActions.add(action);
             }
         }
@@ -230,32 +222,26 @@ public class XCS implements AI {
     private void deleteFromPopulation() {
         int sumNumerosityInPopulation = population.stream().mapToInt(Classifier::getNumerosity).sum();
         double sumFitnessInPopulation = population.stream().mapToInt(Classifier::getNumerosity).sum();
-        if(sumNumerosityInPopulation < XCSConfig.N) {
+        if (sumNumerosityInPopulation < XCSConfig.N) {
             return;
         }
 
         double averageFitnessInPopulation = sumFitnessInPopulation / sumNumerosityInPopulation;
         double voteSum = 0;
-        for (Classifier cl: population) {
+        for (Classifier cl : population) {
             voteSum += deletionVote(cl, averageFitnessInPopulation);
         }
         double choicePoint = Math.random() * voteSum;
         voteSum = 0;
-        for (Classifier cl: population) {
+        for (Classifier cl : population) {
             voteSum += deletionVote(cl, averageFitnessInPopulation);
-            if(voteSum > choicePoint)
-            {
-                if(cl.getNumerosity() > 1)
-                {
+            if (voteSum > choicePoint) {
+                if (cl.getNumerosity() > 1) {
                     cl.setNumerosity(cl.getNumerosity() - 1);
-                }
-                else
-                {
+                } else {
                     boolean deleteSuccessful = population.remove(cl);
-                    if(!deleteSuccessful)
-                    {
-                        if(cl.hashOnEnter != cl.hashCode())
-                        {
+                    if (!deleteSuccessful) {
+                        if (cl.hashOnEnter != cl.hashCode()) {
                             System.out.println("Delete: HashCode changed");
                         }
                     }
@@ -268,17 +254,14 @@ public class XCS implements AI {
     private double deletionVote(Classifier cl, double averageFitnessInPopulation) {
         double vote = cl.getMeanActionSetSize() * cl.getNumerosity();
         double relativeFitness = cl.getFitness() / cl.getNumerosity();
-        if((cl.getExperience() > XCSConfig.thetaDEL) && (relativeFitness > (XCSConfig.delta * averageFitnessInPopulation)))
-        {
+        if ((cl.getExperience() > XCSConfig.thetaDEL) && (relativeFitness > (XCSConfig.delta * averageFitnessInPopulation))) {
             vote *= averageFitnessInPopulation / relativeFitness;
         }
         return vote;
     }
 
-    private void runGA(Set<Classifier> actionSet)
-    {
-        if(timestamp - actionSet.stream().mapToInt(classifier -> classifier.getLastGA() * classifier.getNumerosity()).sum() / actionSet.stream().mapToInt(Classifier::getNumerosity).sum() > XCSConfig.thetaGA)
-        {
+    private void runGA(Set<Classifier> actionSet) {
+        if (timestamp - actionSet.stream().mapToInt(classifier -> classifier.getLastGA() * classifier.getNumerosity()).sum() / actionSet.stream().mapToInt(Classifier::getNumerosity).sum() > XCSConfig.thetaGA) {
             for (Classifier classifier :
                     actionSet) {
                 classifier.setLastGA(timestamp);
@@ -294,8 +277,7 @@ public class XCS implements AI {
             child2.setTimeStamp(timestamp);
             child2.setExperience(0);
 
-            if(random.nextDouble() < XCSConfig.chi)
-            {
+            if (random.nextDouble() < XCSConfig.chi) {
                 child1.getCondition().crossover(child2.getCondition(), random);
                 double prediction = (parent1.getPrediction() + parent2.getPrediction()) / 2;
                 double error = 0.25 * (parent1.getError() + parent2.getError()) / 2;
@@ -316,31 +298,22 @@ public class XCS implements AI {
 
     private void continueGA(Classifier parent1, Classifier parent2, Classifier child) {
         child.getCondition().mutate(random);
-        if(random.nextDouble() > XCSConfig.my)
-        {
+        if (random.nextDouble() > XCSConfig.my) {
             Action action;
             do {
                 action = possibleActions.get(random.nextInt(possibleActions.size()));
-            } while(action == child.getAction());
+            } while (action == child.getAction());
             child.setAction(action);
         }
-        if(XCSConfig.doGASubsumption)
-        {
-            if(doesSubsume(parent1, child))
-            {
+        if (XCSConfig.doGASubsumption) {
+            if (doesSubsume(parent1, child)) {
                 parent1.setNumerosity(parent1.getNumerosity() + 1);
-            }
-            else if(doesSubsume(parent2, child))
-            {
+            } else if (doesSubsume(parent2, child)) {
                 parent2.setNumerosity(parent2.getNumerosity() + 1);
-            }
-            else
-            {
+            } else {
                 InsertInPopulation(child);
             }
-        }
-        else
-        {
+        } else {
             InsertInPopulation(child);
         }
         deleteFromPopulation();
@@ -349,8 +322,7 @@ public class XCS implements AI {
     private void InsertInPopulation(Classifier child) {
         for (Classifier classifier :
                 population) {
-            if (classifier.getCondition().equals(child.getCondition()) && classifier.getAction().equals(child.getAction()))
-            {
+            if (classifier.getCondition().equals(child.getCondition()) && classifier.getAction().equals(child.getAction())) {
                 classifier.setNumerosity(classifier.getNumerosity() + 1);
                 return;
             }
@@ -359,14 +331,10 @@ public class XCS implements AI {
         child.hashOnEnter = child.hashCode();
     }
 
-    private boolean doesSubsume(Classifier parent, Classifier child)
-    {
-        if(parent.getAction().equals(child.getAction()))
-        {
-            if(couldSubsume(parent))
-            {
-                if(parent.getCondition().isMoreGeneral(child.getCondition()))
-                {
+    private boolean doesSubsume(Classifier parent, Classifier child) {
+        if (parent.getAction().equals(child.getAction())) {
+            if (couldSubsume(parent)) {
+                if (parent.getCondition().isMoreGeneral(child.getCondition())) {
                     return true;
                 }
             }
@@ -374,25 +342,20 @@ public class XCS implements AI {
         return false;
     }
 
-    private boolean couldSubsume(Classifier parent)
-    {
-        if(parent.getExperience() > XCSConfig.thetaSUB)
-        {
-            if(parent.getError() < XCSConfig.epsilon0)
-            {
+    private boolean couldSubsume(Classifier parent) {
+        if (parent.getExperience() > XCSConfig.thetaSUB) {
+            if (parent.getError() < XCSConfig.epsilon0) {
                 return true;
             }
         }
         return false;
     }
 
-    private Classifier selectParent(Set<Classifier> actionSet)
-    {
+    private Classifier selectParent(Set<Classifier> actionSet) {
         Classifier parent = null;
-        if (XCSConfig.selectionType == SelectionType.ROULETTE_WHEEL){
+        if (XCSConfig.selectionType == SelectionType.ROULETTE_WHEEL) {
             parent = doRouletteWheelSelection(actionSet);
-        }
-        else if (xcsConfig.selectionType == SelectionType.TOURNAMENT){
+        } else if (xcsConfig.selectionType == SelectionType.TOURNAMENT) {
             parent = doTournamentSelection(actionSet);
         }
         return parent;
@@ -401,17 +364,17 @@ public class XCS implements AI {
 
     private Classifier doTournamentSelection(Set<Classifier> actionSet) {
         Classifier parent = null;
-        int tournamentSize = (int)Math.round(actionSet.size() * XCSConfig.tournamentSize);
+        int tournamentSize = (int) Math.round(actionSet.size() * XCSConfig.tournamentSize);
         if (tournamentSize <= 1)
             tournamentSize = 2;
         int maxFitness = Integer.MIN_VALUE;
-        ArrayList<Classifier>actionSetList = new ArrayList(actionSet);
-        ArrayList<Classifier>selection = new ArrayList();
-        while (selection.size() < tournamentSize){
-            selection.add(actionSetList.get((int)(Math.random()*actionSetList.size())));
+        ArrayList<Classifier> actionSetList = new ArrayList(actionSet);
+        ArrayList<Classifier> selection = new ArrayList();
+        while (selection.size() < tournamentSize) {
+            selection.add(actionSetList.get((int) (Math.random() * actionSetList.size())));
         }
-        for (Classifier cl : selection){
-            if (cl.getFitness() >= maxFitness){
+        for (Classifier cl : selection) {
+            if (cl.getFitness() >= maxFitness) {
                 parent = cl;
             }
         }
@@ -425,8 +388,7 @@ public class XCS implements AI {
         for (Classifier classifier :
                 actionSet) {
             fitnessSum += classifier.getFitness();
-            if(fitnessSum > choicePoint)
-            {
+            if (fitnessSum > choicePoint) {
                 return classifier;
             }
         }

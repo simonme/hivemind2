@@ -9,12 +9,12 @@ import bwapi.UnitType;
  */
 public class ActionExitSiegeMode extends Action {
 
-    public ActionExitSiegeMode() { }
+    public ActionExitSiegeMode() {
+    }
 
     @Override
     public int ExecuteOn(Unit unit) {
-        if(unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode)
-        {
+        if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode) {
             unit.useTech(TechType.Tank_Siege_Mode);
             return 0;
         }
@@ -22,10 +22,10 @@ public class ActionExitSiegeMode extends Action {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof ActionExitSiegeMode))return false;
+        if (!(obj instanceof ActionExitSiegeMode)) return false;
         else return true;
     }
 

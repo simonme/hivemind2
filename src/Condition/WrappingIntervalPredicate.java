@@ -1,8 +1,9 @@
 package Condition;
 
+import Serialization.CSVWriter;
+
 import java.util.Objects;
 import java.util.Scanner;
-import Serialization.CSVWriter;
 
 /**
  * Created by Jakob on 01.06.2017.
@@ -11,8 +12,7 @@ public class WrappingIntervalPredicate extends PredicateBase {
 
     private double wrappingValue;
 
-    public WrappingIntervalPredicate(double lowerBound, double upperBound, double wrappingValue)
-    {
+    public WrappingIntervalPredicate(double lowerBound, double upperBound, double wrappingValue) {
         this.lowerBound = lowerBound % wrappingValue;
         this.upperBound = upperBound % wrappingValue;
         this.wrappingValue = wrappingValue;
@@ -32,33 +32,27 @@ public class WrappingIntervalPredicate extends PredicateBase {
     @Override
     boolean contains(double d) {
         double value = d % wrappingValue;
-        if(lowerBound <= upperBound)
-        {
+        if (lowerBound <= upperBound) {
             return (value >= lowerBound && value <= upperBound);
-        }
-        else
-        {
+        } else {
             return (value <= lowerBound || value >= upperBound);
         }
     }
 
     @Override
     boolean isMoreGeneral(PredicateBase other) {
-        if(this.lowerBound <= this.upperBound)
-        {
+        if (this.lowerBound <= this.upperBound) {
             return (other.lowerBound >= this.lowerBound && other.upperBound <= this.upperBound);
-        }
-        else
-        {
+        } else {
             return (other.lowerBound <= this.lowerBound && other.upperBound >= this.upperBound);
         }
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof WrappingIntervalPredicate))return false;
+        if (!(obj instanceof WrappingIntervalPredicate)) return false;
         WrappingIntervalPredicate other = (WrappingIntervalPredicate) obj;
         return this.lowerBound == other.lowerBound
                 && this.upperBound == other.upperBound;

@@ -9,23 +9,21 @@ import bwapi.Unit;
 public class ActionAttackMove extends Action {
     private RelativePosition movement;
 
-    public ActionAttackMove(RelativePosition movement)
-    {
+    public ActionAttackMove(RelativePosition movement) {
         this.movement = movement;
     }
 
     @Override
-    public int ExecuteOn(Unit unit)
-    {
+    public int ExecuteOn(Unit unit) {
         unit.attack(movement.applyTo(unit.getPosition()));
         return 0;
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof ActionAttackMove))return false;
+        if (!(obj instanceof ActionAttackMove)) return false;
         ActionAttackMove other = (ActionAttackMove) obj;
         return this.movement.equals(other.movement);
     }

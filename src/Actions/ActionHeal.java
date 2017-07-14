@@ -9,24 +9,21 @@ import bwapi.UnitType;
  */
 public class ActionHeal extends Action {
 
-    public ActionHeal() { this.requiresTargetUnit = true; }
+    public ActionHeal() {
+        this.requiresTargetUnit = true;
+    }
 
     @Override
     public int ExecuteOn(Unit unit) {
-        if(unit.getType() == UnitType.Terran_Medic)
-        {
+        if (unit.getType() == UnitType.Terran_Medic) {
             Unit ally = getTargetUnit();
-            if(ally != null)
-            {
-                if(unit.canUseTech(TechType.Healing, ally))
-                {
+            if (ally != null) {
+                if (unit.canUseTech(TechType.Healing, ally)) {
                     unit.useTech(TechType.Healing, ally);
                     return 0;
                 }
                 setTargetUnit(null);
-            }
-            else
-            {
+            } else {
                 System.out.println("Heal failed (Missing target).");
                 return -100;
             }
@@ -35,10 +32,10 @@ public class ActionHeal extends Action {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof ActionHeal))return false;
+        if (!(obj instanceof ActionHeal)) return false;
         else return true;
     }
 

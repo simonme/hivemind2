@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class ActionMap {
 
-    private Map<PlayerAIType, ArrayList<Action>> actions = Collections.synchronizedMap(new EnumMap<PlayerAIType,  ArrayList<Action>>(PlayerAIType.class));
+    private Map<PlayerAIType, ArrayList<Action>> actions = Collections.synchronizedMap(new EnumMap<PlayerAIType, ArrayList<Action>>(PlayerAIType.class));
 
     public ActionMap() {
         ArrayList<Action> marineActions = new ArrayList<>();
@@ -45,7 +45,7 @@ public class ActionMap {
         vultureActions.add(new ActionIdle());
         vultureActions.add(new ActionBoidingMove());
         vultureActions.add(new ActionAwayFromClosestEnemy());
-        vultureActions.add(new ActionSpiderMines(new RelativePosition(0+0.0, 0)));
+        vultureActions.add(new ActionSpiderMines(new RelativePosition(0 + 0.0, 0)));
         vultureActions.add(new ActionAttackClosestEnemy());
         actions.put(PlayerAIType.VULTURE, vultureActions);
     }

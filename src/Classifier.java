@@ -1,5 +1,6 @@
 import Actions.Action;
-import Condition.*;
+import Condition.Condition;
+import Condition.PredicateFactory;
 import Configuration.XCSConfig;
 import Serialization.CSVWriter;
 import Situation.Situation;
@@ -12,6 +13,7 @@ import java.util.Scanner;
  * Created by Simon on 15.05.2017.
  */
 public class Classifier {
+    public int hashOnEnter = 0;
     private Condition condition;
     private Action action;
     private double prediction;
@@ -23,8 +25,6 @@ public class Classifier {
     private int numerosity = 1;
     private int timeStamp = 0;
 
-    public int hashOnEnter = 0;
-
     public Classifier(Condition cond, Action act, double pred, double error, double fitness, double exp, int ts) {
         setCondition(cond);
         setAction(act);
@@ -35,8 +35,7 @@ public class Classifier {
         setTimeStamp(ts);
     }
 
-    public Classifier(Scanner scanner, ArrayList<Action> possibleActions, PredicateFactory predicateFactory)
-    {
+    public Classifier(Scanner scanner, ArrayList<Action> possibleActions, PredicateFactory predicateFactory) {
         setPrediction(Double.parseDouble(scanner.next()));
         setError(Double.parseDouble(scanner.next()));
         setFitness(Double.parseDouble(scanner.next()));
@@ -48,8 +47,7 @@ public class Classifier {
         setCondition(new Condition(scanner, predicateFactory));
     }
 
-    public void serialize(CSVWriter writer, ArrayList<Action> possibleActions)
-    {
+    public void serialize(CSVWriter writer, ArrayList<Action> possibleActions) {
         writer.write(getPrediction());
         writer.write(getError());
         writer.write(getFitness());
@@ -61,22 +59,22 @@ public class Classifier {
         getCondition().serialize(writer);
     }
 
-    public void update(double reward, int totalActionSetSize,  double accuracy, double accuracySum) {
+    public void update(double reward, int totalActionSetSize, double accuracy, double accuracySum) {
         experience++;
         // update prediction
-        if (experience < 1/XCSConfig.beta) {
+        if (experience < 1 / XCSConfig.beta) {
             prediction += (reward - prediction) / experience;
         } else {
             prediction += XCSConfig.beta * (reward - prediction);
         }
         // update prediction error
-        if (experience < 1/ XCSConfig.beta) {
+        if (experience < 1 / XCSConfig.beta) {
             error += (Math.abs(reward - prediction) - error) / experience;
         } else {
             error += XCSConfig.beta * (Math.abs(reward - prediction) - error);
         }
         // update action set size estimate
-        if (experience < 1/XCSConfig.beta) {
+        if (experience < 1 / XCSConfig.beta) {
             meanActionSetSize += (totalActionSetSize - meanActionSetSize) / experience;
         } else {
             meanActionSetSize += XCSConfig.beta * (totalActionSetSize - meanActionSetSize);
@@ -171,10 +169,10 @@ public class Classifier {
 
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof Classifier))return false;
+        if (!(obj instanceof Classifier)) return false;
         Classifier other = (Classifier) obj;
         return this.condition.equals(other.condition)
                 && this.action.equals(other.action)

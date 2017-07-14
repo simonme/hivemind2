@@ -8,5 +8,6 @@ import Situation.Situation;
 public interface AI {
 
     public Action step(Situation sigmaT, double reward, int unitID);
+
     public void serialize(CSVWriter writer);
 }

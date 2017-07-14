@@ -1,11 +1,6 @@
 package Situation;
 
-import Position.RelativePosition;
-
-import bwapi.Unit;
-import bwapi.Position;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Created by Simon on 15.05.2017.

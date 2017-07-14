@@ -7,23 +7,18 @@ import bwapi.Unit;
  */
 public class ActionAttackClosestEnemy extends Action {
 
-    public ActionAttackClosestEnemy()
-    {
+    public ActionAttackClosestEnemy() {
         this.requiresTargetUnit = true;
         this.duration = 15;
     }
 
     @Override
-    public int ExecuteOn(Unit unit)
-    {
+    public int ExecuteOn(Unit unit) {
         Unit enemy = getTargetUnit();
-        if(enemy != null)
-        {
+        if (enemy != null) {
             unit.attack(enemy);
             setTargetUnit(null);
-        }
-        else
-        {
+        } else {
             System.out.println("AttackClosestEnemy failed (Missing target).");
             return -100;
         }
@@ -31,7 +26,7 @@ public class ActionAttackClosestEnemy extends Action {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
         if (!(obj instanceof ActionAttackMove)) return false;

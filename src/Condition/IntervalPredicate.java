@@ -10,51 +10,43 @@ import java.util.Scanner;
 /**
  * Created by Ferdi on 23.05.2017.
  */
-public class IntervalPredicate extends PredicateBase
-{
+public class IntervalPredicate extends PredicateBase {
     IntervalPredicate(double lowerBound, double upperBound) throws InvalidParameterException {
-        if(lowerBound > upperBound)
-        {
+        if (lowerBound > upperBound) {
             throw new InvalidParameterException("lowerBound has to be less than or equal to upperBound");
         }
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
     }
 
-    IntervalPredicate(Scanner scanner)
-    {
+    IntervalPredicate(Scanner scanner) {
         this.lowerBound = Double.parseDouble(scanner.next());
         this.upperBound = Double.parseDouble(scanner.next());
     }
 
-    void serialize(CSVWriter writer)
-    {
+    void serialize(CSVWriter writer) {
         writer.write(this.lowerBound);
         writer.write(this.upperBound);
     }
 
 
-    boolean contains(double d){
+    boolean contains(double d) {
         return (lowerBound <= d) && (upperBound >= d);
     }
 
-    void crossover(IntervalPredicate other, boolean firstHalf)
-    {
+    void crossover(IntervalPredicate other, boolean firstHalf) {
         super.crossover(other, firstHalf);
         reorder();
         other.reorder();
     }
 
-    void mutate(Random random)
-    {
+    void mutate(Random random) {
         super.mutate(random);
         reorder();
     }
 
-    private void reorder()
-    {
-        if(lowerBound > upperBound)
-        {
+    private void reorder() {
+        if (lowerBound > upperBound) {
             double tmp = lowerBound;
             lowerBound = upperBound;
             upperBound = tmp;
@@ -62,10 +54,10 @@ public class IntervalPredicate extends PredicateBase
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof IntervalPredicate))return false;
+        if (!(obj instanceof IntervalPredicate)) return false;
         IntervalPredicate other = (IntervalPredicate) obj;
         return this.lowerBound == other.lowerBound
                 && this.upperBound == other.upperBound;

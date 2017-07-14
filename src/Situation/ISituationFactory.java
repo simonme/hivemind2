@@ -2,7 +2,6 @@ package Situation;
 
 import bwapi.Unit;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**

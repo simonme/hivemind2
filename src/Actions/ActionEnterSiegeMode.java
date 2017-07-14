@@ -16,7 +16,7 @@ public class ActionEnterSiegeMode extends Action {
     @Override
     public int ExecuteOn(Unit unit) {
         Unit enemy = getTargetUnit();
-        if(unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode
+        if (unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode
                 && enemy != null
                 && unit.getDistance(enemy) < 350) {
             unit.useTech(TechType.Tank_Siege_Mode);
@@ -29,7 +29,7 @@ public class ActionEnterSiegeMode extends Action {
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof ActionEnterSiegeMode))return false;
+        if (!(obj instanceof ActionEnterSiegeMode)) return false;
         else return true;
     }
 

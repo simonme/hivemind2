@@ -1,13 +1,13 @@
-
-import bwapi.*;
+import bwapi.Unit;
 
 import java.util.HashSet;
 import java.util.List;
 
 
 public class Boiding {
+    public static final int RANGE_MULTIPLIER = 1000;
     private final HashSet<Unit> enemyUnits;
-    final private Unit unit;    public static final int RANGE_MULTIPLIER = 1000;
+    final private Unit unit;
     // r_sig
     private double neighborhoodRange = 0.2 * RANGE_MULTIPLIER;
     // r_sep

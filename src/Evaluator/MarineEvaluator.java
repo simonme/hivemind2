@@ -17,7 +17,7 @@ public class MarineEvaluator implements IEvaluator {
     private int HP;
 
     public double evaluate(Unit unit, HashSet<Unit> alliedUnits) {
-        if(!isInitialized) {
+        if (!isInitialized) {
             killedUnitCount = unit.getKillCount();
             damageDealt += unit.isAttacking() ? unit.getType().groundWeapon().damageAmount() : 0;
             HP = unit.getHitPoints();
@@ -31,7 +31,7 @@ public class MarineEvaluator implements IEvaluator {
         damageDealt += deltaDamageDealt;
         int deltaHP = unit.getHitPoints() - HP;
         HP += deltaHP;
-        int distanceToClosestMedic = (int)(getClosestUnitOfType(unit, alliedUnits, UnitType.Terran_Medic));
+        int distanceToClosestMedic = (int) (getClosestUnitOfType(unit, alliedUnits, UnitType.Terran_Medic));
         List<Unit> unitsInRadius = unit.getUnitsInRadius(unit.getType().sightRange());
         unitsInRadius.removeIf(unit2 -> unit2.getPlayer() == unit.getPlayer());
         int visibleEnemyUnitCount = unitsInRadius.size();
@@ -44,7 +44,7 @@ public class MarineEvaluator implements IEvaluator {
     private double getClosestUnitOfType(Unit unit, HashSet<Unit> alliedUnits, UnitType type) {
         double minDistance = Double.POSITIVE_INFINITY;
         for (Unit ally : alliedUnits) {
-            if (ally.getType() == type && ally.exists()){
+            if (ally.getType() == type && ally.exists()) {
                 double distance = getDistance(unit, ally);
                 if (distance < minDistance) {
                     minDistance = distance;

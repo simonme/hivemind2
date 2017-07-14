@@ -16,8 +16,8 @@ public class ActionTriggerStimPack extends Action {
     @Override
     public int ExecuteOn(Unit unit) {
         Unit enemy = getTargetUnit();
-        if(unit.getType() == UnitType.Terran_Marine) {
-            if(unit.canUseTech(TechType.Stim_Packs)
+        if (unit.getType() == UnitType.Terran_Marine) {
+            if (unit.canUseTech(TechType.Stim_Packs)
                     && enemy != null
                     && unit.getDistance(enemy) < 350) {
                 unit.useTech(TechType.Stim_Packs);
@@ -28,10 +28,10 @@ public class ActionTriggerStimPack extends Action {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
-        if (!(obj instanceof ActionTriggerStimPack))return false;
+        if (!(obj instanceof ActionTriggerStimPack)) return false;
         else return true;
     }
 
