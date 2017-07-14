@@ -42,7 +42,7 @@ public abstract class Action {
         this.boidingMove = boidingMove;
     }
 
-    public boolean hasDuration(){ return false; }
+    public boolean hasDuration(){ return duration != 0; }
 
     public int getDuration() {
         return duration;

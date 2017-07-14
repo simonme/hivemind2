@@ -43,7 +43,4 @@ public class ActionAttackClosestEnemy extends Action {
         return 1;
     }
 
-    @Override
-    public boolean hasDuration(){ return true; }
-
 }

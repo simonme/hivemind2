@@ -37,7 +37,7 @@ public class PlayerAI {
         final Unit closestEnemy = getClosestEnemy();
         final Unit lowestHealableAlly = PositionHelper.getLowestHealable(alliedUnits);
         if (actionTime > 0){
-            System.out.println(actionTime);
+//            System.out.println(actionTime);
             actionTime--;
             return;
         }
