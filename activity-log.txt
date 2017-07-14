@@ -1,3 +1,110 @@
+commit 63527ddca8a7c764b061211ca2fa99b00e1c9868
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Fri Jul 14 22:51:36 2017 +0200
+
+    Add newest build and build configuration
+
+commit 9427abca9a1752e02a9d214dd61d4a41848e188e
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Fri Jul 14 22:48:08 2017 +0200
+
+    Final Commit
+
+commit 75776d353eba2ed055986b3e5c4db5bafb166644
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Fri Jul 14 16:25:58 2017 +0200
+
+    Use IntelliJ code reformatting
+
+commit 3f5dcbd8a1a565ad11a4daefd27e4b97d3549590
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Fri Jul 14 16:23:07 2017 +0200
+
+    Improve hasDuration function for Actions
+
+commit 179295f61e601de67705d89ae567c407c1601e18
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Fri Jul 14 12:31:43 2017 +0200
+
+    added duration for attack action
+
+commit 0d3b093650a0a043fbd6228ea8b5d86492529904
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Fri Jul 14 02:51:09 2017 +0200
+
+    Some small improvements..
+
+commit 9a4dd8ca715091fd59395cc11361d73826c375cc
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Fri Jul 14 02:19:53 2017 +0200
+
+    Implement ActionAwayFromClosestEnemy and ActionBoidingMove Actions and fix some bugs.
+
+commit 0c95ca0339286ca1d0d9dae675077b06f44ff5c0
+Merge: 29dfc51 8290701
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Wed Jul 12 21:41:28 2017 +0200
+
+    Merge branch 'master' of github.com:simonme/hivemind2
+
+commit 29dfc51e8112ed41d4741fa73d9fb9ef45c579c3
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Wed Jul 12 21:41:08 2017 +0200
+
+    Boiding works. Still on parameter optimization.
+
+commit 82907017e7e9655c533d66bff28fb4cb4d91e49f
+Author: Jakob Mandery <mandery.jakob@gmail.com>
+Date:   Wed Jul 12 15:19:12 2017 +0200
+
+    Issues #9, #10, #11: Situation for Tank and Medic
+    
+    Implemented different situations for Siege Tank and Medic
+    Siege Tank situation adds siege state
+    Medic situation adds direction and distance to closest healable ally
+
+commit ab2ec695bd16e9c506b612d08ec7bd96b1bab524
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Wed Jul 12 11:40:37 2017 +0200
+
+    Intermediate bugfix commit. Now basically working, but units move downwards and not left towards the enemy.
+
+commit 46cea9ecad899f3743ba975eec789fcdf530288e
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Wed Jul 12 01:34:03 2017 +0200
+
+    Intermediate bugfix commit
+
+commit 56e8ba190ca258cc0cc6039ad838814206c9b489
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Tue Jul 11 13:33:29 2017 +0200
+
+    separated AI from Marine
+
+commit b8e1e13ed48d36ae2c004a7196b0fb27592bc179
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Tue Jul 11 12:46:57 2017 +0200
+
+    corrected GA and updated Marine
+
+commit 83c3ab9b760ba0e4ab88e14e5dc9cf6a3f5c28ea
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Mon Jul 10 17:57:08 2017 +0200
+
+    properly using getters for Parameters in Marine
+
+commit 9350fb07e35775ccdc7caa84bf2e48405590df2d
+Author: T3pp1ch <f.duerlich@gmail.com>
+Date:   Mon Jul 10 17:51:35 2017 +0200
+
+    added mutation and crossover
+
+commit 65509b54a448e7ffb11295f8af00d958b3ef9a3d
+Author: Simon Menssen <simon.menssen@disqava.com>
+Date:   Fri Jul 7 23:49:24 2017 +0200
+
+    Try to fix errors in code and add activity-log.txt
+
 commit b34cbae901c1f15ef4f4e83b863d52e40b81d2d3
 Author: T3pp1ch <f.duerlich@gmail.com>
 Date:   Thu Jul 6 21:02:01 2017 +0200
