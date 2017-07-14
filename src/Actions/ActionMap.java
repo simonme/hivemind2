@@ -15,33 +15,27 @@ public class ActionMap {
 
     private Map<PlayerAIType, ArrayList<Action>> actions = Collections.synchronizedMap(new EnumMap<PlayerAIType,  ArrayList<Action>>(PlayerAIType.class));
 
-    public ActionMap() { // TODO: set correct actions per unit type (include their special abilities!)
+    public ActionMap() {
         ArrayList<Action> marineActions = new ArrayList<>();
         marineActions.add(new ActionIdle());
-        marineActions.add(new ActionMove(new RelativePosition(0+0.0, 50)));
-        marineActions.add(new ActionMove(new RelativePosition(90+0.0, 50)));
-        marineActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
-        marineActions.add(new ActionMove(new RelativePosition(270+0.0, 50)));
+        marineActions.add(new ActionBoidingMove());
+        marineActions.add(new ActionAwayFromClosestEnemy());
         marineActions.add(new ActionAttackClosestEnemy());
         marineActions.add(new ActionTriggerStimPack());
         actions.put(PlayerAIType.MARINE, marineActions);
 
         ArrayList<Action> medicActions = new ArrayList<>();
         medicActions.add(new ActionIdle());
-        medicActions.add(new ActionMove(new RelativePosition(0+0.0, 50)));
-        medicActions.add(new ActionMove(new RelativePosition(90+0.0, 50)));
-        medicActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
-        medicActions.add(new ActionMove(new RelativePosition(270+0.0, 50)));
+        medicActions.add(new ActionBoidingMove());
+        medicActions.add(new ActionAwayFromClosestEnemy());
         medicActions.add(new ActionAttackClosestEnemy());
         medicActions.add(new ActionHeal());
         actions.put(PlayerAIType.MEDIC, medicActions);
 
         ArrayList<Action> siegeTankActions = new ArrayList<>();
         siegeTankActions.add(new ActionIdle());
-        siegeTankActions.add(new ActionMove(new RelativePosition(0+0.0, 50)));
-        siegeTankActions.add(new ActionMove(new RelativePosition(90+0.0, 50)));
-        siegeTankActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
-        siegeTankActions.add(new ActionMove(new RelativePosition(270+0.0, 50)));
+        siegeTankActions.add(new ActionBoidingMove());
+        siegeTankActions.add(new ActionAwayFromClosestEnemy());
         siegeTankActions.add(new ActionAttackClosestEnemy());
         siegeTankActions.add(new ActionEnterSiegeMode());
         siegeTankActions.add(new ActionExitSiegeMode());
@@ -49,10 +43,8 @@ public class ActionMap {
 
         ArrayList<Action> vultureActions = new ArrayList<>();
         vultureActions.add(new ActionIdle());
-        vultureActions.add(new ActionMove(new RelativePosition(0+0.0, 50)));
-        vultureActions.add(new ActionMove(new RelativePosition(90+0.0, 50)));
-        vultureActions.add(new ActionMove(new RelativePosition(180+0.0, 50)));
-        vultureActions.add(new ActionMove(new RelativePosition(270+0.0, 50)));
+        vultureActions.add(new ActionBoidingMove());
+        vultureActions.add(new ActionAwayFromClosestEnemy());
         vultureActions.add(new ActionSpiderMines(new RelativePosition(0+0.0, 0)));
         vultureActions.add(new ActionAttackClosestEnemy());
         actions.put(PlayerAIType.VULTURE, vultureActions);

@@ -1,5 +1,6 @@
 import Actions.Action;
 import Actions.ActionAttackClosestEnemy;
+import Actions.ActionAwayFromClosestEnemy;
 import Actions.ActionHeal;
 import Evaluator.IEvaluator;
 import Situation.ISituationFactory;
@@ -8,7 +9,6 @@ import Position.PositionHelper;
 import bwapi.*;
 
 import java.util.HashSet;
-import java.util.Optional;
 
 public class PlayerAI {
 
@@ -19,6 +19,7 @@ public class PlayerAI {
     private final AI ai;
     private final IEvaluator evaluator;
     private final ISituationFactory situationFactory;
+    private final Boiding boiding;
 
     private int immediateReward;
 
@@ -30,6 +31,7 @@ public class PlayerAI {
         this.ai = ai;
         this.alliedUnits = alliedUnits;
         this.situationFactory = situationFactory;
+        this.boiding = new Boiding(this.unit, this.enemyUnits);
     }
 
     public void step() {
@@ -39,7 +41,7 @@ public class PlayerAI {
         final Situation sigmaT = situationFactory.create(this.unit, closestEnemy, enemyUnits, alliedUnits);
         final Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit, this.alliedUnits) + immediateReward, unit.getID());
         if(action.isRequiresTargetUnit()) {
-            if(action instanceof ActionAttackClosestEnemy)
+            if(action instanceof ActionAttackClosestEnemy || action instanceof ActionAwayFromClosestEnemy)
             {
                 action.setTargetUnit(closestEnemy);
             }
@@ -47,6 +49,9 @@ public class PlayerAI {
             {
                  action.setTargetUnit(lowestHealableAlly);
             }
+        }
+        if (action.isRequiresBoidingMove()) {
+            action.setBoidingMove(boiding.getBoidingMovement());
         }
         immediateReward = action.ExecuteOn(this.unit);
         // System.out.println("stepped " + unit.getID());

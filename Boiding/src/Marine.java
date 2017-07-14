@@ -135,7 +135,7 @@ public class Marine{
         Position vecCohesion = bestColumnCentroid.sub(unitPosition);
 
         final Position centroid = bestColumnCentroid;
-//        bestColumnUnits.removeIf(unit1 -> Position.sub(unit1.getPosition(), centroid).getLength() > separation);
+//        bestColumnUnits.removeIf(unit1 -> CustomPosition.sub(unit1.getPosition(), centroid).getLength() > separation);
         bestColumnUnits.removeIf(unit1 -> centroid.sub(unit1.getPosition()).mul(-1).getLength() > separation);
 
         Position vecSeparation = computeSeparationVector(unitPosition, bestColumnUnits);

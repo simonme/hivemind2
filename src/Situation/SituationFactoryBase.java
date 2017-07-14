@@ -25,10 +25,12 @@ public class SituationFactoryBase implements ISituationFactory {
         features.add((double) unit.getHitPoints());
         if (closestEnemy != null) {
             features.add((double) closestEnemy.getHitPoints());
-            features.add((double) closestEnemy.getDistance(unit));
+            double closestEnemyDistance = (double) closestEnemy.getDistance(unit);
+            features.add(closestEnemyDistance > 400 ? 400 : closestEnemyDistance);
             features.add(RelativePosition.computeAngle(unit.getPosition(), closestEnemy.getPosition()) * 360 / (2*Math.PI));
             features.add((double)closestEnemy.getType().groundWeapon().maxRange());
         } else {
+            features.add((double) -10000);
             features.add((double) -10000);
             features.add((double) -10000);
             features.add((double) -10000);
@@ -37,7 +39,8 @@ public class SituationFactoryBase implements ISituationFactory {
         //System.out.println("Anzahl gegnerischer Einheiten: " + enemyUnits.size());
         features.add((double) enemyUnits.size());
         if (enemyUnits.size() > 0) {
-            features.add(unit.getPosition().getDistance(calculateCentreOfMass(enemyUnits))); // Distanz zum Masseschwerpunkt der Gegner
+            double enemyCentreOfMassDistance = unit.getPosition().getDistance(calculateCentreOfMass(enemyUnits));
+            features.add(enemyCentreOfMassDistance > 400 ? 400 : enemyCentreOfMassDistance); // Distanz zum Masseschwerpunkt der Gegner
             features.add(RelativePosition.computeAngle(unit.getPosition(), calculateCentreOfMass(enemyUnits)) * 360 / (2*Math.PI)); // Relative Position zum Masseschwerpunkt der Gegner
         } else {
             features.add((double) -10000);
@@ -45,7 +48,8 @@ public class SituationFactoryBase implements ISituationFactory {
         }
         //System.out.println("Anzahl verbündeter Einheiten: " + alliedUnits.size());
         features.add((double) alliedUnits.size());
-        features.add(unit.getPosition().getDistance(calculateCentreOfMass(alliedUnits))); // Distanz zum Masseschwerpunkt der Verbündeten
+        double closestAllyDistance = unit.getPosition().getDistance(calculateCentreOfMass(alliedUnits));
+        features.add(closestAllyDistance > 400 ? 400 : closestAllyDistance); // Distanz zum Masseschwerpunkt der Verbündeten
         features.add(RelativePosition.computeAngle(unit.getPosition(), calculateCentreOfMass(alliedUnits)) * 360 / (2*Math.PI)); // Relative Position zum Masseschwerpunkt der Verbündeten
 
         return features;

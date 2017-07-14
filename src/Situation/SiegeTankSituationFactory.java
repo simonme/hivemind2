@@ -15,7 +15,7 @@ public class SiegeTankSituationFactory extends SituationFactoryBase {
         ArrayList<Double> situation = super.createArray(unit, closestEnemy, enemyUnits, alliedUnits);
 
         // Is Tank sieged? Represented as wrapping interval.
-        situation.add(unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode ? 1.0 : 0.0);
+        situation.add(unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode ? 100.0 : 0.0);
 
         return situation;
     }

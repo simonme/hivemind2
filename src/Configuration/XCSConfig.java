@@ -26,11 +26,11 @@ public class XCSConfig {
     public static CrossoverType crossoverType = CrossoverType.UNIFORM;
     public static double my = 0.04;
     public static int N = 6400;
-    public static double m0 = 1.6;
-    public static double r0 = 1.6;
+    public static double m0 = 2.0;
+    public static double r0 = 2.0;
     public static boolean doActionSetSubsumption = true;
     public static boolean doGASubsumption = true;
     public static double tournamentSize = 0.2; //Anteil des ActionSets, der für die Tournament Selection verwendet wird
     public static SelectionType selectionType = SelectionType.TOURNAMENT;
-    public static double pExp = 0.1; //Wahrscheinlichkeit für exploration
+    public static double pExp = 0.7; //Wahrscheinlichkeit für exploration
 }

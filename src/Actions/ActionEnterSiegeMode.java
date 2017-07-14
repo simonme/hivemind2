@@ -9,20 +9,24 @@ import bwapi.UnitType;
  */
 public class ActionEnterSiegeMode extends Action {
 
-    public ActionEnterSiegeMode() { }
-
-    @Override
-    public int ExecuteOn(Unit unit) {
-        if(unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode)
-        {
-            unit.useTech(TechType.Tank_Siege_Mode);
-            return 0;
-        }
-        return -10;
+    public ActionEnterSiegeMode() {
+        this.requiresTargetUnit = true;
     }
 
     @Override
-    public boolean equals(Object obj){
+    public int ExecuteOn(Unit unit) {
+        Unit enemy = getTargetUnit();
+        if(unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode
+                && enemy != null
+                && unit.getDistance(enemy) < 350) {
+            unit.useTech(TechType.Tank_Siege_Mode);
+            return 0;
+        }
+        return -20;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
         if (!(obj instanceof ActionEnterSiegeMode))return false;
