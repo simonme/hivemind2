@@ -10,6 +10,7 @@ public abstract class Action {
     protected boolean requiresBoidingMove = false;
     private Unit targetUnit = null;
     private bwapi.Position boidingMove;
+    protected int duration = 0;
 
     public abstract int ExecuteOn(Unit unit);
 
@@ -39,6 +40,12 @@ public abstract class Action {
 
     public void setBoidingMove(bwapi.Position boidingMove) {
         this.boidingMove = boidingMove;
+    }
+
+    public boolean hasDuration(){ return false; }
+
+    public int getDuration() {
+        return duration;
     }
 }
 

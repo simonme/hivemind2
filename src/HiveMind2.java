@@ -109,7 +109,7 @@ public class HiveMind2 extends DefaultBWListener implements Runnable {
     public void onFrame() {
 
         frame++;
-        if (frame % 15 == 0) {
+        if (frame % 8 == 0) {
             for(int i = 0; i < playerAIs.size(); i++)
             {
                 try {

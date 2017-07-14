@@ -10,6 +10,7 @@ public class ActionAttackClosestEnemy extends Action {
     public ActionAttackClosestEnemy()
     {
         this.requiresTargetUnit = true;
+        this.duration = 15;
     }
 
     @Override
@@ -41,4 +42,8 @@ public class ActionAttackClosestEnemy extends Action {
     public int hashCode() {
         return 1;
     }
+
+    @Override
+    public boolean hasDuration(){ return true; }
+
 }

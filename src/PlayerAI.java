@@ -17,6 +17,7 @@ public class PlayerAI {
     private final IEvaluator evaluator;
     private final ISituationFactory situationFactory;
     private final Boiding boiding;
+    private int actionTime = 0;
 
     private int immediateReward;
 
@@ -35,8 +36,15 @@ public class PlayerAI {
         // System.out.println("stepping " + unit.getID() + " " + unit.getType());
         final Unit closestEnemy = getClosestEnemy();
         final Unit lowestHealableAlly = PositionHelper.getLowestHealable(alliedUnits);
+        if (actionTime > 0){
+            System.out.println(actionTime);
+            actionTime--;
+            return;
+        }
         final Situation sigmaT = situationFactory.create(this.unit, closestEnemy, enemyUnits, alliedUnits);
         final Action action = this.ai.step(sigmaT, evaluator.evaluate(this.unit, this.alliedUnits) + immediateReward, unit.getID());
+        if (action.hasDuration())
+            this.actionTime = action.getDuration();
         if(action.isRequiresTargetUnit()) {
             if(action instanceof ActionAttackClosestEnemy
                     || action instanceof ActionAwayFromClosestEnemy
